@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第XX期《中美AI竞赛，到底是什么的较量？》</title>
+<style>
+:root {
+  --bg: #F9F9F7; --bg-pure: #FAFAFA; --black-border: #0D0D0D;
+  --text-primary: #1A1A1A; --text-secondary: #64748B; --text-tertiary: #475569;
+  --accent-navy: #0A1128; --accent-red: #E63946;
+  --accent-blue: #3B82F6; --accent-blue-deep: #4169E1;
+  --chapter-01: #E8F0FE; --chapter-02: #F3E8FF; --chapter-03: #E0F2F1;
+  --chapter-04: #FFF1E6; --chapter-05: #E5E7EB;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', 'Helvetica Neue', sans-serif;
+  --img-size: 480px; --radius: 16px; --border-color: #E2E8F0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; }
+.slide { width:1080px; height:1920px; position:relative; display:flex; flex-direction:column; margin:0 auto 40px; }
+.black-top { width:100%; height:160px; background:#0D0D0D; flex-shrink:0; }
+.black-bottom { width:100%; height:200px; background:#0D0D0D; flex-shrink:0; }
+.content-area { flex:1; padding:60px 72px 120px; position:relative; display:flex; flex-direction:column; }
+.nav-bar { position:absolute; bottom:48px; left:72px; right:72px; display:flex; justify-content:space-between; font-family:var(--font-body); font-size:28px; color:var(--text-tertiary); opacity:0.5; }
+img.square { width:480px; height:480px; object-fit:cover; object-position:center top; border-radius:16px; display:block; }
+
+.kw-card {
+  background: #ffffff;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 24px;
+  padding: 48px 56px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  transition: box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.kw-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.kw-number {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #9CA3AF;
+}
+.kw-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #1A1A1A;
+  margin: 0;
+}
+.kw-subtitle {
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #9CA3AF;
+  font-style: italic;
+  margin-top: 4px;
+}
+.kw-desc {
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+  font-size: 32px;
+  line-height: 1.75;
+  color: #4B5563;
+  white-space: pre-line;
+}
+</style>
+</head>
+<body>
+
+<!-- P1 封面 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:#C29A90;padding:0;overflow:hidden;">
+    <img src="images/cover.jpg" alt="封面" style="width:1080px;height:100%;object-fit:cover;object-position:center center;display:block;">
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P2 正文页·开场 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:#C29A90;justify-content:center;gap:40px;">
+    <h2 style="font:700 72px/1.2 var(--font-display);color:#ffffff;">这场战争，你在新闻里看不见</h2>
+    <div style="width:80px;height:6px;background:rgba(255,255,255,0.6);border-radius:3px;"></div>
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <p style="font:400 36px/1.7 var(--font-body);color:rgba(255,255,255,0.65);">很多人以为是技术的较量。更多人以为是钱的较量。但真正的战场，藏在一张出口管制清单里，藏在一块你买不到的芯片里，藏在一条跨境数据禁令里。</p>
+      <div style="background:#fff;border: 1.5px solid #E5E7EB;border-radius:24px;padding:48px 56px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+        <p style="font:700 48px/1.5 var(--font-display);color:var(--accent-navy);">这期讲清楚 3 件事：</p>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:28px;">
+          <div style="display:flex;align-items:center;gap:20px;">
+            <span style="font:500 22px/1 'Courier New',monospace;letter-spacing:0.2em;color:#9CA3AF;flex-shrink:0;">01</span>
+            <span style="font:600 40px/1.3 var(--font-body);color:var(--text-primary);">中国AI强不强？</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;">
+            <span style="font:500 22px/1 'Courier New',monospace;letter-spacing:0.2em;color:#9CA3AF;flex-shrink:0;">02</span>
+            <span style="font:600 40px/1.3 var(--font-body);color:var(--text-primary);">卡在哪里？</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;">
+            <span style="font:500 22px/1 'Courier New',monospace;letter-spacing:0.2em;color:#9CA3AF;flex-shrink:0;">03</span>
+            <span style="font:600 40px/1.3 var(--font-body);color:var(--text-primary);">能否突围？</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-bar"><span>大白话讲AI</span><span>2 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P3 章节封面 01 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-01);justify-content:center;align-items:center;text-align:center;gap:32px;">
+    <span style="font:900 200px/1 var(--font-display);color:rgba(10,17,40,0.08);">01</span>
+    <h2 style="font:700 72px/1.2 var(--font-display);color:var(--accent-navy);margin-top:-80px;">中国AI有多强</h2>
+    <p style="font:400 40px/1.6 var(--font-body);color:var(--text-secondary);max-width:800px;">两张底牌，一场逆袭，应用层的另一条跑道</p>
+    <div class="nav-bar"><span>第1章 中国AI有多强</span><span>3 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P4 关键词卡片：中国AI的两张底牌 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-01);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">中国AI的两张底牌</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">数据红利</div>
+      <div class="kw-desc">14亿人口的使用行为，产生了海量真实数据。AI需要数据喂养，中国不缺。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">工程师红利</div>
+      <div class="kw-desc">全球最大规模的理工科毕业生群体，能以更低成本、更快速度落地AI应用。</div>
+    </div>
+    <div class="nav-bar"><span>第1章 中国AI有多强</span><span>4 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P5 关键词卡片：百模大战 & 国家队入场 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-01);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">百模大战 &amp; 国家队入场</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">百模大战</div>
+      <div class="kw-desc">2023年国内大模型数量爆发，超过100个。竞争激烈，但也加速了技术迭代和人才集聚。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">国家队入场</div>
+      <div class="kw-desc">政府和国有资本大规模进入AI领域，提供长期资金和政策保障，确保战略持续性。</div>
+    </div>
+    <div class="nav-bar"><span>第1章 中国AI有多强</span><span>5 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P6 关键词卡片：DeepSeek逆袭 & 开源反攻 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-01);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">DeepSeek逆袭 &amp; 开源反攻</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">DeepSeek逆袭</div>
+      <div class="kw-desc">2025年初，DeepSeek以极低算力成本训练出顶级模型，证明效率优化可以部分替代算力堆砌。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">开源反攻</div>
+      <div class="kw-desc">中国AI公司通过开放模型权重，吸引全球开发者使用和改进，建立技术影响力和生态话语权。</div>
+    </div>
+    <div class="nav-bar"><span>第1章 中国AI有多强</span><span>6 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P7 关键词卡片：应用层爆发 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-01);justify-content:center;gap:56px;">
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">应用层爆发</div>
+      <div class="kw-desc">中国AI在电商、医疗、教育、制造等领域快速落地，形成全球最密集的AI应用场景。这不是在追赶，是在另一条跑道上领跑。</div>
+    </div>
+    <div class="nav-bar"><span>第1章 中国AI有多强</span><span>7 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P8 关键词卡片：中国AI代表产品 A-C -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-01);justify-content:center;gap:40px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">中国AI代表产品</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">DeepSeek</div>
+      <div class="kw-desc">幻方量化旗下，2025年以R1模型震动全球。低算力、高性能，开源发布，全球下载量破亿。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">通义千问 · 阿里巴巴</div>
+      <div class="kw-desc">阿里巴巴旗舰大模型，深度整合淘宝、钉钉、阿里云，是目前落地场景最广的国产模型之一。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 03</div>
+      <div class="kw-title">MiniMax</div>
+      <div class="kw-desc">明星独角兽，主打多模态和长上下文，Hailuo视频生成在海外出圈，是中国AI出海最快的产品之一。</div>
+    </div>
+    <div class="nav-bar"><span>第1章 中国AI有多强</span><span>8 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P9 关键词卡片：中国AI代表产品 D-E -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-01);justify-content:center;gap:48px;">
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">智谱AI · GLM</div>
+      <div class="kw-desc">清华系背景，GLM系列模型走学术+商业双线，较早开源，开发者生态积累深厚。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">豆包 · 字节跳动</div>
+      <div class="kw-desc">字节旗下AI助手，依托抖音/今日头条流量体系，用户规模增长最快，是目前国内日活最高的AI产品。</div>
+    </div>
+    <div class="nav-bar"><span>第1章 中国AI有多强</span><span>9 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P10 章节封面 02 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-02);justify-content:center;align-items:center;text-align:center;gap:32px;">
+    <span style="font:900 200px/1 var(--font-display);color:rgba(10,17,40,0.08);">02</span>
+    <h2 style="font:700 72px/1.2 var(--font-display);color:var(--accent-navy);margin-top:-80px;">卡脖子在哪里</h2>
+    <p style="font:400 40px/1.6 var(--font-body);color:var(--text-secondary);max-width:800px;">芯片、光刻机、数据——双重封锁的真实结构</p>
+    <div class="nav-bar"><span>第2章 卡脖子在哪里</span><span>10 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P11 关键词卡片：硬件层封锁 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-02);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">硬件层封锁</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">芯片制裁</div>
+      <div class="kw-desc">美国限制向中国出口高端AI芯片（主要是英伟达A100/H100系列），直接切断中国获取顶级算力的渠道。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">光刻机封锁</div>
+      <div class="kw-desc">荷兰ASML的EUV光刻机是制造先进芯片的关键设备，在美国压力下，中国无法购买，本土芯片制造能力被限制在落后制程。</div>
+    </div>
+    <div class="nav-bar"><span>第2章 卡脖子在哪里</span><span>11 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P12 关键词卡片：算力差距 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-02);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">算力差距</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">算力缺口</div>
+      <div class="kw-desc">由于无法获取顶级AI芯片，中国可调用的AI训练算力总量远低于美国头部机构，影响大模型训练上限。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">算力集群</div>
+      <div class="kw-desc">将大量芯片互联组成超大规模计算集群，是训练顶级大模型的基础设施。中国在这一层的规模和互联效率上存在明显短板。</div>
+    </div>
+    <div class="nav-bar"><span>第2章 卡脖子在哪里</span><span>12 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P13 关键词卡片：代工封锁 & 实体清单 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-02);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">代工封锁 &amp; 实体清单</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">代工封锁</div>
+      <div class="kw-desc">台积电等顶级芯片代工厂在美国压力下，限制为中国AI企业生产先进制程芯片，切断了"自己设计、外包生产"的路径。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">实体清单</div>
+      <div class="kw-desc">美国商务部维护的制裁名单，被列入的中国公司无法购买美国技术和产品。华为、寒武纪等AI相关企业均在其中。</div>
+    </div>
+    <div class="nav-bar"><span>第2章 卡脖子在哪里</span><span>13 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P14 关键词卡片：囤卡潮 & 华为替代路 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-02);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">囤卡潮 &amp; 华为替代路</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">囤卡潮</div>
+      <div class="kw-desc">制裁收紧前，中国科技公司大规模采购英伟达GPU囤积，试图在禁令生效前锁定算力资源。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">华为替代路</div>
+      <div class="kw-desc">华为通过昇腾系列AI芯片和昇思框架，尝试构建独立于英伟达CUDA生态的国产算力体系，是目前最有规模的替代方案。</div>
+    </div>
+    <div class="nav-bar"><span>第2章 卡脖子在哪里</span><span>14 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P15 关键词卡片：数据层封锁 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-02);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">数据层封锁</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">数据合规墙</div>
+      <div class="kw-desc">中国数据安全法规要求本地存储和处理用户数据，限制了中国AI产品向海外扩张时的数据流通。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">跨境数据禁令</div>
+      <div class="kw-desc">部分类型数据被明确禁止出境，影响中国AI公司训练面向全球用户的模型，以及与境外机构的数据合作。</div>
+    </div>
+    <div class="nav-bar"><span>第2章 卡脖子在哪里</span><span>15 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P16 关键词卡片：规则层争议 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-02);justify-content:center;gap:56px;">
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">模型蒸馏争议</div>
+      <div class="kw-desc">用强大模型的输出数据训练较小模型的技术。OpenAI指控DeepSeek使用其模型输出进行蒸馏训练，引发关于数据来源合法性的国际争议。技术竞争已蔓延到规则层——谁来定义合法训练，谁就掌握了另一种封锁武器。</div>
+    </div>
+    <div class="nav-bar"><span>第2章 卡脖子在哪里</span><span>16 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P17 章节封面 03 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-03);justify-content:center;align-items:center;text-align:center;gap:32px;">
+    <span style="font:900 200px/1 var(--font-display);color:rgba(10,17,40,0.08);">03</span>
+    <h2 style="font:700 72px/1.2 var(--font-display);color:var(--accent-navy);margin-top:-80px;">中国怎么突围</h2>
+    <p style="font:400 40px/1.6 var(--font-body);color:var(--text-secondary);max-width:800px;">五条路线，从存量优化到全栈自主</p>
+    <div class="nav-bar"><span>第3章 中国怎么突围</span><span>17 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P18 关键词卡片：突围路线 1-2 硬件层 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-03);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">突围路线 1-2：硬件层</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">存量芯片战争</div>
+      <div class="kw-desc">在无法获取新芯片的情况下，最大化利用已有芯片的计算效率。包括优化调度、延长使用寿命、挖掘性能潜力。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">国产芯片赛跑</div>
+      <div class="kw-desc">寒武纪、华为昇腾、壁仞、摩尔线程等公司正在加速研发国产AI芯片，目标是在制程差距内追赶英伟达的性能和生态。</div>
+    </div>
+    <div class="nav-bar"><span>第3章 中国怎么突围</span><span>18 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P19 关键词卡片：突围路线 3-4 软件层 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-03);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">突围路线 3-4：软件层</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">软件定义算力</div>
+      <div class="kw-desc">通过编译器优化、算子库改进、模型并行策略等软件手段，让同等硬件发挥更高计算效率。DeepSeek的成功很大程度上依赖这条路。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">推理优化</div>
+      <div class="kw-desc">训练大模型需要大算力，但推理（使用模型）可以更高效。中国公司大量投入推理侧优化，用更少算力提供同等服务质量。</div>
+    </div>
+    <div class="nav-bar"><span>第3章 中国怎么突围</span><span>19 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P20 关键词卡片：突围路线 5 战略层 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-03);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">突围路线 5：战略层</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">私有化部署</div>
+      <div class="kw-desc">将AI模型部署在客户自己的服务器上，而非云端。适合对数据安全敏感的政府、金融、医疗客户，也绕开了跨境数据限制。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">自主可控</div>
+      <div class="kw-desc">在芯片、框架、数据、模型全链条上建立不依赖美国技术的本土体系。这是国家战略目标，也是整个突围逻辑的终点。</div>
+    </div>
+    <div class="nav-bar"><span>第3章 中国怎么突围</span><span>20 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P21 关键词卡片：国产算力代表 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--chapter-03);justify-content:center;gap:48px;">
+    <div style="font:500 28px/1 'Courier New',monospace;letter-spacing:0.2em;text-transform:uppercase;color:#9CA3AF;padding-bottom:8px;border-bottom:2px solid #E5E7EB;">国产算力代表</div>
+    <div class="kw-card">
+      <div class="kw-number">No. 01</div>
+      <div class="kw-title">寒武纪</div>
+      <div class="kw-desc">中国最早的AI芯片专业公司，MLU系列芯片面向云端训练和推理，已进入实体清单但仍在持续迭代，是国产算力赛道的标志性玩家。</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-number">No. 02</div>
+      <div class="kw-title">华为昇腾</div>
+      <div class="kw-desc">华为AI计算品牌，昇腾910系列是目前性能最接近英伟达H100的国产训练芯片。配套昇思MindSpore框架，目标是构建完整的国产AI算力生态，从芯片到软件全栈自研。</div>
+    </div>
+    <div class="nav-bar"><span>第3章 中国怎么突围</span><span>21 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- P22 正文页·收尾 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:var(--bg);justify-content:center;gap:40px;">
+    <h2 style="font:700 72px/1.2 var(--font-display);color:var(--accent-navy);">这场战争，真正的战场在哪里</h2>
+    <div style="width:80px;height:6px;background:var(--accent-red);border-radius:3px;"></div>
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div style="background:#fff;border-radius:16px;padding:40px 48px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+        <p style="font:400 44px/1.7 var(--font-body);color:var(--text-primary);">中美AI竞赛，是算法、人才、钱的较量，更是谁能控制另一方看不见的基础设施。</p>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:40px 48px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+        <p style="font:400 44px/1.7 var(--font-body);color:var(--text-primary);">芯片是基础设施。光刻机是基础设施。数据规则是基础设施。代工厂是基础设施。</p>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:40px 48px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+        <p style="font:400 44px/1.7 var(--font-body);color:var(--text-primary);">多年之前就开始了，一层一层替换掉。</p>
+      </div>
+    </div>
+    <div class="nav-bar"><span>大白话讲AI</span><span>22 / 22</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+<!-- 结尾页 -->
+<div class="slide">
+  <div class="black-top"></div>
+  <div class="content-area" style="background:#C29A90;justify-content:center;align-items:center;text-align:center;gap:40px;">
+    <!-- 头像圆形 -->
+    <img src="images/avatar.png" alt="Miss发行人" style="width:200px;height:200px;border-radius:50%;object-fit:cover;object-position:center;border:6px solid rgba(255,255,255,0.6);box-shadow:0 8px 32px rgba(0,0,0,0.15);">
+    <!-- 频道名 -->
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
+      <span style="font:700 56px var(--font-body);color:#ffffff;letter-spacing:0.04em;">@Miss发行人</span>
+      <span style="font:400 32px var(--font-body);color:rgba(255,255,255,0.75);letter-spacing:0.05em;">大白话讲AI</span>
+    </div>
+    <!-- 分割线 -->
+    <div style="width:120px;height:2px;background:rgba(255,255,255,0.35);border-radius:2px;"></div>
+    <!-- 下期见 -->
+    <p style="font:700 64px/1.3 var(--font-display);color:#ffffff;">下期见</p>
+    <!-- vibe coding 注 -->
+    <div style="background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.3);border-radius:16px;padding:24px 48px;">
+      <p style="font:400 28px/1.6 var(--font-body);color:rgba(255,255,255,0.8);">✦ 本期 PPT 内容由 Vibe Coding 生成 ✦</p>
+    </div>
+    <div class="nav-bar" style="color:rgba(255,255,255,0.4);"><span></span><span>END</span></div>
+  </div>
+  <div class="black-bottom"></div>
+</div>
+
+</body>
+</html>

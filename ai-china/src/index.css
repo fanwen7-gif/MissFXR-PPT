@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Noto Sans SC", sans-serif;
+  --font-serif: "Playfair Display", "Noto Serif SC", serif;
+  --color-brand-bg: #F2EFE9;
+  --color-brand-ink: #1D1D1F;
+  --color-brand-muted: #86868B;
+  --color-brand-accent: #E03C31;
+}
+
+body {
+  background-color: var(--color-brand-bg);
+  color: var(--color-brand-ink);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}

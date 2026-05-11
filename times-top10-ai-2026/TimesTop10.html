@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>《时代》：全球最具影响力的10家AI公司</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .deck {
+    position: relative;
+    width: 960px;
+    height: 720px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    background: #EEF2F8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  /* ===== 封面 ===== */
+  .slide.cover {
+    background: #D62503;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 80px;
+  }
+  .cover-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.45em;
+    color: rgba(255,255,255,0.7);
+    font-weight: 600;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+  .cover-time-badge {
+    display: inline-block;
+    background: white;
+    color: #D62503;
+    font-size: 52px;
+    font-weight: 900;
+    font-family: "Georgia", "Times New Roman", serif;
+    letter-spacing: -2px;
+    line-height: 1;
+    padding: 6px 20px 4px;
+    margin-bottom: 32px;
+  }
+  .cover-main {
+    font-size: 34px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.35;
+    margin-bottom: 20px;
+    max-width: 560px;
+  }
+  .cover-divider {
+    width: 48px;
+    height: 2px;
+    background: rgba(255,255,255,0.45);
+    margin: 0 auto 20px;
+  }
+  .cover-byline {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.08em;
+  }
+
+  /* ===== 封底 ===== */
+  .slide.back {
+    background: #D62503;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 80px;
+  }
+  .back-inner { max-width: 640px; }
+  .back-num {
+    font-size: 100px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.15);
+    line-height: 1;
+    margin-bottom: -16px;
+    font-family: "Georgia", serif;
+  }
+  .back-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+  .back-body {
+    font-size: 17px;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.9;
+    margin-bottom: 32px;
+  }
+  .back-hl { color: white; font-weight: 700; }
+  .back-tag {
+    display: inline-block;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.8);
+    font-size: 13px;
+    padding: 6px 18px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ===== 导语页 ===== */
+  .slide.intro {
+    text-align: left;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 56px 80px;
+  }
+  .intro-inner { max-width: 780px; }
+  .page-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: #D62503;
+    font-weight: 700;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+  .intro-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
+    margin-bottom: 22px;
+  }
+  .intro-body {
+    font-size: 17px;
+    color: #2d3748;
+    line-height: 1.95;
+  }
+  .hl { color: #D62503; font-weight: 600; }
+  .hl-dark { color: #1a3a6b; font-weight: 600; }
+
+  /* ===== 公司页 ===== */
+  .slide.company {
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 36px 72px;
+    overflow: hidden;
+  }
+  .company-inner { width: 100%; }
+  .company-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 16px;
+  }
+  .company-logo-placeholder {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    background: #dde3ed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #8a96aa;
+    text-align: center;
+    line-height: 1.3;
+    padding: 4px;
+    border: 1.5px dashed #b0bcd0;
+    margin-top: 4px;
+  }
+  .company-meta { flex: 1; }
+  .company-number {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: #D62503;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .company-name {
+    font-size: 34px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.05;
+  }
+  .company-tagline {
+    font-size: 12px;
+    color: #8a96aa;
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: #D62503;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .company-reason {
+    font-size: 15.5px;
+    color: #2d3748;
+    line-height: 1.85;
+    margin-bottom: 14px;
+  }
+
+  .note-block {
+    background: rgba(255,107,53,0.07);
+    border-left: 3px solid #D62503;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+  }
+  .note-items {
+    font-size: 14px;
+    color: #2d3748;
+    line-height: 1.85;
+  }
+  .note-items .k { color: #D62503; font-weight: 600; }
+
+  .img-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .img-ph {
+    padding: 5px 11px;
+    background: #dde3ed;
+    border-radius: 5px;
+    font-size: 11px;
+    color: #8a96aa;
+    border: 1.5px dashed #b0bcd0;
+    white-space: nowrap;
+  }
+
+  /* ===== 导航 ===== */
+  .nav {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 100;
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.7);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+  }
+  .nav button:hover { background: rgba(255,255,255,0.2); }
+  .nav button:disabled { opacity: 0.25; cursor: default; }
+  .counter { color: rgba(255,255,255,0.35); font-size: 12px; min-width: 48px; text-align: center; }
+  .hint { position: fixed; bottom: 26px; right: 34px; color: rgba(255,255,255,0.2); font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 1. 封面 -->
+  <div class="slide cover active">
+    <div class="cover-eyebrow">Miss 发行人 · 大白话讲AI</div>
+    <div class="cover-time-badge">TIME</div>
+    <div class="cover-main">《时代》：全球最具影响力的<br>10家AI公司</div>
+    <div class="cover-divider"></div>
+    <div style="display:flex;gap:12px;justify-content:center;align-items:center;margin-bottom:20px;">
+      <img src="亚马逊logo.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+      <img src="智谱logo.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+      <img src="OpenAIlogo.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;background:#000;padding:5px;">
+      <img src="抖音logo.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+      <img src="阿里巴巴logo.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+      <img src="Googlelogo.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+      <img src="Metalogo.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+      <img src="Anthropiclogo.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;background:#000;padding:5px;">
+    </div>
+    <div class="cover-byline">2026 · AI Power List · 深度解读</div>
+  </div>
+
+  <!-- 2. 导语 -->
+  <div class="slide intro">
+    <div style="display:flex;align-items:center;gap:48px;width:100%;max-width:860px;">
+      <div style="flex:1;min-width:0;">
+        <div class="page-label">《时代》· 入选逻辑</div>
+        <div class="intro-title">《时代》：全球最具影响力的10家AI公司</div>
+        <div class="intro-body">
+          TIME 没有明文列标准，但从入选理由推断，核心维度是：<br>
+          <span class="hl">规模影响力 × 叙事独特性 × 行业塑造力</span>。<br>
+          不是单纯看营收或估值，更看<span class="hl-dark">"这家公司代表了什么方向"</span>。
+        </div>
+      </div>
+      <div style="flex-shrink:0;">
+        <img src="报道截图.jpg" style="width:280px;height:auto;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.18);display:block;">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. No.1 ByteDance (1/2) -->
+  <div class="slide company">
+    <div class="company-inner">
+      <div class="company-header">
+        <img src="字节跳动logo.png" style="width:52px;height:52px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+        <div class="company-meta">
+          <div class="company-number">NO. 01 / 10 · 中国公司</div>
+          <div class="company-name">ByteDance 字节跳动</div>
+          <div class="company-tagline">From TikTok parent to AI powerhouse · 从 TikTok 母公司到 AI 巨擘</div>
+        </div>
+      </div>
+      <div class="section-label">入选理由</div>
+      <div class="company-reason">
+        以 <span class="hl">豆包</span> 为核心，做到了 AI 助手真正意义上的大众化普及——<span class="hl">周活1.55亿，春节日活破亿</span>。同时是全球 AI 基础设施投入最大的玩家之一。
+      </div>
+      <div class="section-label">值得关注</div>
+      <div class="note-block">
+        <div class="note-items">
+          <span class="k">1</span> 原文特别强调"使中国成为首批大规模使用 AI 助手的国家之一"，这个定性很有力。<br>
+          <span class="k">2</span> 抖音 7.7亿月活是底盘，但字节押注的未来是 豆包，不是 抖音。<br>
+          <span class="k">3</span> 字节跳动还计划在2026年投资140亿美元购买英伟达芯片，前提是美国出口批准，以保持其在中国人工智能雄心中的领先地位。<br>
+          <span class="k">4</span> "我们越来越深刻地感受到人工智能开发仍处于早期阶段，目前仅是马拉松的前500米。" ——字节跳动 CEO 梁汝波<br>
+          <span class="k">5</span> 字节的决心：2025年超200亿美元资本支出，是什么概念呢——可购买约35艘最新型的航空母舰，或冰岛一年的国内生产总值（GDP）。
+        </div>
+      </div>
+      <div class="img-row">
+        <img src="抖音logo.png" style="height:44px;border-radius:8px;">
+        <img src="豆包logo.png" style="height:44px;border-radius:8px;">
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. No.1 ByteDance (2/2) -->
+  <div class="slide company">
+    <div style="display:flex;align-items:center;gap:48px;width:100%;">
+      <div style="flex:1;min-width:0;">
+        <div class="company-header">
+          <img src="字节跳动logo.png" style="width:52px;height:52px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+          <div class="company-meta">
+            <div class="company-number">NO. 01 / 10 · 中国公司</div>
+            <div class="company-name">ByteDance 字节跳动</div>
+            <div class="company-tagline">From TikTok parent to AI powerhouse · 从 TikTok 母公司到 AI 巨擘</div>
+          </div>
+        </div>
+        <div class="section-label">入选理由</div>
+        <div class="company-reason">
+          以 <span class="hl">豆包</span> 为核心，做到了 AI 助手真正意义上的大众化普及——<span class="hl">周活1.55亿，春节日活破亿</span>。同时是全球 AI 基础设施投入最大的玩家之一。
+        </div>
+        <div class="section-label">值得关注</div>
+        <div class="note-block">
+          <div class="note-items">
+            <span class="k">1</span> 原文特别强调"使中国成为首批大规模使用 AI 助手的国家之一"，这个定性很有力。<br>
+            <span class="k">2</span> 抖音 7.7亿月活是底盘，但字节押注的未来是 豆包，不是 抖音。<br>
+            <span class="k">3</span> 字节跳动还计划在2026年投资140亿美元购买英伟达芯片，前提是美国出口批准，以保持其在中国人工智能雄心中的领先地位。<br>
+            <span class="k">4</span> "我们越来越深刻地感受到人工智能开发仍处于早期阶段，目前仅是马拉松的前500米。" ——字节跳动 CEO 梁汝波<br>
+            <span class="k">5</span> 字节的决心：2025年超200亿美元资本支出，是什么概念呢——可购买约35艘最新型的航空母舰，或冰岛一年的国内生产总值（GDP）。
+          </div>
+        </div>
+      </div>
+      <div style="flex-shrink:0;">
+        <img src="140亿是什么概念.png" style="width:300px;height:auto;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.18);display:block;">
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. No.2 Amazon -->
+  <div class="slide company">
+    <div class="company-inner">
+      <div class="company-header">
+        <img src="亚马逊logo.png" style="width:52px;height:52px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+        <div class="company-meta">
+          <div class="company-number">NO. 02 / 10</div>
+          <div class="company-name">Amazon 亚马逊</div>
+          <div class="company-tagline">Powering the AI arms race · 为 AI 军备竞赛提供动力</div>
+        </div>
+      </div>
+      <div class="section-label">入选理由</div>
+      <div class="company-reason">
+        不押注模型，押注<span class="hl">"算力层"</span>——Project Rainier 是迄今最大 AI 算力集群之一，同时向 <span class="hl-dark">Anthropic（130亿+200亿）</span>和 <span class="hl-dark">OpenAI（500亿条件性承诺）</span>两家竞对都投了钱。
+      </div>
+      <div class="section-label">值得关注</div>
+      <div class="note-block">
+        <div class="note-items">
+          Amazon 的逻辑非常清晰——<span class="k">"让模型公司依赖我的基础设施"</span>。Ron Diamant 说"我们从两家都获得反馈，净收益是正的"，这是典型的平台层策略，和 Nvidia 是同一套打法。
+        </div>
+      </div>
+      <div class="img-row">
+        <img src="Anthropiclogo.png" style="height:60px;border-radius:8px;background:#000;padding:6px;">
+        <img src="OpenAIlogo.png" style="height:60px;border-radius:8px;background:#000;padding:6px;">
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. No.3 Zhipu AI -->
+  <div class="slide company">
+    <div class="company-inner">
+      <div class="company-header">
+        <img src="智谱logo.png" style="width:52px;height:52px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+        <div class="company-meta">
+          <div class="company-number">NO. 03 / 10 · 中国公司</div>
+          <div class="company-name">Zhipu AI 智谱</div>
+          <div class="company-tagline">No Western chips required · 无需西方芯片</div>
+        </div>
+      </div>
+      <div class="section-label">入选理由</div>
+      <div class="company-reason">
+        如果说 DeepSeek 证明了中国企业<span class="hl">不需要数十亿美元的外部投资</span>来打造前沿人工智能，那么 Zhipu AI 也证明了他们也<span class="hl">不需要西方芯片</span>。这两个证明合在一起，对西方 AI 生态的冲击是<span class="hl-dark">结构性的</span>。
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. No.4 OpenAI -->
+  <div class="slide company">
+    <div style="display:flex;align-items:center;gap:48px;width:100%;">
+      <div style="flex:1;min-width:0;">
+        <div class="company-header">
+          <img src="OpenAIlogo.png" style="width:52px;height:52px;border-radius:10px;object-fit:contain;background:#000;padding:6px;">
+          <div class="company-meta">
+            <div class="company-number">NO. 04 / 10</div>
+            <div class="company-name">OpenAI</div>
+            <div class="company-tagline">Setting the pace · 引领节奏</div>
+          </div>
+        </div>
+        <div class="section-label">入选理由</div>
+        <div class="company-reason">
+          规模上无可争议的领跑者——<span class="hl">估值8520亿，月收20亿美元，ChatGPT 周活9亿</span>。"设定整个行业部署节奏"的公司。
+        </div>
+        <div class="section-label">值得关注</div>
+        <div class="note-block">
+          <div class="note-items">
+            CEO Fidji Simo 关闭 Sora、暂停成人模式，向 coding 和企业服务聚焦。<span class="k">"不能因为旁路任务而错过这个时刻"</span>——这句话透露的战略收敛值得关注。
+          </div>
+        </div>
+      </div>
+      <div style="flex-shrink:0;">
+        <img src="晚点数据图.jpg" style="width:300px;height:auto;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.18);display:block;">
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. No.5 Alphabet -->
+  <div class="slide company">
+    <div class="company-inner">
+      <div class="company-header">
+        <img src="Googlelogo.png" style="width:52px;height:52px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+        <div class="company-meta">
+          <div class="company-number">NO. 05 / 10</div>
+          <div class="company-name">Alphabet 谷歌母公司</div>
+          <div class="company-tagline">The clairvoyant · 先知</div>
+        </div>
+      </div>
+      <div class="section-label">入选理由</div>
+      <div class="company-reason">
+        没有哪家公司把 AI 送到这么多人面前——<span class="hl">Gmail、Maps、YouTube、Waymo</span> 全都是 AI 渠道。Gemini 在能力榜上已接近顶端，<span class="hl">2025年年收入首次突破4000亿美元</span>。
+      </div>
+      <div class="section-label">值得关注</div>
+      <div class="note-block">
+        <div class="note-items">
+          TIME 给 Pichai 的标签是<span class="k">"clairvoyant"（先知）</span>，因为他十年前就把公司定为 AI-first。Google 的核心优势不是最强模型，而是<span class="k">"分发密度"</span>——这一点在 AGI 竞争中往往被低估。
+        </div>
+      </div>
+      <div class="img-row">
+        <div class="img-ph">Gmail、地图、YouTube 和 Waymo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7b. Hassabis 图 -->
+  <div class="slide" style="background:#EEF2F8;display:flex;justify-content:center;align-items:center;">
+    <img src="hassabis.png" style="max-width:80%;max-height:80%;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+  </div>
+
+  <!-- 8. No.6 Meta -->
+  <div class="slide company">
+    <div class="company-inner">
+      <div class="company-header">
+        <img src="Metalogo.png" style="width:52px;height:52px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+        <div class="company-meta">
+          <div class="company-number">NO. 06 / 10</div>
+          <div class="company-name">Meta Facebook母公司</div>
+          <div class="company-tagline">Social media bellwether · 社交媒体风向标</div>
+        </div>
+      </div>
+      <div class="section-label">入选理由</div>
+      <div class="company-reason">
+        社交数据飞轮驱动广告收入创历史新高，同时 <span class="hl">LLaMA 系列</span>在开源生态中影响深远。Zuckerberg 押注<span class="hl-dark">"理解每个用户独特目标"</span>的个性化 AI。
+      </div>
+      <div class="section-label">值得关注</div>
+      <div class="note-block">
+        <div class="note-items">
+          数据与AI互为增长飞轮，社交媒体的图片文字喂养了AI，AI提供了更精准的推荐算法。<br>
+          Meta的多次收购，看看到了他的决心，只是目前，好像……
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. No.7 Anthropic -->
+  <div class="slide company">
+    <div class="company-inner">
+      <div class="company-header">
+        <img src="Anthropiclogo.png" style="width:52px;height:52px;border-radius:10px;object-fit:contain;background:#000;padding:6px;">
+        <div class="company-meta">
+          <div class="company-number">NO. 07 / 10</div>
+          <div class="company-name">Anthropic（Claude母公司）</div>
+          <div class="company-tagline">Steadfast AI lab · 坚守立场的 AI 实验室</div>
+        </div>
+      </div>
+      <div class="section-label">入选理由</div>
+      <div class="company-reason">
+        对政府说"不"并胜诉，然后因此<span class="hl">反而赢得更多客户</span>。这是2026年最戏剧性的商业故事之一。
+      </div>
+      <div class="section-label">值得关注</div>
+      <div class="note-block">
+        <div class="note-items">
+          原文信息密度极高。Claude 是第一个被批准进入机密网络的前沿 AI 系统，据称被用于委内瑞拉总统马杜罗被捕事件和美国对伊朗的军事打击。Hegseth 要求取消"禁止大规模国内监控"和"禁止完全自主武器"两条红线，Amodei 拒绝，被列为供应链风险，提起诉讼，法院颁发初步禁令。最终：新客户涌入，声誉反升。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. No.8 Alibaba -->
+  <div class="slide company">
+    <div class="company-inner">
+      <div class="company-header">
+        <img src="阿里巴巴logo.png" style="width:52px;height:52px;border-radius:10px;object-fit:contain;background:#fff;padding:4px;">
+        <div class="company-meta">
+          <div class="company-number">NO. 08 / 10 · 中国公司</div>
+          <div class="company-name">Alibaba Group 阿里巴巴</div>
+          <div class="company-tagline">Reshaping more than retail · 重塑远不止零售</div>
+        </div>
+      </div>
+      <div class="section-label">入选理由</div>
+      <div class="company-reason">
+        <span class="hl">Qwen 系列</span>累计下载超10亿次，衍生出<span class="hl">20万+个模型</span>，是全球最热门的开源模型家族。Airbnb、Pinterest 都是其客户。
+      </div>
+      <div class="section-label">值得关注</div>
+      <div class="note-block">
+        <div class="note-items">
+          阿里巴巴现在正试图将其开放模型的领先优势转变为<span class="k">全栈人工智能帝国</span>。公司正在扩展其已经庞大的云计算基础设施，制造自己的 AI 芯片和消费类应用，并向企业客户销售其模型的代理托管版本。
+        </div>
+      </div>
+      <div class="img-row">
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. No.9 Mistral -->
+  <div class="slide company">
+    <div class="company-inner">
+      <div class="company-header">
+        <div class="company-logo-placeholder">M</div>
+        <div class="company-meta">
+          <div class="company-number">NO. 09 / 10</div>
+          <div class="company-name">Mistral</div>
+          <div class="company-tagline">Europe's AI alternative · 欧洲的 AI 替代方案</div>
+        </div>
+      </div>
+      <div class="section-label">入选理由</div>
+      <div class="company-reason">
+        欧洲主权 AI 的代表，<span class="hl">年化收入4亿美元（同比约20倍）</span>，法国军队签署部署协议，定位是<span class="hl-dark">"不想让数据出门的政府和企业的首选"</span>。
+      </div>
+      <div class="section-label">值得关注</div>
+      <div class="note-block">
+        <div class="note-items">
+          ASML 领投17亿欧元，这是个有意思的组合——半导体设备巨头投欧洲 AI 公司，有明显的战略逻辑（芯片+模型的欧洲供应链自主）。CEO Mensch 说<span class="k">"开源长期必赢"</span>，这是一个需要时间验证的大赌注。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. No.10 Hugging Face -->
+  <div class="slide company">
+    <div class="company-inner">
+      <div class="company-header">
+        <div class="company-logo-placeholder">HF</div>
+        <div class="company-meta">
+          <div class="company-number">NO. 10 / 10</div>
+          <div class="company-name">Hugging Face</div>
+          <div class="company-tagline">Democratizing AI · 让 AI 民主化</div>
+        </div>
+      </div>
+      <div class="section-label">入选理由</div>
+      <div class="company-reason">
+        AI 的 GitHub——<span class="hl">200万+模型、50万+数据集</span>，财富500强有30%以上在平台上有账号，是整个开源 AI 生态的基础设施。
+      </div>
+      <div class="section-label">值得关注</div>
+      <div class="note-block">
+        <div class="note-items">
+          CEO Delangue 说<span class="k">"年底前 agent 用户将超过人类用户"</span>，这是一个关于 AI 基础设施使用方式根本性转变的预判——未来是 AI agent 在 Hugging Face 上取用模型，不只是人类。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13. 封底 -->
+  <div class="slide back">
+    <div class="back-inner">
+      <div class="back-num">10</div>
+      <div class="back-title">这份榜单在说什么？</div>
+      <div class="back-body">
+        10家公司里，<span class="back-hl">3家来自中国</span>（字节、智谱、阿里）。<br>
+        AI 不再是一场美国独奏，<br>
+        而是一场<span class="back-hl">多极竞争</span>——<br>
+        算力、模型、应用、治理，<br>
+        每个维度都有不同的玩家在定义规则。
+      </div>
+      <div class="back-tag">Miss 发行人 · 大白话讲AI</div>
+    </div>
+  </div>
+
+</div>
+
+<nav class="nav">
+  <button id="prev" disabled>← 上一页</button>
+  <span class="counter" id="counter">1 / 13</span>
+  <button id="next">下一页 →</button>
+</nav>
+<div class="hint">← → 键盘导航</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const total = slides.length;
+
+  function go(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, total - 1));
+    slides[current].classList.add('active');
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('prev').disabled = current === 0;
+    document.getElementById('next').disabled = current === total - 1;
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(current + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(current - 1);
+  });
+</script>
+</body>
+</html>

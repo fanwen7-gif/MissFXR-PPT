@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>推动人类历史的人 · Sam Altman</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F5F2EE;
+    --surface: #FFFFFF;
+    --surface2: #F0EDE8;
+    --accent1: #1A1A1A;
+    --gold: #C8A96E;
+    --blue: #2D5A8E;
+    --burgundy: #8B3A3A;
+    --muted: #6B6560;
+  }
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: 'Inter', sans-serif;
+  }
+  #presentation {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #slides-wrapper {
+    position: relative;
+    width: 100vw; height: 56.25vw;
+    max-height: 100vh;
+    max-width: 177.78vh;
+  }
+  .slide {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    overflow: hidden;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  /* Fixed UI */
+  #progress-bar {
+    position: fixed; bottom: 0; left: 0;
+    height: 1px; background: var(--gold);
+    transition: width 0.35s ease;
+    z-index: 1000;
+  }
+  #slide-counter {
+    position: fixed; bottom: 16px; right: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; font-weight: 400;
+    color: #fff; opacity: 0.4;
+    z-index: 1000;
+    letter-spacing: 0.05em;
+  }
+  #chapter-indicator {
+    position: fixed; top: 16px; right: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; font-weight: 400;
+    color: var(--muted); opacity: 0.6;
+    z-index: 1000;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  /* Utility classes */
+  .serif { font-family: 'Playfair Display', serif; }
+  .sans { font-family: 'Inter', sans-serif; }
+  .gold { color: var(--gold); }
+  .muted { color: var(--muted); }
+  .white { color: #fff; }
+  .dark { color: var(--accent1); }
+  .thin { font-weight: 100; }
+  .light { font-weight: 300; }
+  .regular { font-weight: 400; }
+  .medium { font-weight: 500; }
+  .semibold { font-weight: 600; }
+  .bold { font-weight: 700; }
+  .black { font-weight: 900; }
+  .italic { font-style: italic; }
+  .tracked { letter-spacing: 0.15em; text-transform: uppercase; }
+  .full-height { height: 100%; }
+  .cover-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .gold-line {
+    width: 60px; height: 2px;
+    background: var(--gold);
+    margin: 20px 0;
+  }
+  .gold-line-thin {
+    width: 40px; height: 1px;
+    background: var(--gold);
+    margin: 16px 0;
+  }
+  .separator {
+    width: 100%; height: 1px;
+    background: rgba(0,0,0,0.1);
+    margin: 20px 0;
+  }
+  .separator-light {
+    width: 100%; height: 1px;
+    background: rgba(255,255,255,0.15);
+    margin: 20px 0;
+  }
+</style>
+</head>
+<body>
+<div id="presentation">
+  <div id="slides-wrapper">
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide active" id="slide-1" style="background:#1A1A1A;">
+      <div style="position:absolute;top:0;left:0;width:50%;height:100%;z-index:2;background:linear-gradient(to right,rgba(10,10,10,0.97) 0%,rgba(10,10,10,0.85) 60%,rgba(10,10,10,0.3) 100%);"></div>
+      <img src="images/sam_altman_portrait.jpg" alt="Sam Altman" style="position:absolute;top:0;right:0;width:60%;height:100%;object-fit:cover;object-position:top center;">
+      <div style="position:absolute;top:0;left:0;width:52%;height:100%;z-index:3;display:flex;flex-direction:column;justify-content:center;padding:6% 5% 6% 7%;">
+        <div style="font-family:'Inter',sans-serif;font-size:0.72vw;font-weight:400;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:2.5vh;">第一期 · Sam Altman</div>
+        <h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:5.8vw;color:#fff;line-height:1.05;margin-bottom:2.5vh;">推动人类历史<br>的人</h1>
+        <p style="font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:1.6vw;color:#fff;margin-bottom:1.5vh;line-height:1.4;">一个不写代码的人，<br>如何主导了AI时代？</p>
+        <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.95vw;color:rgba(255,255,255,0.65);margin-bottom:4vh;">6个关键贡献，一次说清楚。</p>
+        <div style="width:50px;height:1px;background:var(--gold);"></div>
+      </div>
+      <div style="position:absolute;bottom:4%;left:7%;z-index:3;font-family:'Playfair Display',serif;font-size:1.1vw;font-weight:700;color:var(--gold);">大白话讲AI</div>
+    </div>
+
+    <!-- SLIDE 2: PART 01 CHAPTER COVER -->
+    <div class="slide" id="slide-2" style="background:#1A1A1A;">
+      <img src="images/openai_logo.png" alt="OpenAI" style="position:absolute;top:5%;left:5%;height:4%;opacity:0.5;filter:brightness(10);z-index:2;">
+      <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;display:flex;flex-direction:column;justify-content:center;padding:0 8%;">
+        <div style="position:absolute;top:50%;left:5%;transform:translateY(-50%);font-family:'Inter',sans-serif;font-weight:900;font-size:18vw;color:rgba(255,255,255,0.04);line-height:1;user-select:none;pointer-events:none;">PART 01</div>
+        <div style="position:relative;z-index:2;">
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:5.2vw;color:#fff;margin-bottom:2vh;">他是谁</h2>
+          <div style="width:60px;height:2px;background:var(--gold);margin-bottom:2vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.4vw;color:var(--gold);">先把角色说清楚</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: WHO IS SAM -->
+    <div class="slide" id="slide-3" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:55%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:5% 4% 5% 7%;position:relative;">
+          <div style="font-family:'Inter',sans-serif;font-size:0.7vw;font-weight:900;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5vh;">SAM ALTMAN</div>
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.8vw;color:var(--accent1);margin-bottom:1.2vh;line-height:1.2;">1985年生，OpenAI CEO</h2>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.1vw;color:var(--muted);margin-bottom:2.5vh;">斯坦福辍学生，掌管改变人类的公司</p>
+          <div style="width:100%;height:1px;background:rgba(0,0,0,0.1);margin-bottom:2.5vh;"></div>
+          <div style="display:flex;gap:5%;margin-bottom:3vh;">
+            <div style="flex:1;text-align:center;">
+              <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3vw;color:var(--accent1);line-height:1;">7亿</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.75vw;color:var(--muted);margin-top:0.5vh;letter-spacing:0.05em;">周活跃用户</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3vw;color:var(--accent1);line-height:1;">数千亿</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.75vw;color:var(--muted);margin-top:0.5vh;letter-spacing:0.05em;">微软市值增长</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3vw;color:var(--accent1);line-height:1;">2年</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.75vw;color:var(--muted);margin-top:0.5vh;letter-spacing:0.05em;">重新定义AI</div>
+            </div>
+          </div>
+          <p style="font-family:'Inter',sans-serif;font-size:0.95vw;color:var(--muted);line-height:1.7;border-left:2px solid var(--gold);padding-left:1.2vw;font-style:italic;">"在他之前，AI是实验室里的东西<br>在他之后，AI是每个普通人手机里的东西"</p>
+        </div>
+        <div style="width:1px;background:var(--gold);opacity:0.4;align-self:stretch;margin:5% 0;"></div>
+        <div style="width:45%;height:100%;position:relative;">
+          <img src="images/chatgpt_interface.jpg" alt="ChatGPT" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: 5 MYSTERY CARDS -->
+    <div class="slide" id="slide-4" style="background:#F5F2EE;">
+      <div style="padding:5% 6%;height:100%;display:flex;flex-direction:column;">
+        <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.5vw;color:var(--accent1);margin-bottom:4vh;text-align:center;">他做了什么</h2>
+        <div style="display:flex;gap:2%;flex:1;">
+          <div class="mystery-card" style="flex:1;background:#fff;border-radius:4px;padding:4% 3%;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform 0.2s,box-shadow 0.2s;cursor:default;">
+            <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3.5vw;color:var(--gold);opacity:0.25;line-height:1;margin-bottom:1.5vh;">01</div>
+            <div style="font-family:'Inter',sans-serif;font-weight:600;font-size:0.85vw;color:var(--accent1);margin-bottom:1vh;line-height:1.4;">没有股权，却掌握实际控制力</div>
+            <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.75vw;color:var(--muted);line-height:1.6;font-style:italic;">一家5000亿美元的公司，CEO没有一分股权<br>他是怎么做到的？</p>
+          </div>
+          <div class="mystery-card" style="flex:1;background:#fff;border-radius:4px;padding:4% 3%;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform 0.2s,box-shadow 0.2s;cursor:default;">
+            <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3.5vw;color:var(--gold);opacity:0.25;line-height:1;margin-bottom:1.5vh;">02</div>
+            <div style="font-family:'Inter',sans-serif;font-weight:600;font-size:0.85vw;color:var(--accent1);margin-bottom:1vh;line-height:1.4;">硅谷最厉害的融资博弈</div>
+            <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.75vw;color:var(--muted);line-height:1.6;font-style:italic;">用一套前所未有的资本结构<br>从一无所有到撬动微软130亿美元</p>
+          </div>
+          <div class="mystery-card" style="flex:1;background:#fff;border-radius:4px;padding:4% 3%;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform 0.2s,box-shadow 0.2s;cursor:default;">
+            <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3.5vw;color:var(--gold);opacity:0.25;line-height:1;margin-bottom:1.5vh;">03</div>
+            <div style="font-family:'Inter',sans-serif;font-weight:600;font-size:0.85vw;color:var(--accent1);margin-bottom:1vh;line-height:1.4;">把AI从开发者工具变成普通人产品</div>
+            <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.75vw;color:var(--muted);line-height:1.6;font-style:italic;">GPT-3早就发布了，为什么没人用？<br>ChatGPT做了什么不同的事？</p>
+          </div>
+          <div class="mystery-card" style="flex:1;background:#fff;border-radius:4px;padding:4% 3%;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform 0.2s,box-shadow 0.2s;cursor:default;">
+            <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3.5vw;color:var(--gold);opacity:0.25;line-height:1;margin-bottom:1.5vh;">04</div>
+            <div style="font-family:'Inter',sans-serif;font-weight:600;font-size:0.85vw;color:var(--accent1);margin-bottom:1vh;line-height:1.4;">被自己公司解雇，五天后全员追随</div>
+            <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.75vw;color:var(--muted);line-height:1.6;font-style:italic;">700人联名要求他回归<br>连解雇他的人，最后也签了名</p>
+          </div>
+          <div class="mystery-card" style="flex:1;background:#fff;border-radius:4px;padding:4% 3%;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform 0.2s,box-shadow 0.2s;cursor:default;">
+            <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3.5vw;color:var(--gold);opacity:0.25;line-height:1;margin-bottom:1.5vh;">05</div>
+            <div style="font-family:'Inter',sans-serif;font-weight:600;font-size:0.85vw;color:var(--accent1);margin-bottom:1vh;line-height:1.4;">呼吁监管AI，同时全力加速AI</div>
+            <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.75vw;color:var(--muted);line-height:1.6;font-style:italic;">这是矛盾，<br>还是一套完整的世界观？</p>
+          </div>
+        </div>
+      </div>
+      <style>.mystery-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.12)!important;}</style>
+    </div>
+
+    <!-- SLIDE 5: SAM'S ROLE CLARIFICATION -->
+    <div class="slide" id="slide-5" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:50%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:5% 4% 5% 7%;">
+          <div style="font-family:'Inter',sans-serif;font-size:0.7vw;font-weight:400;color:var(--gold);letter-spacing:0.12em;margin-bottom:1.5vh;">理解他，先放下一个预设</div>
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:3.2vw;color:var(--accent1);margin-bottom:2vh;line-height:1.15;">他不是技术最强的人</h2>
+          <p style="font-family:'Inter',sans-serif;font-size:0.95vw;color:var(--muted);line-height:1.75;margin-bottom:2.5vh;">OpenAI真正的技术核心是Ilya Sutskever，一个被称为「深度学习三巨头」之一Geoffrey Hinton亲传的研究员。GPT系列的核心架构，来自OpenAI的研究团队，不是Sam。</p>
+          <div style="width:100%;height:1px;background:rgba(0,0,0,0.1);margin-bottom:2vh;"></div>
+          <div style="font-family:'Inter',sans-serif;font-weight:600;font-size:0.9vw;color:var(--accent1);margin-bottom:1.5vh;">那Sam做什么</div>
+          <div style="display:flex;flex-direction:column;gap:1vh;">
+            <div style="display:flex;align-items:flex-start;gap:0.8vw;">
+              <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:0.5vh;flex-shrink:0;"></div>
+              <span style="font-family:'Inter',sans-serif;font-size:0.9vw;color:var(--accent1);">判断哪个方向值得押注</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.8vw;">
+              <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:0.5vh;flex-shrink:0;"></div>
+              <span style="font-family:'Inter',sans-serif;font-size:0.9vw;color:var(--accent1);">设计让这件事能被做成的资本结构</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.8vw;">
+              <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:0.5vh;flex-shrink:0;"></div>
+              <span style="font-family:'Inter',sans-serif;font-size:0.9vw;color:var(--accent1);">把实验室技术变成普通人用得上的产品</span>
+            </div>
+          </div>
+          <div style="margin-top:2.5vh;font-family:'Playfair Display',serif;font-style:italic;font-size:0.95vw;color:var(--muted);border-top:1px solid rgba(0,0,0,0.08);padding-top:1.5vh;">缺少其中任何一环，OpenAI都不会是今天的OpenAI。</div>
+        </div>
+        <div style="width:50%;height:100%;position:relative;overflow:hidden;">
+          <img src="images/sam_altman_speaking.jpg" alt="Sam Altman Speaking" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: PART 02 CHAPTER COVER -->
+    <div class="slide" id="slide-6" style="background:#2D5A8E;">
+      <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 8%;">
+        <div style="position:absolute;font-family:'Inter',sans-serif;font-weight:900;font-size:18vw;color:rgba(255,255,255,0.05);line-height:1;user-select:none;pointer-events:none;white-space:nowrap;">PART 02</div>
+        <div style="position:relative;z-index:2;">
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:4.2vw;color:#fff;margin-bottom:2vh;line-height:1.2;">贡献一：顶级战略眼光</h2>
+          <div style="width:60px;height:2px;background:var(--gold);margin-bottom:2vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.3vw;color:rgba(255,255,255,0.8);">在AGI还是科幻时，最早把它当成现实目标</p>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:6%;right:6%;z-index:2;">
+        <img src="images/sam_altman_early.jpg" alt="Sam Early" style="width:12vw;height:12vw;object-fit:cover;border-radius:4px;opacity:0.7;">
+      </div>
+    </div>
+
+    <!-- SLIDE 7: 2015 AI WORLD CONTEXT -->
+    <div class="slide" id="slide-7" style="background:#F5F2EE;">
+      <div style="padding:6% 8%;height:100%;display:flex;flex-direction:column;justify-content:center;">
+        <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:0.72vw;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:2vh;">2015年的AI世界</div>
+        <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:4vw;color:var(--accent1);margin-bottom:4vh;">那时候AI能做什么</h2>
+        <div style="display:flex;gap:4%;margin-bottom:4vh;">
+          <div style="flex:1;padding:3% 3%;background:#fff;border-radius:4px;border-top:3px solid var(--gold);">
+            <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:1.1vw;color:var(--accent1);margin-bottom:1.2vh;">Siri</div>
+            <p style="font-family:'Inter',sans-serif;font-size:0.85vw;color:var(--muted);line-height:1.7;">2011年就出现了，但大多数时候它听不懂你说什么</p>
+          </div>
+          <div style="flex:1;padding:3% 3%;background:#fff;border-radius:4px;border-top:3px solid var(--blue);">
+            <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:1.1vw;color:var(--accent1);margin-bottom:1.2vh;">谷歌翻译</div>
+            <p style="font-family:'Inter',sans-serif;font-size:0.85vw;color:var(--muted);line-height:1.7;">可以用，但翻译出来的句子读起来像机器在说话</p>
+          </div>
+          <div style="flex:1;padding:3% 3%;background:#fff;border-radius:4px;border-top:3px solid var(--muted);opacity:0.7;">
+            <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:1.1vw;color:var(--accent1);margin-bottom:1.2vh;">推荐算法</div>
+            <p style="font-family:'Inter',sans-serif;font-size:0.85vw;color:var(--muted);line-height:1.7;">在后台运行，但你感知不到它的存在</p>
+          </div>
+        </div>
+        <div style="border-left:3px solid var(--gold);padding:2.5% 3%;background:#fff;border-radius:0 4px 4px 0;">
+          <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.7vw;color:var(--accent1);margin-bottom:1vh;">AGI——在学术界被当成哲学问题讨论，不是工程问题。</p>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1vw;color:var(--muted);">主流判断：这件事至少还要几十年。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: SAM'S BET -->
+    <div class="slide" id="slide-8" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:55%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:5% 4% 5% 7%;">
+          <div style="font-family:'Inter',sans-serif;font-size:0.7vw;font-weight:400;color:var(--gold);letter-spacing:0.12em;margin-bottom:1.5vh;">Sam看到的是另一条曲线</div>
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.9vw;color:var(--accent1);margin-bottom:2.5vh;line-height:1.2;">他认为AGI不是<br>几十年后的事</h2>
+          <div style="display:flex;flex-direction:column;gap:1.5vh;margin-bottom:3vh;">
+            <div style="display:flex;align-items:flex-start;gap:1vw;">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:0.6vh;flex-shrink:0;"></div>
+              <span style="font-family:'Inter',sans-serif;font-size:1vw;color:var(--accent1);">深度学习的能力正在加速</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:1vw;">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:0.6vh;flex-shrink:0;"></div>
+              <span style="font-family:'Inter',sans-serif;font-size:1vw;color:var(--accent1);">算力成本每年持续下降</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:1vw;">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:0.6vh;flex-shrink:0;"></div>
+              <span style="font-family:'Inter',sans-serif;font-size:1vw;color:var(--accent1);">顶尖研究员已经看到了突破的路径</span>
+            </div>
+          </div>
+          <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.4vw;color:var(--gold);">是十年内的事。</div>
+        </div>
+        <div style="width:45%;height:100%;position:relative;overflow:hidden;">
+          <img src="images/ilya_sutskever.jpg" alt="Ilya Sutskever" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:2%;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);">
+            <div style="font-family:'Inter',sans-serif;font-size:0.75vw;font-weight:300;color:#fff;letter-spacing:0.1em;">Ilya Sutskever</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: QUOTE SLIDE -->
+    <div class="slide" id="slide-9" style="background:#1A1A1A;">
+      <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8%;">
+        <div style="position:relative;max-width:750px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:14vw;color:var(--gold);opacity:0.12;position:absolute;top:-8%;left:-5%;line-height:1;user-select:none;">"</div>
+          <p style="font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:2.5vw;color:#fff;line-height:1.6;position:relative;z-index:1;margin-bottom:4vh;">「我们可能正在做人类历史上最重要的技术之一。」</p>
+          <div style="width:40px;height:1px;background:var(--gold);margin:0 auto 2vh;"></div>
+          <div style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.85vw;color:var(--gold);letter-spacing:0.08em;">—— Sam Altman，2019年，ChatGPT发布前三年</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: TIMELINE OPENAI FOUNDING -->
+    <div class="slide" id="slide-10" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:40%;height:100%;position:relative;overflow:hidden;">
+          <img src="images/openai_founding.jpg" alt="OpenAI Founding" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,#F5F2EE 100%);"></div>
+        </div>
+        <div style="width:60%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:5% 7% 5% 5%;">
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.8vw;color:var(--accent1);margin-bottom:4vh;">他放弃了什么</h2>
+          <div style="display:flex;gap:2.5%;">
+            <div style="width:2px;background:linear-gradient(to bottom,var(--gold),rgba(200,169,110,0.2));flex-shrink:0;"></div>
+            <div style="display:flex;flex-direction:column;gap:4vh;">
+              <div>
+                <div style="display:flex;align-items:center;gap:1vw;margin-bottom:1.2vh;">
+                  <div style="width:12px;height:12px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-left:-6px;"></div>
+                  <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:2.8vw;color:var(--gold);line-height:1;">2015</div>
+                </div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.92vw;color:var(--muted);line-height:1.75;padding-left:1.5vw;">与Elon Musk等人共同创立OpenAI，定位是造福全人类的非营利AI研究机构，初始资金承诺超过10亿美元。</p>
+              </div>
+              <div>
+                <div style="display:flex;align-items:center;gap:1vw;margin-bottom:1.2vh;">
+                  <div style="width:12px;height:12px;border-radius:50%;background:var(--accent1);flex-shrink:0;margin-left:-6px;"></div>
+                  <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:2.8vw;color:var(--accent1);line-height:1;">2019</div>
+                </div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.92vw;color:var(--muted);line-height:1.75;padding-left:1.5vw;">放弃Y Combinator总裁职位——硅谷最有权势的位置之一——全身投入OpenAI。那时候，没有人知道这件事会成功。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: CHAPTER CLOSE + TRANSITION -->
+    <div class="slide" id="slide-11" style="background:#FFFFFF;">
+      <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8%;">
+        <div style="max-width:700px;text-align:center;">
+          <p style="font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:2.3vw;color:var(--accent1);line-height:1.55;margin-bottom:3vh;">伟大的判断力，不是在结果出来之后说「我早就知道」</p>
+          <div style="width:50px;height:1px;background:var(--gold);margin:0 auto 2.5vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.4vw;color:var(--muted);line-height:1.6;">而是在所有人都不相信的时候，清晰、笃定地押注。</p>
+        </div>
+        <div style="position:absolute;bottom:5%;left:50%;transform:translateX(-50%);font-family:'Inter',sans-serif;font-size:0.7vw;color:var(--muted);opacity:0.5;letter-spacing:0.12em;text-transform:uppercase;">PART 02 / 贡献一</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: PART 03 CHAPTER COVER -->
+    <div class="slide" id="slide-12" style="background:#F0EDE8;">
+      <div style="position:absolute;top:4%;right:5%;z-index:2;">
+        <img src="images/yc_logo.png" alt="YC" style="height:5vh;object-fit:contain;opacity:0.5;">
+      </div>
+      <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 8%;">
+        <div style="position:absolute;font-family:'Inter',sans-serif;font-weight:900;font-size:18vw;color:rgba(26,26,26,0.04);line-height:1;user-select:none;pointer-events:none;white-space:nowrap;">PART 03</div>
+        <div style="position:relative;z-index:2;">
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:4.2vw;color:var(--accent1);margin-bottom:2vh;line-height:1.2;">贡献二：判断力的来源</h2>
+          <div style="width:60px;height:2px;background:var(--gold);margin-bottom:2vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.3vw;color:var(--muted);">YC五年，训练出识别真实价值的能力</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13: TIMELINE LOOPT + YC -->
+    <div class="slide" id="slide-13" style="background:#F5F2EE;">
+      <div style="padding:5% 7%;height:100%;display:flex;flex-direction:column;justify-content:center;">
+        <div style="display:flex;gap:8%;height:80%;">
+          <div style="flex:1;position:relative;">
+            <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:8vw;color:rgba(26,26,26,0.06);line-height:1;position:absolute;top:0;left:0;user-select:none;">失败</div>
+            <div style="position:relative;z-index:1;padding-top:6vh;">
+              <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3vw;color:var(--muted);opacity:0.5;margin-bottom:1.5vh;">2005</div>
+              <p style="font-family:'Inter',sans-serif;font-size:0.88vw;color:var(--muted);line-height:1.75;margin-bottom:2.5vh;">19岁从斯坦福辍学，创办Loopt——一个在iPhone发布两年前就想做「实时查看朋友位置」的移动社交App。融资超过3000万美元，用户始终无法规模化，2012年以4340万美元出售。</p>
+              <div style="overflow:hidden;border-radius:4px;width:100%;max-width:180px;">
+                <img src="images/loopt_app.jpg" alt="Loopt" style="width:100%;height:100px;object-fit:cover;display:block;">
+              </div>
+            </div>
+          </div>
+          <div style="width:1px;background:rgba(0,0,0,0.08);align-self:stretch;"></div>
+          <div style="flex:1;position:relative;">
+            <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:8vw;color:rgba(26,26,26,0.06);line-height:1;position:absolute;top:0;left:0;user-select:none;">积累</div>
+            <div style="position:relative;z-index:1;padding-top:6vh;display:flex;flex-direction:column;gap:3vh;">
+              <div>
+                <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3vw;color:var(--gold);opacity:0.7;margin-bottom:1.5vh;">2014</div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.88vw;color:var(--muted);line-height:1.75;">YC联合创始人Paul Graham退休，29岁的Sam接班，成为总裁。</p>
+              </div>
+              <div>
+                <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3vw;color:var(--accent1);opacity:0.6;margin-bottom:1.5vh;">2019</div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.88vw;color:var(--muted);line-height:1.75;">卸任。任期内YC累计帮助超过1900家公司。</p>
+                <div style="overflow:hidden;border-radius:4px;width:100%;max-width:180px;margin-top:1.5vh;">
+                  <img src="images/sam_altman_yc.jpg" alt="Sam at YC" style="width:100%;height:100px;object-fit:cover;display:block;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14: YC EXPLAINER CARD -->
+    <div class="slide" id="slide-14" style="background:#1A1A1A;">
+      <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8%;">
+        <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:4.5vw;color:#fff;margin-bottom:1.5vh;text-align:center;">Y Combinator</h2>
+        <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.4vw;color:var(--gold);margin-bottom:5vh;text-align:center;">全球最有影响力的早期创业孵化器</p>
+        <div style="width:50px;height:1px;background:var(--gold);margin-bottom:4vh;"></div>
+        <div style="display:flex;align-items:center;gap:3vw;margin-bottom:4vh;">
+          <img src="images/yc_logo.png" alt="YC" style="height:5vh;object-fit:contain;filter:brightness(10);opacity:0.8;">
+          <p style="font-family:'Inter',sans-serif;font-size:1.1vw;color:rgba(255,255,255,0.8);letter-spacing:0.05em;">Airbnb · Dropbox · Stripe · Reddit · OpenAI</p>
+        </div>
+        <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.85vw;color:var(--muted);text-align:center;letter-spacing:0.05em;">每年两期，每期投资约200家早期公司</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 15: WHAT YC REALLY GAVE HIM -->
+    <div class="slide" id="slide-15" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:50%;height:100%;position:relative;overflow:hidden;">
+          <img src="images/sam_altman_yc.jpg" alt="Sam at YC" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,#F5F2EE 100%);"></div>
+        </div>
+        <div style="width:50%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:5% 7% 5% 4%;">
+          <div style="font-family:'Inter',sans-serif;font-size:0.7vw;font-weight:400;color:var(--gold);letter-spacing:0.12em;margin-bottom:1.5vh;">他真正得到的不是人脉</div>
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:3.8vw;color:var(--accent1);margin-bottom:2.5vh;line-height:1.1;">人脉是副产品</h2>
+          <p style="font-family:'Inter',sans-serif;font-size:0.92vw;color:var(--muted);line-height:1.78;margin-bottom:3vh;">五年内，他接触了极高密度的创业项目和创始人，亲眼看到什么东西会成功、什么东西注定失败。这种输入，训练出了一种具体的能力——在别人还看不清的时候，判断「这件事有没有真正的价值」。</p>
+          <div style="border-left:3px solid var(--gold);padding:1.5vh 1.5vw;background:rgba(200,169,110,0.06);border-radius:0 4px 4px 0;">
+            <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.5vw;color:var(--gold);margin-bottom:0.8vh;line-height:1.4;">「Sam总是比我们早半步知道接下来会发生什么。」</p>
+            <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.8vw;color:var(--muted);">—— YC创始人</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 16: PART 04 CHAPTER COVER -->
+    <div class="slide" id="slide-16" style="background:#8B3A3A;">
+      <div style="position:absolute;bottom:6%;right:6%;z-index:2;">
+        <img src="images/microsoft_openai.jpg" alt="Microsoft OpenAI" style="width:14vw;height:9vw;object-fit:cover;border-radius:4px;opacity:0.6;">
+      </div>
+      <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 8%;">
+        <div style="position:absolute;font-family:'Inter',sans-serif;font-weight:900;font-size:18vw;color:rgba(255,255,255,0.04);line-height:1;user-select:none;pointer-events:none;white-space:nowrap;">PART 04</div>
+        <div style="position:relative;z-index:2;">
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:4vw;color:#fff;margin-bottom:2vh;line-height:1.2;">贡献三：运筹帷幄，资本博弈</h2>
+          <div style="width:60px;height:2px;background:var(--gold);margin-bottom:2vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.4vw;color:rgba(255,255,255,0.7);">使不可能变为可能</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 17: TRAINING COST DATA -->
+    <div class="slide" id="slide-17" style="background:#FFFFFF;">
+      <div style="padding:5% 8%;height:100%;display:flex;flex-direction:column;justify-content:center;">
+        <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.8vw;color:var(--accent1);margin-bottom:0.8vh;">研究AGI需要烧掉多少钱</h2>
+        <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1vw;color:var(--muted);margin-bottom:4vh;">指数级增长的那种</p>
+        <div style="display:flex;flex-direction:column;gap:2.5vh;margin-bottom:4vh;">
+          <div style="display:flex;align-items:center;gap:2%;">
+            <div style="width:12%;font-family:'Inter',sans-serif;font-weight:600;font-size:0.85vw;color:var(--accent1);">GPT-2</div>
+            <div style="flex:1;height:28px;background:#F0EDE8;border-radius:2px;overflow:hidden;">
+              <div style="width:0.5%;height:100%;background:var(--muted);opacity:0.4;"></div>
+            </div>
+            <div style="width:22%;text-align:right;">
+              <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.85vw;color:var(--muted);">~$40,000</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7vw;color:var(--muted);opacity:0.6;">¥28万</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:2%;">
+            <div style="width:12%;font-family:'Inter',sans-serif;font-weight:600;font-size:0.85vw;color:var(--accent1);">GPT-3</div>
+            <div style="flex:1;height:28px;background:#F0EDE8;border-radius:2px;overflow:hidden;">
+              <div style="width:5%;height:100%;background:var(--blue);opacity:0.6;"></div>
+            </div>
+            <div style="width:22%;text-align:right;">
+              <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.85vw;color:var(--blue);">~$4,600,000</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7vw;color:var(--muted);opacity:0.6;">¥3,300万</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:2%;">
+            <div style="width:12%;font-family:'Inter',sans-serif;font-weight:600;font-size:0.85vw;color:var(--accent1);">GPT-4</div>
+            <div style="flex:1;height:28px;background:#F0EDE8;border-radius:2px;overflow:hidden;">
+              <div style="width:35%;height:100%;background:var(--burgundy);opacity:0.6;"></div>
+            </div>
+            <div style="width:22%;text-align:right;">
+              <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.85vw;color:var(--burgundy);">~$100,000,000</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7vw;color:var(--muted);opacity:0.6;">¥7亿</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:2%;">
+            <div style="width:12%;font-family:'Inter',sans-serif;font-weight:600;font-size:0.85vw;color:var(--accent1);">GPT-5</div>
+            <div style="flex:1;height:28px;background:#F0EDE8;border-radius:2px;overflow:hidden;">
+              <div style="width:100%;height:100%;background:linear-gradient(to right,var(--gold),#8B3A3A);"></div>
+            </div>
+            <div style="width:22%;text-align:right;">
+              <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.85vw;color:var(--accent1);">~$2,000,000,000</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7vw;color:var(--muted);opacity:0.6;">¥120–180亿</div>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid rgba(0,0,0,0.08);padding-top:3vh;">
+          <p style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.5vw;color:var(--gold);">六年时间，涨了约 <span style="color:var(--accent1);">6万倍</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 18: COMPARISON ANCHORING -->
+    <div class="slide" id="slide-18" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:50%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:5% 4% 5% 7%;">
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:3.2vw;color:var(--accent1);margin-bottom:3.5vh;line-height:1.2;">这个数字有多大</h2>
+          <div style="display:flex;flex-direction:column;gap:2.5vh;margin-bottom:3.5vh;">
+            <div style="background:#fff;border-radius:4px;padding:2.5% 3%;border-left:4px solid var(--blue);">
+              <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.85vw;color:var(--blue);margin-bottom:0.8vh;">小米 2023年全年研发总投入 191亿人民币</div>
+              <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--muted);line-height:1.65;">训练一个GPT-5 = 小米半年到一年的研发预算</p>
+            </div>
+            <div style="background:#fff;border-radius:4px;padding:2.5% 3%;border-left:4px solid var(--burgundy);">
+              <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.85vw;color:var(--burgundy);margin-bottom:0.8vh;">清华大学 2023年全年科研经费 126亿人民币</div>
+              <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--muted);line-height:1.65;">训练一个GPT-5 = 清华一整年的科研经费</p>
+            </div>
+          </div>
+          <div style="border-top:1px solid rgba(0,0,0,0.08);padding-top:2vh;">
+            <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.6vw;color:var(--muted);">靠捐款的非营利机构根本撑不住。</p>
+          </div>
+        </div>
+        <div style="width:50%;height:100%;position:relative;overflow:hidden;">
+          <img src="images/tsinghua_xiaomi.jpg" alt="Tsinghua Xiaomi" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(245,242,238,0.3) 0%,transparent 30%);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 19: CAPITAL STRUCTURE 3 CARDS -->
+    <div class="slide" id="slide-19" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="flex:1;background:#F5F2EE;display:flex;flex-direction:column;justify-content:center;padding:5% 4% 5% 6%;">
+          <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:0.7vw;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:2vh;">背景</div>
+          <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.9vw;color:var(--accent1);margin-bottom:2vh;line-height:1.3;">为什么最开始是非营利</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85vw;color:var(--muted);line-height:1.75;">2015年，OpenAI以非营利机构身份成立，目标是"确保AI造福全人类"。非营利定位让它能吸引Musk等人的资金支持，也让顶尖研究员愿意放弃谷歌、Facebook的高薪加入——因为他们相信这不是一门生意，而是一项使命。</p>
+        </div>
+        <div style="flex:1;background:#1A1A1A;display:flex;flex-direction:column;justify-content:center;padding:5% 4%;">
+          <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:0.7vw;color:var(--gold);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:2vh;">困局</div>
+          <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.9vw;color:#fff;margin-bottom:2vh;line-height:1.3;">早期融资的死局</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85vw;color:rgba(255,255,255,0.65);line-height:1.75;">非营利机构无法给投资人股权回报。随着算力需求指数级增长，单靠捐款根本无法支撑GPT-3级别的训练成本。同时，Elon Musk因为与Tesla AI项目的潜在利益冲突，在2018年撤出董事会，最初承诺的10亿美元只有一部分真正到位。</p>
+        </div>
+        <div style="flex:1;background:var(--gold);display:flex;flex-direction:column;justify-content:center;padding:5% 4%;">
+          <div style="overflow:hidden;border-radius:4px;width:60px;height:60px;margin-bottom:2vh;">
+            <img src="images/elon_musk.jpg" alt="Elon Musk" style="width:100%;height:100%;object-fit:cover;object-position:top;">
+          </div>
+          <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:0.7vw;color:rgba(26,26,26,0.6);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:2vh;">转折</div>
+          <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.9vw;color:var(--accent1);margin-bottom:2vh;line-height:1.3;">Musk的介入与决裂</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85vw;color:rgba(26,26,26,0.75);line-height:1.75;">Musk曾试图完全掌控OpenAI，遭拒后离开，并转向开发竞争对手xAI。他的离开，反而让Sam获得了更清晰的决策权，开始设计一套全新的资本结构来解决融资问题。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 20: THE BREAKTHROUGH STRUCTURE -->
+    <div class="slide" id="slide-20" style="background:#2D5A8E;">
+      <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6% 10%;">
+        <div style="position:absolute;font-family:'Playfair Display',serif;font-weight:900;font-size:20vw;color:rgba(255,255,255,0.04);line-height:1;user-select:none;pointer-events:none;">破局</div>
+        <div style="position:relative;z-index:2;text-align:center;width:100%;">
+          <p style="font-family:'Inter',sans-serif;font-weight:900;font-size:0.7vw;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5vh;">2019年，Sam的解法</p>
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:3.8vw;color:#fff;margin-bottom:2vh;">「利润上限」模式</h2>
+          <div style="width:60px;height:2px;background:var(--gold);margin:0 auto 2.5vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.05vw;color:rgba(255,255,255,0.8);max-width:650px;margin:0 auto 3.5vh;line-height:1.75;">非营利母公司下设营利子公司接受投资，但投资人回报上限是本金的100倍，超出部分归非营利母公司。</p>
+          <div style="display:flex;gap:2%;justify-content:center;margin-bottom:4vh;">
+            <div style="background:#fff;color:var(--accent1);font-family:'Inter',sans-serif;font-size:0.9vw;font-weight:500;padding:1.2vh 2vw;border-radius:3px;">资本觉得这件事可以投</div>
+            <div style="background:var(--gold);color:var(--accent1);font-family:'Inter',sans-serif;font-size:0.9vw;font-weight:500;padding:1.2vh 2vw;border-radius:3px;">研究员觉得没有出卖使命</div>
+          </div>
+          <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:3.8vw;color:#fff;margin-bottom:0.8vh;">微软累计投资 $130亿</div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.82vw;color:rgba(255,255,255,0.55);">2019年首投10亿，附带Azure独家云服务条件</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 21: PART 05 CHAPTER COVER -->
+    <div class="slide" id="slide-21" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:50%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:5% 4% 5% 7%;position:relative;">
+          <div style="position:absolute;font-family:'Inter',sans-serif;font-weight:900;font-size:14vw;color:rgba(26,26,26,0.04);line-height:1;user-select:none;pointer-events:none;white-space:nowrap;top:50%;transform:translateY(-50%);left:5%;">PART 05</div>
+          <div style="position:relative;z-index:2;">
+            <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:3.8vw;color:var(--accent1);margin-bottom:2vh;line-height:1.2;">贡献四：顶级产品化能力</h2>
+            <div style="width:60px;height:2px;background:var(--gold);margin-bottom:2vh;"></div>
+            <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.3vw;color:var(--muted);">科技走入普通人世界</p>
+          </div>
+        </div>
+        <div style="width:50%;height:100%;position:relative;overflow:hidden;">
+          <img src="images/chatgpt_launch.jpg" alt="ChatGPT Launch" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(245,242,238,0.5) 0%,transparent 30%);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 22: GPT-3 PROBLEM -->
+    <div class="slide" id="slide-22" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:50%;height:100%;position:relative;overflow:hidden;">
+          <img src="images/gpt3_api.jpg" alt="GPT-3 API" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,#F5F2EE 100%);"></div>
+        </div>
+        <div style="width:50%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:5% 7% 5% 4%;">
+          <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:8vw;color:rgba(26,26,26,0.05);line-height:1;margin-bottom:-2vh;">2020</div>
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.4vw;color:var(--accent1);margin-bottom:2vh;line-height:1.2;">GPT-3：被锁在工具箱里的技术</h2>
+          <p style="font-family:'Inter',sans-serif;font-size:0.92vw;color:var(--muted);line-height:1.78;margin-bottom:2.5vh;">GPT-3发布。它能写文章、写代码、回答问题，技术能力已经相当强。但几乎没有普通人知道它的存在——因为它只以API形式开放，你必须会写代码才能调用它。</p>
+          <div style="border-left:3px solid var(--muted);padding-left:1.2vw;">
+            <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.4vw;color:var(--muted);line-height:1.5;">一项改变世界的技术，被锁在开发者的工具箱里。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 23: CHATGPT LAUNCH -->
+    <div class="slide" id="slide-23" style="background:#1A1A1A;overflow:hidden;">
+      <img src="images/chatgpt_users.jpg" alt="ChatGPT Users" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0.3;">
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);"></div>
+      <div style="position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8%;text-align:center;">
+        <div style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.1vw;color:var(--gold);letter-spacing:0.15em;margin-bottom:2vh;">2022年11月30日</div>
+        <h2 style="font-family:'Playfair Display',serif;font-weight:900;font-size:6vw;color:#fff;margin-bottom:2.5vh;line-height:1.05;">ChatGPT上线</h2>
+        <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.15vw;color:rgba(255,255,255,0.8);max-width:600px;line-height:1.75;margin-bottom:3vh;">任何人打开网页就能直接对话。不需要任何技术背景，不需要注册API，不需要写一行代码。</p>
+        <div style="width:50px;height:1px;background:var(--gold);margin:0 auto 2.5vh;"></div>
+        <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:2vw;color:var(--gold);">它把AI的使用门槛降到了零。</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 24: GROWTH COMPARISON -->
+    <div class="slide" id="slide-24" style="background:#FFFFFF;">
+      <div style="padding:5% 8%;height:100%;display:flex;flex-direction:column;justify-content:center;">
+        <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:3.4vw;color:var(--accent1);margin-bottom:4vh;">有记录以来最快</h2>
+        <div style="display:flex;flex-direction:column;gap:2.5vh;margin-bottom:4vh;">
+          <div>
+            <div style="display:flex;align-items:center;gap:2%;margin-bottom:0.8vh;">
+              <div style="width:14%;font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--muted);">Instagram</div>
+              <div style="flex:1;height:32px;background:#F0EDE8;border-radius:2px;overflow:hidden;">
+                <div style="width:100%;height:100%;background:var(--muted);opacity:0.25;"></div>
+              </div>
+              <div style="width:18%;font-family:'Inter',sans-serif;font-size:0.8vw;color:var(--muted);text-align:right;">2年半 → 1亿用户</div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:2%;margin-bottom:0.8vh;">
+              <div style="width:14%;font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--muted);">TikTok</div>
+              <div style="flex:1;height:32px;background:#F0EDE8;border-radius:2px;overflow:hidden;">
+                <div style="width:60%;height:100%;background:var(--muted);opacity:0.35;"></div>
+              </div>
+              <div style="width:18%;font-family:'Inter',sans-serif;font-size:0.8vw;color:var(--muted);text-align:right;">9个月 → 1亿用户</div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:2%;margin-bottom:0.8vh;">
+              <div style="width:14%;font-family:'Inter',sans-serif;font-weight:700;font-size:0.82vw;color:var(--accent1);">ChatGPT</div>
+              <div style="flex:1;height:32px;background:#F0EDE8;border-radius:2px;overflow:hidden;">
+                <div style="width:11%;height:100%;background:var(--gold);"></div>
+              </div>
+              <div style="width:18%;text-align:right;">
+                <span style="font-family:'Inter',sans-serif;font-weight:800;font-size:0.85vw;color:var(--gold);">2个月</span>
+                <span style="font-family:'Inter',sans-serif;font-size:0.8vw;color:var(--accent1);"> → 1亿用户</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#F5F2EE;border-radius:4px;padding:2.5% 3%;margin-bottom:3vh;">
+          <p style="font-family:'Inter',sans-serif;font-size:0.85vw;color:var(--muted);line-height:1.65;">截至2025年，OpenAI每周活跃用户约<strong style="color:var(--accent1);">7亿</strong>，估值约<strong style="color:var(--accent1);">3000–5000亿美元</strong>，2024年年化收入约<strong style="color:var(--accent1);">34亿美元</strong></p>
+        </div>
+        <div>
+          <img src="images/google_meta_baidu_logos.jpg" alt="Competitors" style="height:4vh;object-fit:contain;opacity:0.5;">
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 25: PART 06 CHAPTER COVER -->
+    <div class="slide" id="slide-25" style="background:#1A1A1A;">
+      <div style="position:absolute;bottom:6%;right:6%;z-index:2;">
+        <img src="images/openai_boardroom.jpg" alt="OpenAI Boardroom" style="width:14vw;height:9vw;object-fit:cover;border-radius:4px;opacity:0.6;">
+      </div>
+      <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 8%;">
+        <div style="position:absolute;font-family:'Inter',sans-serif;font-weight:900;font-size:18vw;color:rgba(255,255,255,0.04);line-height:1;user-select:none;pointer-events:none;white-space:nowrap;">PART 06</div>
+        <div style="position:relative;z-index:2;">
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:4.5vw;color:#fff;margin-bottom:2vh;line-height:1.15;">贡献五：权力博弈</h2>
+          <div style="width:60px;height:2px;background:var(--gold);margin-bottom:2vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.4vw;color:var(--gold);">五天，AI世界谁主沉浮</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 26: THE FIRING & RETURN TIMELINE -->
+    <div class="slide" id="slide-26" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:30%;height:100%;position:relative;overflow:hidden;">
+          <img src="images/Sam奥特曼图片/25_F1_拉斯维加斯.jpg" alt="F1 Las Vegas" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 70%,#F5F2EE 100%);"></div>
+        </div>
+        <div style="width:70%;height:100%;display:flex;flex-direction:column;justify-content:flex-start;padding:4% 6% 4% 3%;overflow:hidden;">
+          <div style="background:rgba(0,0,0,0.04);border-radius:4px;padding:1.5% 2%;margin-bottom:2.5vh;border-left:3px solid var(--muted);">
+            <p style="font-family:'Inter',sans-serif;font-size:0.8vw;color:var(--muted);line-height:1.65;font-style:italic;">2023年11月17日，星期五下午。Sam Altman正在拉斯维加斯看F1大奖赛，突然收到通知，被要求加入一个Google Meet会议。</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0;position:relative;">
+            <div style="position:absolute;left:7px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--gold),rgba(200,169,110,0.15));"></div>
+            <div style="display:flex;gap:1.5vw;align-items:flex-start;padding-bottom:2vh;">
+              <div style="width:16px;height:16px;border-radius:50%;background:var(--burgundy);flex-shrink:0;margin-top:0.3vh;position:relative;z-index:1;"></div>
+              <div>
+                <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75vw;color:var(--burgundy);margin-bottom:0.4vh;">11月17日下午</div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--accent1);line-height:1.6;">Sam被解雇。联合创始人Greg Brockman随即辞职。</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.5vw;align-items:flex-start;padding-bottom:2vh;">
+              <div style="width:16px;height:16px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:0.3vh;position:relative;z-index:1;"></div>
+              <div>
+                <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75vw;color:var(--blue);margin-bottom:0.4vh;">11月17日晚</div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--accent1);line-height:1.6;">微软CEO纳德拉第一时间联系Sam。</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.5vw;align-items:flex-start;padding-bottom:2vh;">
+              <div style="width:16px;height:16px;border-radius:50%;background:var(--muted);flex-shrink:0;margin-top:0.3vh;position:relative;z-index:1;"></div>
+              <div>
+                <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75vw;color:var(--muted);margin-bottom:0.4vh;">11月18–19日</div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--accent1);line-height:1.6;">约770名员工中超过700人签联名信，威胁集体离职。签名者包括Ilya Sutskever本人。</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.5vw;align-items:flex-start;padding-bottom:2vh;">
+              <div style="width:16px;height:16px;border-radius:50%;background:var(--muted);flex-shrink:0;margin-top:0.3vh;position:relative;z-index:1;"></div>
+              <div>
+                <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75vw;color:var(--muted);margin-bottom:0.4vh;">11月19日</div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--accent1);line-height:1.6;">Ilya公开发帖：「我深深后悔参与了董事会的行动。」</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.5vw;align-items:flex-start;padding-bottom:2vh;">
+              <div style="width:16px;height:16px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:0.3vh;position:relative;z-index:1;"></div>
+              <div>
+                <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75vw;color:var(--blue);margin-bottom:0.4vh;">11月20日</div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--accent1);line-height:1.6;">纳德拉公开表示愿意接收全部OpenAI员工。</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.5vw;align-items:flex-start;">
+              <div style="width:16px;height:16px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:0.3vh;position:relative;z-index:1;"></div>
+              <div>
+                <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75vw;color:var(--gold);margin-bottom:0.4vh;">11月22日</div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.88vw;color:var(--accent1);line-height:1.6;font-weight:600;">Sam回归，原董事会全部换血。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 27: THE REAL POWER -->
+    <div class="slide" id="slide-27" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:50%;height:100%;position:relative;overflow:hidden;">
+          <img src="images/sam_altman_return.jpg" alt="Sam Return" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 65%,#F5F2EE 100%);"></div>
+        </div>
+        <div style="width:50%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:5% 7% 5% 4%;">
+          <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:5.5vw;color:var(--gold);line-height:1;margin-bottom:0.5vh;">700 / 770</div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.2vw;color:var(--muted);margin-bottom:3vh;">员工愿意为他集体辞职</p>
+          <div style="width:100%;height:1px;background:rgba(0,0,0,0.1);margin-bottom:3vh;"></div>
+          <p style="font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:1.9vw;color:var(--accent1);margin-bottom:2.5vh;line-height:1.4;">制度可以解雇一个CEO，但制度留不住一支团队。</p>
+          <p style="font-family:'Inter',sans-serif;font-size:0.92vw;color:var(--muted);line-height:1.75;">Sam没有OpenAI的股权，但770名员工里有700人愿意为他集体辞职。他真正的权力来源——不是股权，不是职位，而是人心。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 28: PART 07 CHAPTER COVER -->
+    <div class="slide" id="slide-28" style="background:#2D5A8E;">
+      <div style="position:absolute;bottom:6%;right:6%;z-index:2;">
+        <img src="images/us_senate_hearing.jpg" alt="Senate Hearing" style="width:14vw;height:9vw;object-fit:cover;border-radius:4px;opacity:0.6;">
+      </div>
+      <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 8%;">
+        <div style="position:absolute;font-family:'Inter',sans-serif;font-weight:900;font-size:18vw;color:rgba(255,255,255,0.04);line-height:1;user-select:none;pointer-events:none;white-space:nowrap;">PART 07</div>
+        <div style="position:relative;z-index:2;">
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:4.2vw;color:#fff;margin-bottom:2vh;line-height:1.2;">贡献六：核心矛盾</h2>
+          <div style="width:60px;height:2px;background:var(--gold);margin-bottom:2vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.2vw;color:rgba(255,255,255,0.7);">加速与安全之间的张力，至今没有答案</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 29: THE CONTRADICTION -->
+    <div class="slide" id="slide-29" style="background:#F5F2EE;">
+      <div style="display:flex;width:100%;height:100%;">
+        <div style="width:50%;height:100%;background:#1A1A1A;display:flex;flex-direction:column;justify-content:center;padding:5% 5%;">
+          <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:0.7vw;color:var(--gold);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:2vh;">他说的话</div>
+          <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.5vw;color:#fff;line-height:1.65;margin-bottom:3vh;">2023年5月，Sam主动在美国参议院作证，呼吁各国政府对AI进行监管。「如果这项技术出了问题，后果可能是灾难性的。」</p>
+          <div style="overflow:hidden;border-radius:4px;width:100%;max-width:220px;">
+            <img src="images/sam_altman_senate.jpg" alt="Senate Hearing" style="width:100%;height:110px;object-fit:cover;display:block;">
+          </div>
+        </div>
+        <div style="width:50%;height:100%;background:#F5F2EE;display:flex;flex-direction:column;justify-content:center;padding:5% 5%;">
+          <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:0.7vw;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:2vh;">他做的事</div>
+          <p style="font-family:'Inter',sans-serif;font-size:1vw;color:var(--accent1);line-height:1.75;margin-bottom:2.5vh;">同年，GPT-4发布，GPTs发布，OpenAI的商业化节奏没有放慢一天。</p>
+          <div style="background:#fff;border-radius:4px;padding:2.5% 3%;border-left:4px solid var(--burgundy);">
+            <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.82vw;color:var(--burgundy);margin-bottom:1vh;">2024年，安全团队大规模离职</div>
+            <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--muted);line-height:1.65;">包括安全团队多名核心负责人相继离职，以及Ilya Sutskever本人的出走。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 30: HIS CORE LOGIC -->
+    <div class="slide" id="slide-30" style="background:#F5F2EE;">
+      <div style="padding:4% 6%;height:100%;display:flex;flex-direction:column;">
+        <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.5vw;color:var(--accent1);margin-bottom:3vh;text-align:center;">他的核心逻辑</h2>
+        <div style="display:flex;gap:2%;flex:1;">
+          <div style="flex:1;background:#fff;border-radius:4px;padding:3.5% 3%;border-top:3px solid var(--burgundy);">
+            <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.7vw;color:var(--burgundy);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5vh;">有据可查的矛盾</div>
+            <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:1.2vw;color:var(--accent1);margin-bottom:1.5vh;line-height:1.3;">安全团队大规模离职；非营利结构加速转型</h3>
+            <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:var(--muted);line-height:1.7;">2024年，超过10位安全领域核心人员相继离开OpenAI，包括联合创始人Ilya Sutskever。与此同时，非营利转型营利的结构调整被加速推进。</p>
+          </div>
+          <div style="flex:1;background:#1A1A1A;border-radius:4px;padding:3.5% 3%;border-top:3px solid var(--gold);">
+            <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.7vw;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5vh;">他的核心逻辑</div>
+            <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1vw;color:#fff;line-height:1.6;margin-bottom:1.5vh;">"如果AGI真的要到来，我宁愿它由一个认真对待安全的组织开发，而不是由不在乎安全的竞争者开发。"</p>
+            <div style="display:flex;flex-direction:column;gap:0.8vh;">
+              <div style="font-family:'Inter',sans-serif;font-size:0.78vw;color:rgba(255,255,255,0.6);">• AGI无法被阻止，只能被引导</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.78vw;color:rgba(255,255,255,0.6);">• 有商业资源的组织才能赢得竞赛</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.78vw;color:rgba(255,255,255,0.6);">• 赢得竞赛才有权力设定安全标准</div>
+            </div>
+          </div>
+          <div style="flex:1;background:#F0EDE8;border-radius:4px;padding:3.5% 3%;border-top:3px solid var(--muted);">
+            <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.7vw;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5vh;">可以质疑的地方</div>
+            <p style="font-family:'Inter',sans-serif;font-size:0.85vw;color:var(--muted);line-height:1.7;margin-bottom:1.5vh;">DeepSeek等竞争者的出现，证明AI能力的扩散无法被阻止。这套逻辑与他的商业利益高度一致。</p>
+            <div style="overflow:hidden;border-radius:3px;margin-top:auto;">
+              <img src="images/deepseek_logo.png" alt="DeepSeek" style="height:30px;object-fit:contain;display:block;opacity:0.6;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 31: CHAPTER CLOSE ENDING -->
+    <div class="slide" id="slide-31" style="background:#F5F2EE;">
+      <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8%;">
+        <div style="max-width:750px;text-align:center;">
+          <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:3.8vw;color:var(--accent1);margin-bottom:2.5vh;line-height:1.2;">硅谷从不缺乏改变世界的人</h2>
+          <div style="width:50px;height:2px;background:var(--gold);margin:0 auto 2.5vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.5vw;color:var(--muted);line-height:1.65;">但每一个人改变世界的方式都不一样</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 32: THREE LEGENDS COMPARISON -->
+    <div class="slide" id="slide-32" style="background:#1A1A1A;overflow:hidden;">
+      <img src="images/jobs_musk_sam.jpg" alt="Jobs Musk Sam" style="position:absolute;top:0;left:0;width:100%;height:40%;object-fit:cover;object-position:top;opacity:0.4;">
+      <div style="position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(to bottom,transparent 50%,#1A1A1A 100%);"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;top:35%;display:flex;padding:0 3%;">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:3% 3%;border-right:1px solid rgba(255,255,255,0.08);">
+          <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.5vw;color:#fff;margin-bottom:1.5vh;">乔布斯</h3>
+          <div style="width:30px;height:1px;background:var(--muted);margin-bottom:1.5vh;opacity:0.5;"></div>
+          <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:rgba(255,255,255,0.55);line-height:1.75;">技术可以有美感，好的产品应该让人觉得理所当然。他留给我们的，是一个标准——在他之后，丑陋的科技产品变得难以被接受。</p>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:3% 3%;border-right:1px solid rgba(255,255,255,0.08);">
+          <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.5vw;color:#fff;margin-bottom:1.5vh;">Elon Musk</h3>
+          <div style="width:30px;height:1px;background:var(--muted);margin-bottom:1.5vh;opacity:0.5;"></div>
+          <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:rgba(255,255,255,0.55);line-height:1.75;">人类的边界可以被推得更远。电动车、火星移民、脑机接口——他做的每一件事都在回答同一个问题：我们能走多远。</p>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:3% 3%;">
+          <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:2.5vw;color:var(--gold);margin-bottom:1.5vh;">Sam Altman</h3>
+          <div style="width:30px;height:1px;background:var(--gold);margin-bottom:1.5vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-size:0.82vw;color:rgba(255,255,255,0.7);line-height:1.75;">能把权力博弈、技术理想和对未来的洞察，全部压在同一个长期目标上。他身上所有看起来矛盾的东西，放在这个长期目标里看，全部自洽。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 33: CLOSING TEXT -->
+    <div class="slide" id="slide-33" style="background:#FFFFFF;">
+      <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8%;">
+        <div style="max-width:700px;text-align:center;">
+          <p style="font-family:'Inter',sans-serif;font-weight:400;font-size:1.1vw;color:var(--accent1);line-height:1.9;margin-bottom:4vh;">这种把一件事想得极度清楚、然后用一切手段去实现它的能力，值得每一个普通人认真学习。不是学他的结论，而是学他思考问题的方式。</p>
+          <div style="width:40px;height:1px;background:var(--gold);margin:0 auto 4vh;"></div>
+          <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:0.92vw;color:var(--muted);line-height:1.85;margin-bottom:5vh;">这个系列，我们会持续介绍那些推动人类历史进程的人。不是仰望他们，而是和大家一起学习：AI是怎么走到今天的，接下来它会把我们带去哪里。</p>
+          <p style="font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:2.5vw;color:var(--gold);">下一期，你想听谁？</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 34: END CARD -->
+    <div class="slide" id="slide-34" style="background:#1A1A1A;">
+      <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8%;">
+        <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:4.5vw;color:#fff;margin-bottom:2.5vh;letter-spacing:0.03em;">大白话讲AI</h1>
+        <div style="width:80px;height:2px;background:var(--gold);margin-bottom:3vh;"></div>
+        <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1.1vw;color:var(--gold);margin-bottom:1.2vh;letter-spacing:0.08em;">出品：大白话讲AI</p>
+        <p style="font-family:'Inter',sans-serif;font-weight:300;font-size:1vw;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">发行人：谢谢Miss</p>
+        <div style="margin-top:5vh;display:flex;gap:2vw;align-items:center;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);opacity:0.6;"></div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:0.4;"></div>
+          <div style="width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:0.2;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end slides-wrapper -->
+</div><!-- end presentation -->
+
+<!-- Fixed UI -->
+<div id="progress-bar"></div>
+<div id="slide-counter">01 / 34</div>
+<div id="chapter-indicator"></div>
+
+<script>
+const totalSlides = 34;
+let currentSlide = 1;
+
+const chapters = {
+  1: '',
+  2: 'PART 01 · 他是谁',
+  3: 'PART 01 · 他是谁',
+  4: 'PART 01 · 他是谁',
+  5: 'PART 01 · 他是谁',
+  6: 'PART 02 · 贡献一',
+  7: 'PART 02 · 贡献一',
+  8: 'PART 02 · 贡献一',
+  9: 'PART 02 · 贡献一',
+  10: 'PART 02 · 贡献一',
+  11: 'PART 02 · 贡献一',
+  12: 'PART 03 · 贡献二',
+  13: 'PART 03 · 贡献二',
+  14: 'PART 03 · 贡献二',
+  15: 'PART 03 · 贡献二',
+  16: 'PART 04 · 贡献三',
+  17: 'PART 04 · 贡献三',
+  18: 'PART 04 · 贡献三',
+  19: 'PART 04 · 贡献三',
+  20: 'PART 04 · 贡献三',
+  21: 'PART 05 · 贡献四',
+  22: 'PART 05 · 贡献四',
+  23: 'PART 05 · 贡献四',
+  24: 'PART 05 · 贡献四',
+  25: 'PART 06 · 贡献五',
+  26: 'PART 06 · 贡献五',
+  27: 'PART 06 · 贡献五',
+  28: 'PART 07 · 贡献六',
+  29: 'PART 07 · 贡献六',
+  30: 'PART 07 · 贡献六',
+  31: '',
+  32: '',
+  33: '',
+  34: ''
+};
+
+function goToSlide(n) {
+  if (n < 1 || n > totalSlides) return;
+  document.getElementById('slide-' + currentSlide).classList.remove('active');
+  currentSlide = n;
+  document.getElementById('slide-' + currentSlide).classList.add('active');
+  
+  const counter = document.getElementById('slide-counter');
+  counter.textContent = String(currentSlide).padStart(2,'0') + ' / ' + String(totalSlides).padStart(2,'0');
+  
+  const progress = document.getElementById('progress-bar');
+  progress.style.width = ((currentSlide / totalSlides) * 100) + '%';
+  
+  const chapterEl = document.getElementById('chapter-indicator');
+  chapterEl.textContent = chapters[currentSlide] || '';
+}
+
+function next() { goToSlide(currentSlide + 1); }
+function prev() { goToSlide(currentSlide - 1); }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); next(); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prev(); }
+});
+
+document.getElementById('presentation').addEventListener('click', function(e) {
+  const rect = this.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  if (x < rect.width * 0.2) { prev(); }
+  else { next(); }
+});
+
+// Init
+goToSlide(1);
+</script>
+</body>
+</html>

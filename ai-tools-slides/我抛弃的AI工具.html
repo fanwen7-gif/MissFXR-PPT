@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我抛弃的AI工具</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #2a2a2a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .deck {
+    position: relative;
+    width: 960px;
+    height: 720px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  }
+
+  /* 莫兰迪底色：暖灰蓝 */
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 960px;
+    height: 720px;
+    background: #D6D8D0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  /* 结尾封底：同色系深一阶 */
+  .slide.ending {
+    background: #9EA49A;
+  }
+
+  .label {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: #7a8070;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .main-title {
+    font-size: 76px;
+    font-weight: 700;
+    color: #2c2e28;
+    line-height: 1.1;
+    margin-bottom: 28px;
+  }
+  .sub-title {
+    font-size: 22px;
+    color: #4a4e44;
+    font-weight: 400;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  .caption {
+    font-size: 15px;
+    color: #7a8070;
+  }
+  .accent { color: #3d5a3e; font-weight: 700; }
+  .accent-bar {
+    width: 40px; height: 4px;
+    background: #3d5a3e;
+    margin: 0 auto 32px;
+    border-radius: 2px;
+  }
+  .accent-bar.left { margin: 0 0 32px; }
+  .chapter-num {
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    color: #3d5a3e;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .chapter-title {
+    font-size: 72px;
+    font-weight: 700;
+    color: #2c2e28;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  /* 工具页 */
+  .slide.tool {
+    align-items: flex-start;
+    text-align: left;
+    padding: 52px 88px;
+  }
+  .tool-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .tool-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .tool-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  .tool-logo svg {
+    width: 28px;
+    height: 28px;
+  }
+  .tool-number {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: #3d5a3e;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .tool-name {
+    font-size: 46px;
+    font-weight: 700;
+    color: #2c2e28;
+    line-height: 1.0;
+  }
+  .tool-name-en {
+    font-size: 14px;
+    color: #7a8070;
+    margin-top: 3px;
+    font-weight: 400;
+  }
+  .tool-body {
+    font-size: 19px;
+    color: #3a3e34;
+    line-height: 1.85;
+    max-width: 740px;
+  }
+  .tool-note {
+    margin-top: 22px;
+    font-size: 14px;
+    color: #7a8070;
+    line-height: 1.7;
+    border-left: 3px solid #3d5a3e;
+    padding-left: 14px;
+  }
+  .hl { color: #3d5a3e; font-weight: 600; }
+
+  /* 双产品 header（ChatGPT + Gemini 页） */
+  .dual-header {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 24px;
+  }
+  .dual-product {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .dual-product .tool-name {
+    font-size: 36px;
+  }
+  .dual-sep {
+    font-size: 28px;
+    color: #b0b4a8;
+    font-weight: 300;
+    margin: 0 4px;
+  }
+
+  /* 问题列表 */
+  .problem-list {
+    list-style: none;
+    margin: 8px 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .problem-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 19px;
+    color: #3a3e34;
+    line-height: 1.5;
+  }
+  .problem-list .num {
+    font-size: 11px;
+    font-weight: 700;
+    color: #3d5a3e;
+    letter-spacing: 0.05em;
+    background: rgba(61,90,62,0.12);
+    border-radius: 4px;
+    padding: 2px 7px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .blockquote {
+    margin-top: 14px;
+    font-size: 16px;
+    color: #6a7062;
+    line-height: 1.7;
+    border-left: 3px solid #b0b4a8;
+    padding-left: 14px;
+    font-style: italic;
+  }
+
+  /* 结尾页文字色适配深底色 */
+  .ending .label { color: #c8cec4; }
+  .ending .accent-bar { background: #d6d8d0; }
+  .ending .ending-title {
+    font-size: 52px;
+    font-weight: 700;
+    color: #f0f0ec;
+    line-height: 1.3;
+    max-width: 680px;
+    margin-bottom: 28px;
+  }
+  .ending .ending-accent { color: #f0f0ec; font-weight: 700; }
+  .ending .ending-sub {
+    font-size: 23px;
+    color: #d6d8d0;
+    line-height: 1.75;
+    max-width: 660px;
+    margin-bottom: 8px;
+  }
+  .ending .ending-num { color: #e8ebe4; font-weight: 700; }
+
+  .nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.7);
+    padding: 9px 22px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+  }
+  .nav button:hover { background: rgba(255,255,255,0.2); }
+  .nav button:disabled { opacity: 0.25; cursor: default; }
+  .nav .counter {
+    color: rgba(255,255,255,0.35);
+    font-size: 12px;
+    min-width: 48px;
+    text-align: center;
+  }
+  .hint {
+    position: fixed;
+    bottom: 28px;
+    right: 36px;
+    color: rgba(255,255,255,0.2);
+    font-size: 11px;
+  }
+
+  /* 封面 logo 总览行 */
+  .cover-logos {
+    display: flex;
+    gap: 16px;
+    margin-top: 36px;
+    align-items: center;
+    justify-content: center;
+  }
+  .cover-logos img {
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    opacity: 0.9;
+  }
+
+  /* 关于我 两栏 */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    text-align: left;
+    max-width: 780px;
+    width: 100%;
+  }
+  .about-section-label {
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    color: #3d5a3e;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .about-line {
+    font-size: 22px;
+    color: #3a3e34;
+    line-height: 1.9;
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 1. 封面 -->
+  <div class="slide active">
+    <div class="label">Miss 发行人 · 大白话讲AI</div>
+    <div class="accent-bar"></div>
+    <div class="main-title">我抛弃的<br>AI工具</div>
+    <div class="sub-title">我都认真用过，有的甚至用出了感情</div>
+    <div class="caption" style="margin-top:16px;">上一期讲了我在用的7个工具，这期讲我抛弃掉的</div>
+    <div class="cover-logos" id="cover-logos"></div>
+  </div>
+
+  <!-- 2. 关于我 -->
+  <div class="slide">
+    <div class="about-grid">
+      <div>
+        <div class="about-section-label">关于我</div>
+        <div class="about-line">在大厂负责一个AI产品的运营</div>
+        <div class="about-line">每天用AI工作超过6小时</div>
+        <div class="about-line">几乎日更社交媒体</div>
+      </div>
+      <div>
+        <div class="about-section-label">本期内容</div>
+        <div class="about-line" style="color:#3d5a3e; font-weight:600;">我抛弃掉的工具？</div>
+        <div class="about-line" style="color:#3d5a3e; font-weight:600;">为什么抛弃？</div>
+        <div class="about-line" style="color:#3d5a3e; font-weight:600;">适合谁用？</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. DeepSeek 章节封面 -->
+  <div class="slide">
+    <div class="chapter-num">Tool  01</div>
+    <div class="chapter-title">DeepSeek</div>
+    <div class="sub-title">国内最好的选择之一，但我遇到了断层</div>
+  </div>
+
+  <!-- 4. DeepSeek 内容（合并原第4+5页） -->
+  <div class="slide tool">
+    <div class="tool-header">
+      <div class="tool-logo" style="background:#fff;">
+        <img src="https://www.deepseek.com/favicon.ico" alt="DeepSeek" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
+      </div>
+      <div>
+        <div class="tool-number">TOOL  01 / 03</div>
+        <div class="tool-name">DeepSeek</div>
+        <div class="tool-name-en">deepseek.com · 深度求索</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      DeepSeek我之前用得很高频，能力也确实不错。但我弃用的原因很简单：<span class="hl">被Claude完全碾压了。</span><br><br>
+      不是输一点，什么叫断层？同一个问题，你问DeepSeek——回答得也对。你问GPT或Gemini——会在术的层面引领你。但你问Claude——会给你一个极其简洁的、在方向和思路层面上系统且犀利的判断。<span class="hl">你感觉不是在获得答案，是在获得视野。</span><br><br>
+      就像同一个问题，你问一个优秀的职场人，和你问一个真正的大佬——说的都没错，但那个层级差距，那就是断层。
+    </div>
+    <div class="tool-note">
+      适合谁：预算有限、需要中文场景、有数据隐私顾虑的用户，它是国内最好的选择之一。<br>但用过Claude之后，你会懂我在说什么。
+    </div>
+  </div>
+
+  <!-- 5. ChatGPT + Gemini 章节封面 -->
+  <div class="slide">
+    <div class="chapter-num">Tool  02</div>
+    <div style="display:flex; align-items:center; justify-content:center; gap:20px; margin-bottom:20px;">
+      <div style="width:56px;height:56px;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.18);flex-shrink:0;">
+        <img src="https://openai.com/favicon.ico" alt="ChatGPT" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="chapter-title" style="font-size:52px;margin-bottom:0;">ChatGPT</div>
+      <div style="font-size:36px;color:#b0b4a8;font-weight:300;margin:0 4px;">/</div>
+      <div style="width:56px;height:56px;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.12);flex-shrink:0;">
+        <img src="gemini.jpeg" alt="Gemini" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="chapter-title" style="font-size:52px;margin-bottom:0;">Gemini</div>
+    </div>
+    <div class="sub-title">我们是真的有过蜜月期的</div>
+  </div>
+
+  <!-- 6. ChatGPT + Gemini 蜜月期 -->
+  <div class="slide tool">
+    <div class="dual-header">
+      <div class="dual-product">
+        <div class="tool-logo" style="width:40px;height:40px;border-radius:10px;overflow:hidden;">
+          <img src="https://openai.com/favicon.ico" alt="ChatGPT" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="tool-name" style="font-size:32px;">ChatGPT</div>
+      </div>
+      <div style="font-size:22px;color:#b0b4a8;font-weight:300;">/</div>
+      <div class="dual-product">
+        <div class="tool-logo" style="width:40px;height:40px;border-radius:10px;overflow:hidden;">
+          <img src="gemini.jpeg" alt="Gemini" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="tool-name" style="font-size:32px;">Gemini</div>
+      </div>
+      <div style="margin-left:8px;">
+        <div class="tool-number">TOOL  02 / 03</div>
+        <div class="tool-name-en">OpenAI · Google</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      这两个我放在一起讲，因为故事是连在一起的。<br><br>
+      先说蜜月期——<span class="hl">我们是真的有过蜜月期的。</span>大概有6个月，我几乎只用GPT。后来有两个月，我80%的时间都在用Gemini。他们各有非常好的优势，我对他们甚至产生了感情。我当时专门发了朋友圈，感谢他们在我的生活、工作、情感方方面面提供的帮助。<br><br>
+      那时候它们对我的生产力提升是<span class="hl">真实的，显著的。</span>
+    </div>
+  </div>
+
+  <!-- 7. ChatGPT + Gemini 四个问题 -->
+  <div class="slide tool">
+    <div class="dual-header">
+      <div class="dual-product">
+        <div class="tool-logo" style="width:40px;height:40px;border-radius:10px;overflow:hidden;">
+          <img src="https://openai.com/favicon.ico" alt="ChatGPT" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="tool-name" style="font-size:32px;">ChatGPT</div>
+      </div>
+      <div style="font-size:22px;color:#b0b4a8;font-weight:300;">/</div>
+      <div class="dual-product">
+        <div class="tool-logo" style="width:40px;height:40px;border-radius:10px;overflow:hidden;">
+          <img src="gemini.jpeg" alt="Gemini" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="tool-name" style="font-size:32px;">Gemini</div>
+      </div>
+    </div>
+    <div class="tool-body" style="font-size:16px;">
+      但与此同时，我一直有一些隐隐的烦躁。四个问题：
+    </div>
+    <ul class="problem-list" style="margin-top:10px;">
+      <li><span class="num">01</span> 极其发散</li>
+      <li><span class="num">02</span> 极其啰嗦</li>
+      <li><span class="num">03</span> 经常吹捧我</li>
+      <li><span class="num">04</span> 喜欢说让人起鸡皮疙瘩的AI黑话</li>
+    </ul>
+    <div class="blockquote">
+      比如——"我接住你了。"每次看到这句话我都想关掉页面。<br>
+      但即便这样，我还是忍着用。生产力收益是真实的嘛，没办法。<br>
+      直到有一天，我用了Claude。又聪明，又不废话。<strong>我立刻就跑了。</strong><br>
+      然后我反过来意识到：我以为是蜜月期，其实一直都有代价——我的判断在被它们持续诱导，只是我没意识到。
+    </div>
+    <div class="tool-note" style="margin-top:14px;">
+      适合谁：重度依赖搜索的话可以用下Gemini，不然直接Claude得了。
+    </div>
+  </div>
+
+  <!-- 8. Google AI Studio 章节封面 -->
+  <div class="slide">
+    <div class="chapter-num">Tool  03</div>
+    <div style="width:72px;height:72px;border-radius:18px;overflow:hidden;margin:0 auto 20px;box-shadow:0 4px 16px rgba(0,0,0,0.25);">
+      <img src="aistudio.jpeg" alt="Google AI Studio" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div class="chapter-title">Google AI Studio</div>
+    <div class="sub-title">其实是一个很好的工具，我弃用的原因很具体</div>
+  </div>
+
+  <!-- 9. Google AI Studio 内容 -->
+  <div class="slide tool">
+    <div class="tool-header">
+      <div class="tool-logo" style="overflow:hidden;">
+        <img src="aistudio.jpeg" alt="Google AI Studio" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div>
+        <div class="tool-number">TOOL  03 / 03</div>
+        <div class="tool-name">Google AI Studio</div>
+        <div class="tool-name-en">aistudio.google.com · Google</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      我之前用它做Web PPT生成。它有<span class="hl">实时渲染和预览功能</span>——所见即所得，写一行代码立刻看到效果，非常直觉。对Vibe Coding新手来说是很好的入门工具。<br><br>
+      但我最终离开它，两个具体原因：<br><br>
+      第一，<span class="hl">文件在线仓库，本地插图很不方便</span>，工作流被打断。<br>
+      第二，<span class="hl">插入图片之后效果变差，不稳定。</span>加上响应速度明显比Claude和Claude Code慢很多。
+    </div>
+    <div class="tool-note">
+      Vibe Coding新手建议：小白用Codex桌面端，愿意花时间就上Claude Code
+    </div>
+  </div>
+
+  <!-- 10. 结尾封底 -->
+  <div class="slide ending">
+    <div class="label" style="font-size:14px;">大白话讲 AI · 我的建议</div>
+    <div class="accent-bar" style="background:#d6d8d0;"></div>
+    <div class="ending-sub" style="display:flex;gap:16px;align-items:flex-start;max-width:660px;margin-bottom:24px;">
+      <span class="ending-num" style="font-size:28px;line-height:1.2;flex-shrink:0;">1</span>
+      <span>直接用最SOTA的，不需要自己去发现，抄best practice就行。</span>
+    </div>
+    <div class="ending-sub" style="display:flex;gap:16px;align-items:flex-start;max-width:660px;margin-bottom:40px;">
+      <span class="ending-num" style="font-size:28px;line-height:1.2;flex-shrink:0;">2</span>
+      <span>对模型和工具要有敏感度。Claude是Claude，AI是AI，<br>差距就像自行车和汽车——都是车，但不是一回事。</span>
+    </div>
+    <div style="font-size:15px; color:rgba(240,240,236,0.4); line-height:1.6;">我抛弃这些工具，不是因为它们烂。而是好用的太好用了。</div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button id="prev" disabled>←</button>
+  <span class="counter" id="counter">1 / 10</span>
+  <button id="next">→</button>
+</div>
+<div class="hint">← → 或点击按钮翻页</div>
+
+<script>
+  // 封面 logo 总览：收集所有 tool-logo 里的 img src，去重后注入
+  const coverLogos = document.getElementById('cover-logos');
+  const seen = new Set();
+  document.querySelectorAll('.tool-logo img').forEach(img => {
+    if (!seen.has(img.src)) {
+      seen.add(img.src);
+      const el = document.createElement('img');
+      el.src = img.src;
+      el.alt = img.alt;
+      coverLogos.appendChild(el);
+    }
+  });
+
+  const slides = document.querySelectorAll('.slide');
+  let cur = 0;
+  const total = slides.length;
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const counter = document.getElementById('counter');
+
+  function go(n) {
+    slides[cur].classList.remove('active');
+    cur = n;
+    slides[cur].classList.add('active');
+    prev.disabled = cur === 0;
+    next.disabled = cur === total - 1;
+    counter.textContent = (cur + 1) + ' / ' + total;
+  }
+
+  prev.addEventListener('click', () => { if (cur > 0) go(cur - 1); });
+  next.addEventListener('click', () => { if (cur < total - 1) go(cur + 1); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (cur < total - 1) go(cur + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if (cur > 0) go(cur - 1); }
+  });
+</script>
+</body>
+</html>
