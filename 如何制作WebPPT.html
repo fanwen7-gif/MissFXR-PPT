@@ -265,6 +265,12 @@ li { font-size: 14px; color: var(--sub); line-height: 1.75; margin-bottom: 6px; 
 .recap-label { font-size: 12px; color: var(--sub); }
 .end-sub { font-size: 14px; color: var(--muted); letter-spacing: 0.04em; }
 
+/* ── Confetti ────────────────────────────────────── */
+@keyframes confetti-fall {
+  0%   { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--dr)) scale(0.4); opacity: 0; }
+}
+
 /* ── Overlay ─────────────────────────────────────── */
 #overlay {
   display: none;
@@ -346,10 +352,15 @@ li { font-size: 14px; color: var(--sub); line-height: 1.75; margin-bottom: 6px; 
           <div style="font-size:32px;margin-bottom:16px;">⚡️</div>
           <h3 id="s2-c2h3" style="font-size:17px;font-weight:700;color:white;margin-bottom:10px;transition:color 0.4s ease;">节省时间</h3>
           <p id="s2-c2p" style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.75;transition:color 0.4s ease;">把大纲扔给 Agent，半小时能出 30 页。</p>
-          <div id="s2-divider" style="display:flex;gap:14px;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.15);transition:border-color 0.4s ease;">
+          <div id="s2-divider" style="display:flex;align-items:center;gap:14px;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.15);transition:border-color 0.4s ease;">
             <span style="font-size:22px;cursor:pointer;display:inline-block;transition:transform 0.15s ease;" onmouseenter="applyS2Theme('icecream');this.style.transform='scale(1.25)'" onmouseleave="resetS2Theme();this.style.transform='scale(1)'">🌸</span>
             <span style="font-size:22px;cursor:pointer;display:inline-block;transition:transform 0.15s ease;" onmouseenter="applyS2Theme('morandi');this.style.transform='scale(1.25)'" onmouseleave="resetS2Theme();this.style.transform='scale(1)'">🎨</span>
             <span style="font-size:22px;cursor:pointer;display:inline-block;transition:transform 0.15s ease;" onmouseenter="applyS2Theme('deepspace');this.style.transform='scale(1.25)'" onmouseleave="resetS2Theme();this.style.transform='scale(1)'">🌌</span>
+            <!-- Easter egg -->
+            <div style="margin-left:auto;position:relative;display:inline-block;" id="easter-wrap">
+              <span id="easter-emoji" style="font-size:22px;cursor:pointer;display:inline-block;transition:transform 0.2s ease;" onmouseenter="startEaster()" onmouseleave="stopEaster()">👨‍💻</span>
+              <div id="easter-badge" style="position:absolute;bottom:130%;right:0;background:white;color:#1a3a6b;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;white-space:nowrap;opacity:0;transform:translateY(4px);transition:opacity 0.25s ease,transform 0.25s ease;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,0.15);">感谢陈南老师 🎉</div>
+            </div>
           </div>
         </div>
       </div>
@@ -873,6 +884,45 @@ function applyS2Theme(name) {
 
 function resetS2Theme() {
   s2ResetTimer = setTimeout(() => applyS2Theme('default'), 80);
+}
+
+/* ── Easter egg ──────────────────────────────────── */
+let easterInterval;
+const confettiEmojis = ['🌸','🎊','✨','🌟','💫','🎉','⭐️','🌺'];
+
+function spawnConfetti() {
+  const wrap = document.getElementById('easter-wrap');
+  const el = document.createElement('span');
+  el.textContent = confettiEmojis[Math.floor(Math.random() * confettiEmojis.length)];
+  const dx = (Math.random() - 0.5) * 180;
+  const dy = -(60 + Math.random() * 120);
+  const dr = (Math.random() - 0.5) * 360 + 'deg';
+  el.style.cssText = `
+    position:absolute; bottom:100%; right:0;
+    font-size:${18 + Math.random() * 14}px;
+    pointer-events:none; z-index:999;
+    --dx:${dx}px; --dy:${dy}px; --dr:${dr};
+    animation: confetti-fall 0.8s ease-out forwards;
+  `;
+  wrap.appendChild(el);
+  setTimeout(() => el.remove(), 850);
+}
+
+function startEaster() {
+  document.getElementById('easter-emoji').style.transform = 'scale(1.3)';
+  const badge = document.getElementById('easter-badge');
+  badge.style.opacity = '1';
+  badge.style.transform = 'translateY(0)';
+  spawnConfetti();
+  easterInterval = setInterval(spawnConfetti, 180);
+}
+
+function stopEaster() {
+  document.getElementById('easter-emoji').style.transform = 'scale(1)';
+  const badge = document.getElementById('easter-badge');
+  badge.style.opacity = '0';
+  badge.style.transform = 'translateY(4px)';
+  clearInterval(easterInterval);
 }
 
 function openOverlay() {
