@@ -332,20 +332,25 @@ li { font-size: 14px; color: var(--sub); line-height: 1.75; margin-bottom: 6px; 
   </div>
 
   <!-- 2. 引言 -->
-  <div class="slide" id="s2">
+  <div class="slide" id="s2" style="transition:background 0.4s ease;">
     <div style="width:100%;max-width:900px;">
       <div class="section-tag"><span class="sn">01</span>引言</div>
-      <h2>我为什么开始做 AI PPT？</h2>
+      <h2 id="s2-h2" style="transition:color 0.4s ease;">我为什么开始做 AI PPT？</h2>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-        <div class="card">
+        <div id="s2-card1" class="card" style="transition:background 0.4s ease,border-color 0.4s ease;">
           <div style="font-size:32px;margin-bottom:16px;">✨</div>
-          <h3 style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:10px;">动效丰富，版式好看</h3>
-          <p style="font-size:14px;color:var(--muted);line-height:1.75;">传统 PPT 动效死板、模板审美有限。AI PPT 则天马行空，任何在电脑上能出现的样式都可以实现。</p>
+          <h3 id="s2-c1h3" style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:10px;transition:color 0.4s ease;">动效丰富，版式好看</h3>
+          <p id="s2-c1p" style="font-size:14px;color:var(--muted);line-height:1.75;transition:color 0.4s ease;">传统 PPT 动效死板、模板审美有限。AI PPT 则天马行空，任何在电脑上能出现的样式都可以实现。</p>
         </div>
-        <div style="background:var(--dark);border-radius:12px;padding:24px;">
+        <div id="s2-card2" style="background:var(--dark);border-radius:12px;padding:24px;transition:background 0.4s ease;">
           <div style="font-size:32px;margin-bottom:16px;">⚡️</div>
-          <h3 style="font-size:17px;font-weight:700;color:white;margin-bottom:10px;">节省时间</h3>
-          <p style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.75;">把大纲扔给 Agent，半小时能出 30 页。</p>
+          <h3 id="s2-c2h3" style="font-size:17px;font-weight:700;color:white;margin-bottom:10px;transition:color 0.4s ease;">节省时间</h3>
+          <p id="s2-c2p" style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.75;transition:color 0.4s ease;">把大纲扔给 Agent，半小时能出 30 页。</p>
+          <div id="s2-divider" style="display:flex;gap:14px;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.15);transition:border-color 0.4s ease;">
+            <span style="font-size:22px;cursor:pointer;display:inline-block;transition:transform 0.15s ease;" onmouseenter="applyS2Theme('icecream');this.style.transform='scale(1.25)'" onmouseleave="resetS2Theme();this.style.transform='scale(1)'">🌸</span>
+            <span style="font-size:22px;cursor:pointer;display:inline-block;transition:transform 0.15s ease;" onmouseenter="applyS2Theme('morandi');this.style.transform='scale(1.25)'" onmouseleave="resetS2Theme();this.style.transform='scale(1)'">🎨</span>
+            <span style="font-size:22px;cursor:pointer;display:inline-block;transition:transform 0.15s ease;" onmouseenter="applyS2Theme('deepspace');this.style.transform='scale(1.25)'" onmouseleave="resetS2Theme();this.style.transform='scale(1)'">🌌</span>
+          </div>
         </div>
       </div>
     </div>
@@ -839,6 +844,36 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') go(1);
   if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
 });
+
+/* ── Slide 2 theme switcher ──────────────────────── */
+const s2Themes = {
+  default:   { slide:'#EEF2F8', h2:'#111827', c1bg:'#ffffff', c1bd:'#dde3ee', c1h3:'#111827', c1p:'#8a96aa', c2bg:'#1a3a6b', c2h3:'#ffffff', c2p:'rgba(255,255,255,0.55)', div:'rgba(255,255,255,0.15)' },
+  icecream:  { slide:'#FDF6EC', h2:'#2C1B3E', c1bg:'#FFF0F8', c1bd:'#F4B8D0', c1h3:'#2C1B3E', c1p:'#B07090', c2bg:'#F4A7BF', c2h3:'#2C1B3E', c2p:'rgba(44,27,62,0.6)',    div:'rgba(44,27,62,0.15)' },
+  morandi:   { slide:'#EDE8E2', h2:'#3D3530', c1bg:'#F5F0EA', c1bd:'#C8B8A8', c1h3:'#3D3530', c1p:'#8A7E78', c2bg:'#9B8E84', c2h3:'#F5F0EA', c2p:'rgba(245,240,234,0.7)', div:'rgba(245,240,234,0.2)' },
+  deepspace: { slide:'#060B18', h2:'#E8EEFF', c1bg:'#0D1526', c1bd:'#1E2D4A', c1h3:'#E8EEFF', c1p:'#6A7B9A', c2bg:'#0E2456', c2h3:'#E8EEFF', c2p:'rgba(232,238,255,0.5)', div:'rgba(232,238,255,0.12)' },
+};
+
+let s2ResetTimer;
+
+function applyS2Theme(name) {
+  clearTimeout(s2ResetTimer);
+  const t = s2Themes[name];
+  document.getElementById('s2').style.background = t.slide;
+  document.getElementById('s2-h2').style.color = t.h2;
+  const c1 = document.getElementById('s2-card1');
+  c1.style.background = t.c1bg;
+  c1.style.borderColor = t.c1bd;
+  document.getElementById('s2-c1h3').style.color = t.c1h3;
+  document.getElementById('s2-c1p').style.color = t.c1p;
+  document.getElementById('s2-card2').style.background = t.c2bg;
+  document.getElementById('s2-c2h3').style.color = t.c2h3;
+  document.getElementById('s2-c2p').style.color = t.c2p;
+  document.getElementById('s2-divider').style.borderTopColor = t.div;
+}
+
+function resetS2Theme() {
+  s2ResetTimer = setTimeout(() => applyS2Theme('default'), 80);
+}
 
 function openOverlay() {
   document.getElementById('overlay').classList.add('open');
