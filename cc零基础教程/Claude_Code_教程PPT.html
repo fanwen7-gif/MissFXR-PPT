@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>Claude Code 新手完全教程</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #0f1923;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .deck {
+    position: relative;
+    width: 960px;
+    height: 720px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    background: #EEF2F8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .label {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: #8a96aa;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .main-title {
+    font-size: 68px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.15;
+    margin-bottom: 28px;
+  }
+  .sub-title {
+    font-size: 19px;
+    color: #4a5568;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .caption {
+    font-size: 14px;
+    color: #8a96aa;
+    line-height: 1.7;
+  }
+  .accent-bar {
+    width: 40px; height: 4px;
+    background: #1a3a6b;
+    border-radius: 2px;
+    margin: 0 auto 28px;
+  }
+  .chapter-num {
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    color: #1a3a6b;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .chapter-title {
+    font-size: 62px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .slide.content {
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 48px 80px;
+  }
+  .slide-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: #1a3a6b;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .slide-heading {
+    font-size: 40px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+    margin-bottom: 22px;
+  }
+  .slide-body {
+    font-size: 17px;
+    color: #2d3748;
+    line-height: 1.9;
+  }
+  .hl { color: #1a3a6b; font-weight: 700; }
+  .toc-name .hl {
+    color: #1a3a6b;
+    font-weight: 700;
+    background: rgba(26,58,107,0.09);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .block {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(26,58,107,0.06);
+    border-radius: 8px;
+    width: 100%;
+  }
+  .block-title {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: #1a3a6b;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .block-body {
+    font-size: 15px;
+    color: #2d3748;
+    line-height: 1.85;
+  }
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: #d4dce8;
+    margin: 16px 0;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 48px;
+    width: 100%;
+  }
+  .col-label {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: #1a3a6b;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .col-body {
+    font-size: 15px;
+    color: #2d3748;
+    line-height: 1.85;
+  }
+  .step-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 11px 16px;
+    background: rgba(26,58,107,0.05);
+    border-radius: 8px;
+  }
+  .step-num {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: #1a3a6b;
+    font-weight: 700;
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 56px;
+  }
+  .step-text {
+    font-size: 15px;
+    color: #2d3748;
+    line-height: 1.7;
+  }
+  .step-text strong { color: #111827; font-weight: 600; }
+  .compare-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e8ecf2;
+  }
+  .compare-key {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a3a6b;
+    min-width: 140px;
+    flex-shrink: 0;
+  }
+  .compare-val {
+    font-size: 15px;
+    color: #2d3748;
+    line-height: 1.7;
+  }
+  .toc-list {
+    width: 100%;
+    max-width: 800px;
+    text-align: left;
+  }
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid #dde3ee;
+  }
+  .toc-part {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #1a3a6b;
+    min-width: 72px;
+    flex-shrink: 0;
+  }
+  .toc-name {
+    font-size: 17px;
+    color: #111827;
+    font-weight: 500;
+  }
+  .trick-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 40px;
+    width: 100%;
+  }
+  .trick-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid #e8ecf2;
+  }
+  .trick-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1a3a6b;
+    letter-spacing: 0.1em;
+    min-width: 28px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .trick-name {
+    font-size: 14px;
+    color: #111827;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .trick-desc {
+    font-size: 12px;
+    color: #8a96aa;
+    line-height: 1.5;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    margin-top: 24px;
+  }
+  .flow-step { flex: 1; text-align: center; }
+  .flow-box {
+    background: rgba(26,58,107,0.07);
+    border-radius: 8px;
+    padding: 12px 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a3a6b;
+    line-height: 1.4;
+  }
+  .flow-box.end { background: #1a3a6b; color: #fff; }
+  .flow-arrow { font-size: 18px; color: #b0c4dc; padding: 0 4px; flex-shrink: 0; }
+  .flow-note { font-size: 11px; color: #8a96aa; margin-top: 6px; line-height: 1.5; }
+
+  /* 封面 logo */
+  .cover-logos {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 36px;
+  }
+  .cover-logo {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    object-fit: cover;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    opacity: 0.92;
+  }
+
+  /* 价值卡片 */
+  .value-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .value-card {
+    padding: 22px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #dde3ee;
+  }
+  .value-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a3a6b;
+    margin-bottom: 10px;
+  }
+  .value-body {
+    font-size: 15px;
+    color: #4a5568;
+    line-height: 1.8;
+  }
+
+  /* 代码块 */
+  .code-block {
+    background: rgba(26,58,107,0.08);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 15px;
+    color: #1a3a6b;
+    line-height: 1.8;
+    margin-top: 16px;
+    width: 100%;
+    border-left: 3px solid #1a3a6b;
+  }
+
+  /* 拿手好戏网格 */
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .feat-card {
+    background: #fff;
+    border: 1px solid #dde3ee;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .feat-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+  }
+  .feat-desc {
+    font-size: 12px;
+    color: #8a96aa;
+    line-height: 1.6;
+  }
+
+  /* Agent 循环图 */
+  .loop-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+    margin: 16px 0;
+  }
+  .loop-node {
+    background: #fff;
+    border: 2px solid #1a3a6b;
+    border-radius: 50%;
+    width: 88px; height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a3a6b;
+    text-align: center;
+    line-height: 1.3;
+    flex-shrink: 0;
+  }
+  .loop-arrow {
+    font-size: 20px;
+    color: #7aa3cc;
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+
+  /* 架构表格 */
+  .arch-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 14px;
+  }
+  .arch-table th {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: #1a3a6b;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid #1a3a6b;
+    text-align: left;
+  }
+  .arch-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #e8ecf2;
+    color: #2d3748;
+    line-height: 1.5;
+    vertical-align: top;
+  }
+  .arch-table td:first-child { font-weight: 600; color: #111827; width: 160px; }
+  .arch-table td:last-child { color: #8a96aa; font-size: 13px; }
+
+  /* 导航 */
+  .nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.7);
+    padding: 9px 22px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+  }
+  .nav button:hover { background: rgba(255,255,255,0.2); }
+  .nav button:disabled { opacity: 0.25; cursor: default; }
+  .counter { color: rgba(255,255,255,0.35); font-size: 12px; min-width: 48px; text-align: center; }
+  .hint { position: fixed; bottom: 28px; right: 36px; color: rgba(255,255,255,0.2); font-size: 11px; }
+
+  /* 标题旁小图标 */
+  .title-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    vertical-align: middle;
+    margin-right: 12px;
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- P1 封面 -->
+  <div class="slide active">
+    <div class="label">Miss 发行人 · 大白话讲 AI</div>
+    <div class="accent-bar"></div>
+    <div class="main-title">Claude Code<br>新手完全教程</div>
+    <div class="sub-title">费用 · 安装 · 技巧 · 实操跟练</div>
+    <div class="caption">从零开始，做出你的第一个 AI 作品</div>
+    <div class="cover-logos">
+      <img class="cover-logo" src="logo-cc.png" alt="Claude Code">
+      <img class="cover-logo" src="logo-anthropic.png" alt="Anthropic">
+      <div style="width:1px;height:40px;background:rgba(26,58,107,0.2);margin:0 8px;"></div>
+      <img src="logo-cc-text.png" alt="Claude Code" style="height:52px;opacity:0.9;">
+    </div>
+  </div>
+
+  <!-- P2 目录 -->
+  <div class="slide">
+    <div class="label">CONTENTS</div>
+    <div class="accent-bar"></div>
+    <div class="toc-list">
+      <div class="toc-item"><span class="toc-part">PART 00</span><span class="toc-name">为什么 CC 是<span class="hl">风靡硅谷和大厂</span>的生产力工具？</span></div>
+      <div class="toc-item"><span class="toc-part">PART 01</span><span class="toc-name">Claude Code <span class="hl">到底是什么</span>？</span></div>
+      <div class="toc-item"><span class="toc-part">PART 02</span><span class="toc-name">从安装到<span class="hl">第一次成功运行</span></span></div>
+      <div class="toc-item"><span class="toc-part">PART 03</span><span class="toc-name">普通人如何用 CC <span class="hl">提效</span>？</span></div>
+      <div class="toc-item"><span class="toc-part">PART 04</span><span class="toc-name">怎么用好它？<span class="hl">12个技巧</span>让你少走弯路</span></div>
+      <div class="toc-item" style="border-bottom:none"><span class="toc-part">PART 05</span><span class="toc-name">2个项目手把手<span class="hl">实战跟练</span></span></div>
+    </div>
+  </div>
+
+  <!-- P3 第0章封面（已删，原P3位置改为P4内容） -->
+  <!-- P4 原：核心差异 → 新标题 -->
+  <div class="slide content no-icon">
+    <div class="slide-eyebrow">PART 00 · 核心差异</div>
+    <div class="slide-heading">不是问答 AI<br>而是规划 → 执行 → 复盘全链路</div>
+    <div class="slide-body">
+      <span class="hl">普通 AI 对话：</span>你问，它答，到此为止。<br>
+      <span class="hl">Claude Code：</span>你说目标，它自己规划步骤、调用工具、执行操作、评估结果、反复迭代，直到完成。
+    </div>
+    <div class="divider"></div>
+    <div class="two-col">
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <img src="logo-anthropic.png" style="width:44px;height:44px;border-radius:10px;flex-shrink:0;margin-top:2px;">
+        <div>
+          <div class="col-label">普通 Claude</div>
+          <div class="col-body">问答机器<br>你推一步，它走一步</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <img src="logo-cc.png" style="width:44px;height:44px;border-radius:10px;flex-shrink:0;margin-top:2px;">
+        <div>
+          <div class="col-label">Claude Code</div>
+          <div class="col-body" style="color:#1a3a6b;font-weight:600">全链路 Agent<br>你说目标，它跑完全程</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新增：拿手好戏 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 00 · 能做什么</div>
+    <div class="slide-heading">Claude Code 的拿手好戏</div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-title">拆表格</div>
+        <div class="feat-desc">把复杂表格拆分整理，自动提取关键数据</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">操作电脑</div>
+        <div class="feat-desc">自动执行重复操作，替你完成鼠标键盘的工作</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">做 PPT</div>
+        <div class="feat-desc">根据内容自动生成结构完整的演示文稿</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">写文档</div>
+        <div class="feat-desc">生成技术文档、说明书、项目报告</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">整理文件夹</div>
+        <div class="feat-desc">按规则自动归类、重命名、清理文件</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">写网页</div>
+        <div class="feat-desc">从零搭建可用的前端页面，直接在浏览器打开</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">爬取网页数据</div>
+        <div class="feat-desc">抓取指定网站内容，自动整理成表格或文档</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">自动发邮件/消息</div>
+        <div class="feat-desc">写脚本定时发送通知、报告、提醒</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">分析数据生成图表</div>
+        <div class="feat-desc">读取 CSV/Excel，自动分析并生成可视化图表</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">批量处理图片</div>
+        <div class="feat-desc">压缩、裁剪、格式转换，几百张一次搞定</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">设置定时任务</div>
+        <div class="feat-desc">让某件事每天/每周自动执行，彻底解放双手</div>
+      </div>
+      <div class="feat-card" style="background:#1a3a6b;border-color:#1a3a6b">
+        <div class="feat-title" style="color:#fff">自动化一切……</div>
+        <div class="feat-desc" style="color:rgba(255,255,255,0.6)">只要你能描述清楚，它就能尝试</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P5 价值 → 卡片放大 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 00 · 对你的价值</div>
+    <div class="slide-heading">普通人为什么<br>一定要试试？</div>
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="value-title">省时间</div>
+        <div class="value-body">以前要花几小时手动整理的文件，现在告诉它一句话，自动完成。</div>
+      </div>
+      <div class="value-card">
+        <div class="value-title">省钱</div>
+        <div class="value-body">不需要雇程序员，自己就能做出一个能用的工具、网站、自动化流程。</div>
+      </div>
+      <div class="value-card">
+        <div class="value-title">做出以前做不到的事</div>
+        <div class="value-body">几百个文件批量处理、自动抓取数据、搭一个只属于你的工作流。</div>
+      </div>
+    </div>
+    <div class="block" style="margin-top:20px">
+      <div class="block-body" style="text-align:center;font-size:16px">
+        Claude Code 达到 <span class="hl">$2.5B 年化营收</span>，仅用 9 个月 ·
+        目前写了 GitHub 全部 public commit 的 <span class="hl">4%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第1章封面 -->
+  <div class="slide">
+    <div class="chapter-num">PART  01</div>
+    <div class="chapter-title">Claude Code<br>到底是什么？</div>
+    <div class="sub-title">两个概念搞清楚，后面所有东西都通了</div>
+  </div>
+
+  <!-- P8 大模型 + 工具关系图 -->
+  <div class="slide content no-icon">
+    <div class="slide-eyebrow">PART 01 · 1.1</div>
+    <div class="slide-heading">什么是 Agent？</div>
+    <div class="slide-body" style="margin-bottom:24px">
+      大模型是<span class="hl">大脑</span>，工具是<span class="hl">双手</span>——光有大脑没有手，什么也做不了。
+    </div>
+    <!-- 左右关系图 -->
+    <div style="display:flex;align-items:center;gap:0;width:100%;">
+
+      <!-- 左：大模型 -->
+      <div style="flex:1;background:#fff;border:1.5px solid #b0c4dc;border-radius:12px;padding:28px 24px;text-align:center;">
+        <div style="font-size:40px;margin-bottom:8px;">🧠 👁️</div>
+        <div style="font-size:18px;font-weight:700;color:#1a3a6b;margin-bottom:6px;">大模型</div>
+        <div style="font-size:13px;color:#4a5568;line-height:1.6;">负责推理和决策<br>感知环境、思考下一步</div>
+      </div>
+
+      <!-- 中：双向箭头 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 20px;flex-shrink:0;">
+        <div style="font-size:13px;color:#7aa3cc;letter-spacing:0.05em;">调用 →</div>
+        <div style="width:60px;height:2px;background:linear-gradient(90deg,#1a3a6b,#7aa3cc);border-radius:1px;"></div>
+        <div style="width:60px;height:2px;background:linear-gradient(90deg,#7aa3cc,#1a3a6b);border-radius:1px;"></div>
+        <div style="font-size:13px;color:#7aa3cc;letter-spacing:0.05em;">← 返回结果</div>
+      </div>
+
+      <!-- 右：工具 -->
+      <div style="flex:1;background:#fff;border:1.5px solid #b0c4dc;border-radius:12px;padding:20px 24px;text-align:center;">
+        <div style="font-size:40px;margin-bottom:8px;">🔧 🤲</div>
+        <div style="font-size:18px;font-weight:700;color:#1a3a6b;margin-bottom:12px;">工具</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="background:#e8eef7;border-radius:6px;padding:7px;font-size:12px;font-weight:600;color:#1a3a6b;">读写文件</div>
+          <div style="background:#e8eef7;border-radius:6px;padding:7px;font-size:12px;font-weight:600;color:#1a3a6b;">执行命令</div>
+          <div style="background:#e8eef7;border-radius:6px;padding:7px;font-size:12px;font-weight:600;color:#1a3a6b;">搜索网络</div>
+          <div style="background:#e8eef7;border-radius:6px;padding:7px;font-size:12px;font-weight:600;color:#1a3a6b;">调用服务</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="caption" style="text-align:left;margin-top:16px;">工具让大模型从「只会说话」变成「能干活」——这就是 Agent 的本质</div>
+  </div>
+
+  <!-- P9 自主决策循环（恢复原版） -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 01 · 1.2</div>
+    <div class="slide-heading">自主决策循环</div>
+    <div class="slide-body" style="margin-bottom:12px">
+      光有大模型还不够——关键是它能跑一个<span class="hl">自主决策循环</span>：
+    </div>
+    <div class="loop-row">
+      <div class="loop-node">感知<br>环境</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node">推理<br>决策</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node">调用<br>工具</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node">评估<br>结果</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node" style="border-style:dashed;font-size:12px">再循环<br>直到完成</div>
+    </div>
+    <div class="divider"></div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">普通 AI（问答机器）</div>
+        <div class="col-body">你推一步，它走一步<br>没有循环，没有自主</div>
+      </div>
+      <div>
+        <div class="col-label">Agent（自主执行）</div>
+        <div class="col-body" style="color:#1a3a6b;font-weight:500">你说目标<br>它自己跑完这个循环</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P9 世一Agent是怎么炼成的 -->
+  <div class="slide content" style="padding:40px 80px">
+    <div class="slide-eyebrow">PART 01 · 1.2</div>
+    <div class="slide-heading">世一 Agent 是怎么炼成的？</div>
+    <div class="two-col" style="gap:0 32px;align-items:start">
+      <div>
+        <div class="col-label">架构亮点</div>
+        <div class="step-list" style="gap:8px">
+          <div class="step-item" style="padding:10px 14px">
+            <span class="step-num" style="min-width:auto;font-size:12px">终端原生</span>
+            <div class="step-text">直接操作系统，不受 IDE 限制</div>
+          </div>
+          <div class="step-item" style="padding:10px 14px">
+            <span class="step-num" style="min-width:auto;font-size:12px">单线程循环</span>
+            <div class="step-text">透明可调试，你看得清它在干什么</div>
+          </div>
+          <div class="step-item" style="padding:10px 14px">
+            <span class="step-num" style="min-width:auto;font-size:12px">1M 上下文</span>
+            <div class="step-text">支撑大项目、长对话不丢背景</div>
+          </div>
+          <div class="step-item" style="padding:10px 14px">
+            <span class="step-num" style="min-width:auto;font-size:12px">权限系统</span>
+            <div class="step-text">每个操作单独授权，安全可控</div>
+          </div>
+          <div class="step-item" style="padding:10px 14px">
+            <span class="step-num" style="min-width:auto;font-size:12px">Skill 生态</span>
+            <div class="step-text">官方开箱即用，不用自己配工作流</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="col-label">模型亮点</div>
+        <div class="step-list" style="gap:8px">
+          <div class="step-item" style="padding:10px 14px">
+            <span class="step-num" style="min-width:auto;font-size:12px">基准</span>
+            <div class="step-text">SWE-bench Verified <span class="hl">88.6%</span><br>目前全球编程任务最高分</div>
+          </div>
+          <div class="step-item" style="padding:10px 14px">
+            <span class="step-num" style="min-width:auto;font-size:12px">占比</span>
+            <div class="step-text">写了 GitHub 全部 public commit 的 <span class="hl">4%</span></div>
+          </div>
+          <div class="step-item" style="padding:10px 14px">
+            <span class="step-num" style="min-width:auto;font-size:12px">质量</span>
+            <div class="step-text">对比 Cursor，代码返工减少 <span class="hl">30%</span></div>
+          </div>
+          <div class="step-item" style="padding:10px 14px">
+            <span class="step-num" style="min-width:auto;font-size:12px">长任务</span>
+            <div class="step-text">多文件编辑、长会话上下文<br>一致性业界最强</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第2章封面 -->
+  <div class="slide">
+    <div class="chapter-num">PART  02</div>
+    <div class="chapter-title">从安装到<br>第一次成功运行</div>
+    <div class="sub-title">零基础小白保姆级教程</div>
+  </div>
+
+  <!-- P11 费用配置 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 02 · 2.1</div>
+    <div class="slide-heading">要花多少钱？<br>我的电脑能用吗？</div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">费用</div>
+        <div class="compare-row"><span class="compare-key">订阅制（Claude Pro）</span><span class="compare-val">约 $20/月，有额度限制</span></div>
+        <div class="compare-row"><span class="compare-key">API 计费</span><span class="compare-val">按用量付费，用多少花多少</span></div>
+        <div class="compare-row"><span class="compare-key">国产 Token Plan</span><span class="compare-val">约 20元/月，适合国内用户</span></div>
+        <div class="compare-row" style="border:none"><span class="compare-key">我的建议</span><span class="compare-val" style="color:#1a3a6b;font-weight:500">新手先订阅制，上手后再 API</span></div>
+      </div>
+      <div>
+        <div class="col-label">配置要求</div>
+        <div class="compare-row"><span class="compare-key">操作系统</span><span class="compare-val">macOS 或 Windows 均可</span></div>
+        <div class="compare-row"><span class="compare-key">内存</span><span class="compare-val">8GB 以上（16GB 更顺）</span></div>
+      </div>
+    </div>
+    <div class="block" style="margin-top:20px">
+      <div class="block-body" style="text-align:center">须知悉：<span class="hl">没有免费试用的路径</span></div>
+    </div>
+  </div>
+
+  <!-- P12 安装 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 02 · 2.2</div>
+    <div class="slide-heading">一步一步跟着装<br>装不上来找我</div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num">STEP 01</span><div class="step-text"><strong>安装 Node.js</strong> &nbsp;·&nbsp; 去 nodejs.org 下载安装，无脑下一步就行</div></div>
+      <div class="step-item"><span class="step-num">STEP 02</span><div class="step-text"><strong>安装 Claude Code CLI</strong> &nbsp;·&nbsp; 打开终端，输入：npm install -g @anthropic-ai/claude-code</div></div>
+      <div class="step-item"><span class="step-num">STEP 03</span><div class="step-text"><strong>获取 API Key</strong> &nbsp;·&nbsp; 去 console.anthropic.com 注册 / minimax 或 zhipu 注册付费，创建 API Key</div></div>
+      <div class="step-item"><span class="step-num">STEP 04</span><div class="step-text"><strong>配置 API Key</strong> &nbsp;·&nbsp; 在终端输入：claude config set apiKey 你的Key<br>或使用 <strong>CC switch</strong> 配置</div></div>
+    </div>
+  </div>
+
+  <!-- P13 界面 -->
+  <!-- P13 第一次运行 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 02 · 2.4</div>
+    <div class="slide-heading">试试让它<br>帮你做一件事</div>
+    <div class="slide-body" style="margin-bottom:16px">第一次跑通，比什么都重要。</div>
+    <div class="block">
+      <div class="block-title">给它说这句话</div>
+      <div class="block-body" style="font-size:16px;color:#1a3a6b;font-weight:500">
+        「帮我在桌面创建一个叫「我的第一个AI作品」的文件夹，<br>在里面新建一个 hello.txt，内容是 Hello, Claude Code!」
+      </div>
+    </div>
+    <div class="slide-body" style="margin-top:20px;color:#8a96aa">
+      如果它做到了——恭喜，你已经是 Claude Code 用户了。
+    </div>
+  </div>
+
+  <!-- P15 第2章小结 -->
+  <!-- 第3章封面 -->
+  <div class="slide">
+    <div class="chapter-num">PART  03</div>
+    <div class="chapter-title">普通人如何<br>用 CC 提效？</div>
+    <div class="sub-title">从别人的案例，找到你自己的机会</div>
+  </div>
+
+  <!-- P17 Vibe Coding -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 03 · 3.1</div>
+    <div class="slide-heading">用嘴说出你的需求<br>它帮你写代码——这就是 Vibe Coding</div>
+    <div class="slide-body" style="margin-bottom:16px">
+      你不需要懂代码语法。你只需要能描述你想要什么。
+    </div>
+    <div class="code-block">「帮我做一个网页，可以记录我每天喝水的次数，有一个加号按钮。」</div>
+    <div class="block" style="margin-top:16px">
+      <div class="block-body" style="text-align:center">
+        你说想要什么 &nbsp;→&nbsp; 它写代码 &nbsp;→&nbsp; 代码直接写入文件 &nbsp;→&nbsp; 跑起来
+      </div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">这一句话，就够了。</div>
+  </div>
+
+  <!-- P18 自动化 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 03 · 3.2</div>
+    <div class="slide-heading">重复的事情<br>只做一次</div>
+    <div class="two-col" style="gap:0 24px;margin-bottom:16px;">
+      <div>
+        <div class="col-label">我的真实案例</div>
+        <div class="step-list" style="gap:8px">
+          <div class="step-item"><div class="step-text">帮我写周报</div></div>
+          <div class="step-item"><div class="step-text">整理自媒体数据</div></div>
+          <div class="step-item"><div class="step-text">去网上搜罗 AI 资讯</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="col-label">你也可以这样用</div>
+        <div class="step-list" style="gap:8px">
+          <div class="step-item"><div class="step-text">每周手动整理100条数据 → 自动跑</div></div>
+          <div class="step-item"><div class="step-text">每次发稿前检查格式 → 一键完成</div></div>
+          <div class="step-item"><div class="step-text">定期汇总多个表格 → 自动合并</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">重复超过3次的事，都值得让它自动化。</div>
+  </div>
+
+  <!-- P19 文件处理 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 03 · 3.3</div>
+    <div class="slide-heading">批量处理文件<br>这件事它最擅长</div>
+    <div class="two-col" style="gap:0 24px;margin-bottom:16px;">
+      <div>
+        <div class="col-label">我的真实案例</div>
+        <div class="step-list" style="gap:8px">
+          <div class="step-item"><div class="step-text">整理电脑文件夹</div></div>
+          <div class="step-item"><div class="step-text">批量做 PPT 大纲</div></div>
+          <div class="step-item"><div class="step-text">批量初筛简历</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="col-label">你也可以这样用</div>
+        <div class="step-list" style="gap:8px">
+          <div class="step-item"><div class="step-text">500张图片批量重命名 → 10秒完成</div></div>
+          <div class="step-item"><div class="step-text">几十个 PDF 提取关键信息 → 整理成表格</div></div>
+          <div class="step-item"><div class="step-text">命名混乱的文件夹 → 按规则自动归类</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:8px;text-align:left">对非程序员来说，这类场景是最快能感受到「它真的有用」的地方。</div>
+    <div class="caption" style="margin-top:6px;text-align:left;color:#1a3a6b;font-weight:600">记下来，我们在第5章一起做。</div>
+  </div>
+
+  <!-- P20 AI飞轮 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 03 · 3.4</div>
+    <div class="slide-heading">找到你生活里<br>最值得自动化的那件事</div>
+    <div class="slide-body" style="margin-bottom:16px">
+      不要只看别人的案例。你自己的重复性工作，才是最值得下手的地方。
+    </div>
+    <div class="code-block">「帮我想想，我是一个[你的身份/工作]，每天要做的重复性事情可能有哪些？哪些最适合用 Claude Code 自动化？」</div>
+    <div class="caption" style="margin-top:16px;text-align:left">它会帮你做诊断。这个过程，就是你找到第一个项目的起点。</div>
+  </div>
+
+  <!-- 第4章封面 -->
+  <div class="slide">
+    <div class="chapter-num">PART  04</div>
+    <div class="chapter-title">怎么用好它？</div>
+    <div class="sub-title">12个技巧，让你少走90%的弯路</div>
+  </div>
+
+  <!-- P23 技巧导航 -->
+  <div class="slide content" style="padding:44px 80px">
+    <div class="slide-eyebrow">PART 04 · 12个技巧全览</div>
+    <div class="trick-grid">
+      <div class="trick-item"><span class="trick-num">01</span><div><div class="trick-name">出错了怎么办</div><div class="trick-desc">看不懂报错？这样处理</div></div></div>
+      <div class="trick-item"><span class="trick-num">02</span><div><div class="trick-name">Token &amp; 费用意识</div><div class="trick-desc">为什么越聊越贵？怎么省钱？</div></div></div>
+      <div class="trick-item"><span class="trick-num">03</span><div><div class="trick-name">语音输入</div><div class="trick-desc">说比打快，减少表达摩擦</div></div></div>
+      <div class="trick-item"><span class="trick-num">04</span><div><div class="trick-name">CLAUDE.md</div><div class="trick-desc">让它永远记住你是谁</div></div></div>
+      <div class="trick-item"><span class="trick-num">05</span><div><div class="trick-name">Plan Mode</div><div class="trick-desc">动手之前，先让它想清楚</div></div></div>
+      <div class="trick-item"><span class="trick-num">06</span><div><div class="trick-name">权限 &amp; 安全意识</div><div class="trick-desc">它能做很多事，你要知道边界</div></div></div>
+      <div class="trick-item"><span class="trick-num">07</span><div><div class="trick-name">Git 管理代码</div><div class="trick-desc">后悔药：每次大改前先存档</div></div></div>
+      <div class="trick-item"><span class="trick-num">08</span><div><div class="trick-name">动手前先搜一搜</div><div class="trick-desc">不要重复造轮子</div></div></div>
+      <div class="trick-item"><span class="trick-num">09</span><div><div class="trick-name">MCP</div><div class="trick-desc">接入外部服务，连接你的世界</div></div></div>
+      <div class="trick-item"><span class="trick-num">10</span><div><div class="trick-name">Hook</div><div class="trick-desc">设定触发条件，让它自动运行</div></div></div>
+      <div class="trick-item"><span class="trick-num">11</span><div><div class="trick-name">Skill &amp; Tool</div><div class="trick-desc">扩展它的能力边界</div></div></div>
+      <div class="trick-item" style="border:none"><span class="trick-num">12</span><div><div class="trick-name">插件生态</div><div class="trick-desc">现成的工具，直接用</div></div></div>
+    </div>
+  </div>
+
+  <!-- P24 技巧1 出错 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 01 / 12</div>
+    <div class="slide-heading">看不懂报错？<br>这样处理</div>
+    <div class="caption" style="margin-bottom:16px">第一次遇到报错，几乎所有人都慌。其实不用。</div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num">STEP 01</span><div class="step-text"><strong>不要自己看报错</strong><br>直接把报错信息复制给它，说：「这是什么问题，怎么解决？」</div></div>
+      <div class="step-item"><span class="step-num">STEP 02</span><div class="step-text"><strong>让它自己 debug</strong><br>说：「你帮我找找哪里出了问题，然后修复它。」</div></div>
+      <div class="step-item"><span class="step-num">STEP 03</span><div class="step-text"><strong>如果反复修不好</strong><br>新开一个对话，重新描述你要做的事，从头来过。对话太长，它已经「绕进去」了。</div></div>
+      <div class="step-item"><span class="step-num">STEP 04</span><div class="step-text"><strong>截图发给其他 AI 排查</strong><br>把报错截图丢给 ChatGPT / Gemini 问原因，多一个视角，往往能找到盲点。</div></div>
+    </div>
+  </div>
+
+  <!-- P25 技巧2 Token -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 02 / 12</div>
+    <div class="slide-heading">为什么越聊越贵？<br>怎么省钱？</div>
+    <div class="block" style="margin-top:0">
+      <div class="block-title">什么是 Context 窗口？</div>
+      <div class="block-body">每次对话，它能「记住」的内容是有上限的。对话越长，处理的内容越多，花费越高，超出上限后会开始「忘事」。</div>
+    </div>
+    <div class="divider"></div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num">省钱 01</span><div class="step-text">任务完成后开新对话，不要一个对话聊到底</div></div>
+      <div class="step-item"><span class="step-num">省钱 02</span><div class="step-text">用 CLAUDE.md 存背景，让它不用靠对话记住项目信息</div></div>
+      <div class="step-item"><span class="step-num">省钱 03</span><div class="step-text">复杂任务用 Plan Mode，先规划，避免走弯路反复修改</div></div>
+    </div>
+  </div>
+
+  <!-- P26 技巧3 语音 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 03 / 12</div>
+    <div class="slide-heading">说比打快<br>减少表达摩擦</div>
+    <div class="slide-body" style="margin-bottom:20px">
+      你的想法在脑子里是流动的。打字的速度跟不上思维的速度。<br>
+      用语音输入，把你想要的一口气说出来——<span class="hl">比打字快3倍，而且更自然。</span>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">最适合用语音的场景</div>
+        <div class="col-body">描述需求<br>解释背景<br>遇到问题时口述现象</div>
+      </div>
+      <div>
+        <div class="col-label">工具推荐</div>
+        <div class="col-body">Mac 系统自带语音输入<br>Typeless</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P27 技巧4 CLAUDE.md -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 04 / 12</div>
+    <div class="slide-heading">CC 的灵魂：CLAUDE.md<br><span style="font-size:28px;font-weight:600;color:#4a5568;">让它永远记住你是谁、在做什么</span></div>
+    <div class="slide-body" style="margin-bottom:16px">
+      每次开新对话，它对你的项目背景一无所知。<br>
+      <span class="hl">CLAUDE.md 解决这个问题</span>：写好之后，它每次启动都会读。
+    </div>
+    <div class="block" style="margin-bottom:16px;margin-top:0">
+      <div class="block-body">
+        <span class="hl">README.md</span> 是写给人读的 &nbsp;·&nbsp;
+        <span class="hl">CLAUDE.md</span> 是写给 AI 读的<br>
+        两个文件，镜像关系
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">写什么进去？</div>
+        <div class="col-body">这个项目是做什么的<br>技术栈是什么<br>有哪些约定和规则<br>你希望它以什么风格工作</div>
+      </div>
+      <div>
+        <div class="col-label">效果</div>
+        <div class="col-body" style="color:#1a3a6b;font-weight:500">不用每次都重新介绍自己<br>打开就能接着上次进度继续干</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P28 技巧5 Plan Mode -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 05 / 12</div>
+    <div class="slide-heading">Plan Mode<br>动手之前一起想清楚</div>
+    <div class="slide-body" style="margin-bottom:16px">
+      直接让它动手，往往改着改着就走偏了。Plan Mode 让它先把计划列出来给你看。
+    </div>
+    <div class="block">
+      <div class="block-title">怎么用</div>
+      <div class="block-body">
+        方式一：输入 <span class="hl">/plan</span> 启动 Plan Mode，直接进入规划状态<br>
+        方式二：在需求前加：「<span class="hl">先不要写代码，列一个执行计划给我看。</span>」<br>
+        确认计划没问题，再说：「好，开始执行。」
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="two-col">
+      <div><div class="col-label">你看计划的时间</div><div class="col-body" style="color:#1a3a6b;font-weight:600;font-size:20px">几秒钟</div></div>
+      <div><div class="col-label">它走弯路的代价</div><div class="col-body">可能要花你几十分钟来回修</div></div>
+    </div>
+  </div>
+
+  <!-- P29 技巧6 权限 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 06 / 12</div>
+    <div class="slide-heading">权限 &amp; 安全意识</div>
+    <div class="slide-body" style="margin-bottom:16px">
+      每次 CC 要执行操作，它会弹出确认——你有三个选择：
+    </div>
+    <div class="step-list" style="margin-bottom:16px">
+      <div class="step-item"><span class="step-num">选项 1</span><div class="step-text"><strong>Yes</strong> &nbsp;·&nbsp; 这次允许</div></div>
+      <div class="step-item"><span class="step-num">选项 2</span><div class="step-text"><strong>Yes, don't ask again</strong> &nbsp;·&nbsp; 永久允许这类操作</div></div>
+      <div class="step-item"><span class="step-num">选项 3</span><div class="step-text"><strong>No</strong> &nbsp;·&nbsp; 这次拒绝</div></div>
+    </div>
+    <div class="block">
+      <div class="block-title">⚠️ 危险模式：bypassPermissions</div>
+      <div class="block-body">跳过所有权限确认，CC 直接执行任何操作。<br>
+      别名：<span class="hl">--dangerously-skip-permissions</span>（YOLO 模式）<br>
+      <span style="color:#c0392b;font-weight:600;">只在隔离的容器或虚拟机里用，绝不用在你的主电脑上。</span></div>
+    </div>
+  </div>
+
+  <!-- P30 技巧7 Git -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 07 / 12</div>
+    <div class="slide-heading">Git &amp; Commit<br>后悔药，每次大改前先存档</div>
+    <div class="two-col" style="margin-bottom:16px">
+      <div>
+        <div class="col-label">什么是 Git？</div>
+        <div class="col-body">给你的代码拍「快照」<br>随时可以回到任何历史版本</div>
+      </div>
+      <div>
+        <div class="col-label">为什么 Claude Code 特别需要？</div>
+        <div class="col-body">AI 一次改动可能动十几个文件<br>改出问题，没有 Git 很难还原</div>
+      </div>
+    </div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num" style="min-width:60px">存档</span><div class="step-text">「git 一下」/ 「帮我把现在的进度 commit，备注是 [你做了什么]」</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:60px">还原</span><div class="step-text">「帮我还原到上一次存档的状态」</div></div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">习惯：每次让它做大改动之前，先 commit 一次。</div>
+  </div>
+
+  <!-- P31 技巧8 搜一搜 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 08 / 12</div>
+    <div class="slide-heading">不要重复造轮子<br>先问有没有现成的</div>
+    <div class="slide-body" style="margin-bottom:16px">
+      你想做的东西，大概率已经有人做过了。在让它从头写之前，先问一句：
+    </div>
+    <div class="code-block">「我想做 [你的需求]，有没有现成的库或工具可以直接用？」</div>
+    <div class="step-list" style="margin-top:16px">
+      <div class="step-item"><span class="step-num">好处 01</span><div class="step-text">现成的方案经过验证，更稳定</div></div>
+      <div class="step-item"><span class="step-num">好处 02</span><div class="step-text">不用从零写，省时间省 Token</div></div>
+      <div class="step-item"><span class="step-num">好处 03</span><div class="step-text">这是真正的程序员思维：先找，再造</div></div>
+    </div>
+  </div>
+
+  <!-- P32 技巧9 MCP -->
+  <!-- P32 技巧9 Skill & Tool -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 09 / 12</div>
+    <div class="slide-heading">Skill &amp; Tool：扩展它的能力边界</div>
+    <div class="slide-body" style="margin-bottom:16px">
+      Claude Code 的能力不是固定的。Skill 和 Tool 让你可以给它安装新的「技能包」。
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">Skill</div>
+        <div class="col-body">预设好的工作流，一句话触发。<br>比如：/deep-research 帮我研究 XX 话题</div>
+      </div>
+      <div>
+        <div class="col-label">Tool</div>
+        <div class="col-body">让它可以使用的具体工具<br>比如搜索、代码执行、文件操作</div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:20px;text-align:left">先用好内置功能。有了「这件事如果能自动化就好了」的场景，再来探索社区里有没有现成的 Skill。</div>
+  </div>
+
+  <!-- P33 技巧10 MCP -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 10 / 12</div>
+    <div class="slide-heading">MCP：接入外部服务<br>让它连接你的世界</div>
+    <div class="slide-body" style="margin-bottom:16px">MCP（Model Context Protocol）让 Claude Code 可以连接外部工具和服务。</div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num" style="min-width:100px">操控浏览器</span><div class="step-text">让它帮你自动填表、抓取数据</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:100px">连接数据库</span><div class="step-text">直接读写数据，不用手动导出</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:100px">接入 Notion</span><div class="step-text">让它直接操作你的工作文档</div></div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">建议：有了基础使用经验再来碰这个。先用好基本功能，MCP 是锦上添花。</div>
+  </div>
+
+  <!-- P34 技巧11 Hook -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 11 / 12</div>
+    <div class="slide-heading">Hook：设定触发条件<br>让它自动运行</div>
+    <div class="slide-body" style="margin-bottom:16px">Hook 让你可以设定：<span class="hl">「当某件事发生时，自动执行某个操作。」</span></div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num" style="min-width:140px">每次保存文件后</span><div class="step-text">自动运行代码检查</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:140px">每次对话结束后</span><div class="step-text">自动把摘要写入笔记</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:140px">每次提交代码前</span><div class="step-text">自动做格式整理</div></div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">进阶功能。用熟了基本操作，有了「要是每次自动做就好了」的感受，再来设置。</div>
+  </div>
+
+  <!-- P35 技巧12 插件生态 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 技巧 12 / 12</div>
+    <div class="slide-heading">现成的工具<br>直接用</div>
+    <div class="slide-body" style="margin-bottom:16px">
+      Claude Code 有活跃的社区生态。很多人已经做好了各种场景的 Skill、Hook、MCP 配置，开源分享。
+    </div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num" style="min-width:80px">GitHub</span><div class="step-text">搜索 awesome-claude-code</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:80px">官方文档</span><div class="step-text">Claude Code 官方文档的 Extensions 页面</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:80px">社区</span><div class="step-text">Reddit 的 r/ClaudeAI</div></div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">用现成的，比自己从头配快得多。</div>
+  </div>
+
+  <!-- 第5章封面 -->
+  <div class="slide">
+    <div class="chapter-num">PART  05</div>
+    <div class="chapter-title">2个项目<br>手把手实战跟练</div>
+    <div class="sub-title">选一个，跟我一起从零做完</div>
+  </div>
+
+  <!-- P37 实战介绍 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 05 · 选你的项目</div>
+    <div class="slide-heading">两个项目<br>选一个跟我做</div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">项目一 &nbsp;·&nbsp; 难度 ★☆☆</div>
+        <div class="col-body" style="font-size:17px;font-weight:600;color:#111827;margin-bottom:8px">零到壹：30分钟做出第一个小游戏</div>
+        <div class="col-body">适合：完全零基础<br>你会做出：一个可以在浏览器里玩的贪吃蛇游戏</div>
+      </div>
+      <div>
+        <div class="col-label">项目二 &nbsp;·&nbsp; 难度 ★★☆</div>
+        <div class="col-body" style="font-size:17px;font-weight:600;color:#111827;margin-bottom:8px">搭一个属于你的自动化系统</div>
+        <div class="col-body">适合：有明确的重复性工作想解决<br>你会做出：一个真实帮你省时间的脚本</div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:20px;text-align:left">两个项目覆盖的知识点是一样的，选你更有感觉的那个。</div>
+  </div>
+
+  <!-- P38 实战一 贪吃蛇 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 05 · 实战一</div>
+    <div class="slide-heading">零到壹<br>30分钟做出第一个小游戏</div>
+    <div class="flow-row">
+      <div class="flow-step"><div class="flow-box">诊断</div><div class="flow-note">让 AI 帮你<br>搞清楚要做什么</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">提需求</div><div class="flow-note">用一句话<br>描述目标</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">Plan Mode</div><div class="flow-note">先列计划<br>你来确认</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">执行</div><div class="flow-note">它写代码<br>你看运行</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">报错处理</div><div class="flow-note">遇到问题<br>让它 debug</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box end">完成！</div><div class="flow-note">打开浏览器<br>开始玩</div></div>
+    </div>
+    <div class="caption" style="margin-top:20px;text-align:left">跟完这个流程，你已经掌握了 Claude Code 的核心使用方法。</div>
+  </div>
+
+  <!-- P39 实战二 自动化 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 05 · 实战二</div>
+    <div class="slide-heading">搭一个属于你自己的<br>自动化系统</div>
+    <div class="flow-row">
+      <div class="flow-step"><div class="flow-box">找痛点</div><div class="flow-note">让 AI 采访你<br>找出最重复的事</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">设计流程</div><div class="flow-note">把手动步骤<br>一步步列出来</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">执行</div><div class="flow-note">它把流程<br>变成脚本</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">调试</div><div class="flow-note">跑一遍<br>看哪里不对</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box end">上线！</div><div class="flow-note">设定触发<br>让它真正跑起来</div></div>
+    </div>
+    <div class="step-list" style="margin-top:20px">
+      <div class="step-item"><span class="step-num" style="min-width:100px">你会学到的</span><div class="step-text">如何把模糊需求变成具体指令 &nbsp;·&nbsp; 如何用 Git 保护进度 &nbsp;·&nbsp; 如何在真实环境里 debug</div></div>
+    </div>
+  </div>
+
+  <!-- P40 结尾 -->
+  <div class="slide">
+    <div class="label">Miss 发行人 · 大白话讲 AI</div>
+    <div class="accent-bar"></div>
+    <div class="main-title">恭喜你<br>迈出了这一步</div>
+    <div class="sub-title" style="margin-top:4px">会用 AI 的人，不会被 AI 替代。</div>
+    <div class="sub-title">你刚刚成为了其中一个。</div>
+    <div class="caption" style="margin-top:20px">
+      接下来不需要学完所有东西——<br>
+      带着一个真实的问题，打开 Claude Code，开始做。<br>
+      做着做着，你就会了。
+    </div>
+    <div class="sub-title" style="margin-top:24px;color:#1a3a6b;font-weight:700;">祝你 Claude Code 愉快 🎉</div>
+  </div>
+
+</div>
+
+<nav class="nav">
+  <button id="prev" disabled>←</button>
+  <span class="counter" id="counter">1 / 39</span>
+  <button id="next">→</button>
+</nav>
+<div class="hint">← → 键翻页</div>
+
+<script>
+
+  // 标题旁加小图标（跳过有图的页面 no-icon）
+  document.querySelectorAll('.slide-heading').forEach(heading => {
+    if (heading.closest('.no-icon')) return;
+    const icon = document.createElement('img');
+    icon.src = 'logo-cc.png';
+    icon.className = 'title-icon';
+    heading.style.display = 'flex';
+    heading.style.alignItems = 'center';
+    heading.insertBefore(icon, heading.firstChild);
+  });
+
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let cur = 0;
+
+  function go(n) {
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total - 1, n));
+    slides[cur].classList.add('active');
+    document.getElementById('counter').textContent = (cur+1) + ' / ' + total;
+    document.getElementById('prev').disabled = cur === 0;
+    document.getElementById('next').disabled = cur === total - 1;
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(cur-1));
+  document.getElementById('next').addEventListener('click', () => go(cur+1));
+  document.addEventListener('keydown', e => {
+    if (e.key==='ArrowRight'||e.key==='ArrowDown') go(cur+1);
+    if (e.key==='ArrowLeft' ||e.key==='ArrowUp')   go(cur-1);
+  });
+</script>
+</body>
+</html>
