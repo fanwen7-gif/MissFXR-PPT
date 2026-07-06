@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>常用的 60 个 AI 术语</title>
+<title>一次性搞懂 AI 新闻热词</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -35,8 +35,6 @@
     transition: opacity 0.3s ease;
   }
   .slide.active { opacity: 1; pointer-events: all; }
-
-  /* ── 通用文字 ── */
   .label {
     font-size: 12px;
     letter-spacing: 0.3em;
@@ -45,10 +43,10 @@
     margin-bottom: 22px;
   }
   .main-title {
-    font-size: 68px;
+    font-size: 58px;
     font-weight: 700;
     color: #111827;
-    line-height: 1.15;
+    line-height: 1.12;
     margin-bottom: 24px;
   }
   .sub-title {
@@ -63,20 +61,19 @@
     line-height: 1.7;
   }
   .accent-bar {
-    width: 40px; height: 4px;
+    width: 40px;
+    height: 4px;
     background: #1a3a6b;
     border-radius: 2px;
     margin: 0 auto 28px;
   }
-
-  /* ── 封面词云 ── */
   .cover-terms {
     display: flex;
     flex-wrap: wrap;
     gap: 10px 14px;
     justify-content: center;
     margin-top: 32px;
-    max-width: 600px;
+    max-width: 650px;
   }
   .cover-term {
     font-size: 13px;
@@ -87,21 +84,19 @@
     border: 1px solid #b0c4dc;
     letter-spacing: 0.02em;
   }
-
-  /* ── 全景页 ── */
   .overview-grid {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
-    max-width: 800px;
+    max-width: 810px;
     text-align: left;
   }
   .overview-row {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 12px 18px;
+    padding: 14px 18px;
     border-radius: 10px;
     background: #fff;
     border: 1px solid #dde3ee;
@@ -110,11 +105,12 @@
     font-size: 11px;
     letter-spacing: 0.2em;
     font-weight: 700;
-    min-width: 100px;
+    min-width: 98px;
     flex-shrink: 0;
   }
   .ov-dot {
-    width: 8px; height: 8px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     flex-shrink: 0;
   }
@@ -122,7 +118,7 @@
     font-size: 15px;
     font-weight: 600;
     color: #111827;
-    min-width: 72px;
+    min-width: 86px;
     flex-shrink: 0;
   }
   .ov-tags {
@@ -143,37 +139,21 @@
     color: #aab0be;
     flex-shrink: 0;
   }
-
-  /* 全景色系 */
   .ov-lv1 { color: #3a5a8a; }
   .ov-lv1 .ov-dot { background: #7aa3cc; }
   .ov-lv1 .ov-tag { background: #e8eef7; border-color: #b0c4dc; color: #3a5a8a; }
-
   .ov-lv2 { color: #3B6D11; }
   .ov-lv2 .ov-dot { background: #639922; }
   .ov-lv2 .ov-tag { background: #EAF3DE; border-color: #97C459; color: #3B6D11; }
-
   .ov-lv3 { color: #1a3a6b; }
   .ov-lv3 .ov-dot { background: #4a86c8; }
   .ov-lv3 .ov-tag { background: #E6F1FB; border-color: #85B7EB; color: #1a3a6b; }
-
   .ov-lv4 { color: #534AB7; }
   .ov-lv4 .ov-dot { background: #7c6fbf; }
   .ov-lv4 .ov-tag { background: #EEEDFE; border-color: #AFA9EC; color: #534AB7; }
-
   .ov-lv5 { color: #854F0B; }
   .ov-lv5 .ov-dot { background: #EF9F27; }
   .ov-lv5 .ov-tag { background: #FAEEDA; border-color: #FAC775; color: #854F0B; }
-
-  .ov-lv6 { color: #993C1D; }
-  .ov-lv6 .ov-dot { background: #D85A30; }
-  .ov-lv6 .ov-tag { background: #FAECE7; border-color: #F0997B; color: #993C1D; }
-
-  .ov-lv7 { color: #A32D2D; }
-  .ov-lv7 .ov-dot { background: #E24B4A; }
-  .ov-lv7 .ov-tag { background: #FCEBEB; border-color: #F09595; color: #A32D2D; }
-
-  /* ── 章节封面页 ── */
   .slide.chapter {
     background: #EEF2F8;
     justify-content: center;
@@ -189,7 +169,7 @@
     text-transform: uppercase;
   }
   .ch-title {
-    font-size: 96px;
+    font-size: 92px;
     font-weight: 700;
     color: #111827;
     line-height: 1.0;
@@ -200,7 +180,7 @@
     font-size: 20px;
     color: #4a5568;
     line-height: 1.6;
-    max-width: 480px;
+    max-width: 540px;
     margin-bottom: 28px;
   }
   .ch-groups {
@@ -216,42 +196,27 @@
     background: rgba(26,58,107,0.08);
     border: 1px solid rgba(26,58,107,0.15);
   }
-  /* 每个 lv 的主题色 */
   .ch-lv1 .ch-part, .ch-lv1 .ch-badge { color: #3a5a8a; }
   .ch-lv1 .ch-badge { background: #e8eef7; border-color: #b0c4dc; }
   .ch-lv1 .ch-bar { background: #7aa3cc; }
-
   .ch-lv2 .ch-part, .ch-lv2 .ch-badge { color: #3B6D11; }
   .ch-lv2 .ch-badge { background: #EAF3DE; border-color: #97C459; }
   .ch-lv2 .ch-bar { background: #639922; }
-
   .ch-lv3 .ch-part, .ch-lv3 .ch-badge { color: #1a3a6b; }
   .ch-lv3 .ch-badge { background: #E6F1FB; border-color: #85B7EB; }
   .ch-lv3 .ch-bar { background: #4a86c8; }
-
   .ch-lv4 .ch-part, .ch-lv4 .ch-badge { color: #534AB7; }
   .ch-lv4 .ch-badge { background: #EEEDFE; border-color: #AFA9EC; }
   .ch-lv4 .ch-bar { background: #7c6fbf; }
-
   .ch-lv5 .ch-part, .ch-lv5 .ch-badge { color: #854F0B; }
   .ch-lv5 .ch-badge { background: #FAEEDA; border-color: #FAC775; }
   .ch-lv5 .ch-bar { background: #EF9F27; }
-
-  .ch-lv6 .ch-part, .ch-lv6 .ch-badge { color: #993C1D; }
-  .ch-lv6 .ch-badge { background: #FAECE7; border-color: #F0997B; }
-  .ch-lv6 .ch-bar { background: #D85A30; }
-
-  .ch-lv7 .ch-part, .ch-lv7 .ch-badge { color: #A32D2D; }
-  .ch-lv7 .ch-badge { background: #FCEBEB; border-color: #F09595; }
-  .ch-lv7 .ch-bar { background: #E24B4A; }
-
   .ch-bar {
-    width: 48px; height: 5px;
+    width: 48px;
+    height: 5px;
     border-radius: 3px;
     margin-bottom: 28px;
   }
-
-  /* 章节封面右侧装饰大数字 */
   .ch-deco {
     position: absolute;
     right: 80px;
@@ -265,8 +230,6 @@
     pointer-events: none;
     user-select: none;
   }
-
-  /* ── 卡片内页 ── */
   .slide.cards {
     justify-content: flex-start;
     align-items: stretch;
@@ -297,16 +260,80 @@
     color: #aab0be;
     margin-left: auto;
   }
-
   .cards-grid {
     display: grid;
     gap: 12px;
     flex: 1;
   }
+  .algo-layout {
+    display: grid;
+    grid-template-columns: 0.95fr 1.25fr;
+    gap: 18px;
+    flex: 1;
+  }
+  .algo-intro,
+  .algo-panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px 26px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .algo-intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .algo-kicker {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #7b8aa3;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .algo-intro-title {
+    font-size: 34px;
+    line-height: 1.2;
+    color: #111827;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .algo-intro-desc {
+    font-size: 18px;
+    color: #4b5563;
+    line-height: 1.8;
+  }
+  .algo-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .algo-item {
+    display: grid;
+    grid-template-columns: 118px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding: 14px 0;
+    border-bottom: 1px solid #e8edf5;
+  }
+  .algo-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .algo-item-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a3a6b;
+    line-height: 1.5;
+  }
+  .algo-item-text {
+    font-size: 16px;
+    color: #334155;
+    line-height: 1.8;
+  }
   .cards-grid.cols-2 { grid-template-columns: 1fr 1fr; }
   .cards-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
-
-  /* 5cakes 风格卡片 */
   .card {
     background: #fff;
     border-radius: 12px;
@@ -315,7 +342,6 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     display: flex;
     flex-direction: column;
-    gap: 0;
   }
   .card-num {
     font-size: 10px;
@@ -326,10 +352,10 @@
     text-transform: uppercase;
   }
   .card-term {
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 700;
     color: #111827;
-    line-height: 1.15;
+    line-height: 1.18;
     margin-bottom: 2px;
   }
   .card-term-en {
@@ -338,35 +364,93 @@
     font-style: italic;
     margin-bottom: 10px;
   }
+  .term-with-tip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hover-tip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #eef4fb;
+    border: 1px solid #c9d8eb;
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .hover-tip-emoji {
+    font-size: 13px;
+    line-height: 1;
+  }
+  .hover-tip-box {
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 340px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #d8e3f1;
+    color: #1f2937;
+    box-shadow: 0 18px 42px rgba(15,23,42,0.16);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s ease;
+    z-index: 30;
+    text-align: left;
+  }
+  .hover-tip:hover .hover-tip-box {
+    opacity: 1;
+    visibility: visible;
+  }
+  .hover-tip-title {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #1a3a6b;
+    line-height: 1.5;
+  }
+  .hover-tip-line {
+    display: block;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #475569;
+    margin-bottom: 8px;
+    padding: 7px 9px;
+    border-radius: 10px;
+    background: #f8fbff;
+    border: 1px solid #e5edf8;
+  }
+  .hover-tip-line:last-child { margin-bottom: 0; }
+  .hover-tip-line strong {
+    color: #111827;
+  }
   .card-desc {
-    font-size: 13.5px;
+    font-size: 14px;
     color: #4b5563;
-    line-height: 1.8;
+    line-height: 1.85;
     flex: 1;
   }
+  .cols-2 .card-desc { max-width: 330px; }
   .card-desc .hl { color: #1a3a6b; font-weight: 600; }
-
-  /* lv 色调只用在 num 上，不用色条 */
   .lv1 .card-num { color: #7aa3cc; }
   .lv2 .card-num { color: #639922; }
   .lv3 .card-num { color: #4a86c8; }
   .lv4 .card-num { color: #7c6fbf; }
   .lv5 .card-num { color: #EF9F27; }
-  .lv6 .card-num { color: #D85A30; }
-  .lv7 .card-num { color: #E24B4A; }
-
   .lv1.cards .cards-lv { color: #3a5a8a; }
   .lv2.cards .cards-lv { color: #3B6D11; }
   .lv3.cards .cards-lv { color: #1a3a6b; }
   .lv4.cards .cards-lv { color: #534AB7; }
   .lv5.cards .cards-lv { color: #854F0B; }
-  .lv6.cards .cards-lv { color: #993C1D; }
-  .lv7.cards .cards-lv { color: #A32D2D; }
-
-  /* ── 封底 ── */
-  .slide.ending {
-    background: #1a3a6b;
-  }
+  .slide.ending { background: #1a3a6b; }
   .ending .label { color: rgba(255,255,255,0.4); }
   .ending .accent-bar { background: rgba(255,255,255,0.25); }
   .ending-title {
@@ -374,14 +458,14 @@
     font-weight: 700;
     color: #fff;
     line-height: 1.3;
-    max-width: 680px;
+    max-width: 720px;
     margin-bottom: 24px;
   }
   .ending-sub {
     font-size: 18px;
     color: rgba(255,255,255,0.6);
     line-height: 1.85;
-    max-width: 580px;
+    max-width: 620px;
     text-align: center;
   }
   .ending-note {
@@ -390,8 +474,6 @@
     color: rgba(255,255,255,0.22);
     letter-spacing: 0.12em;
   }
-
-  /* ── 导航 ── */
   .nav {
     position: fixed;
     bottom: 28px;
@@ -433,818 +515,583 @@
 <body>
 <div class="deck">
 
-<!-- ═══════════════════════════════════════════
-  P1  封面
-════════════════════════════════════════════ -->
 <div class="slide active">
   <div class="label">Miss 发行人 · 大白话讲AI</div>
   <div class="accent-bar"></div>
-  <div class="main-title">AI 入门<br>必会 60 词</div>
-  <div class="sub-title">AI 入门词典</div>
-  <div class="caption">一口气从零进阶</div>
+  <div class="main-title">一次性搞懂<br>AI 新闻热词</div>
+  <div class="sub-title">不懂技术，也能秒懂 AI 新闻</div>
   <div class="cover-terms">
-    <span class="cover-term">Prompt</span>
-    <span class="cover-term">LLM</span>
-    <span class="cover-term">Token</span>
     <span class="cover-term">Agent</span>
-    <span class="cover-term">API</span>
-    <span class="cover-term">微调</span>
-    <span class="cover-term">MCP</span>
-    <span class="cover-term">幻觉</span>
-    <span class="cover-term">涌现</span>
+    <span class="cover-term">Vibe Coding</span>
+    <span class="cover-term">Token</span>
     <span class="cover-term">GPU</span>
-    <span class="cover-term">推理</span>
-    <span class="cover-term">神经网络</span>
+    <span class="cover-term">DeepSeek</span>
+    <span class="cover-term">Codex</span>
+    <span class="cover-term">Claude Code</span>
+    <span class="cover-term">国产大模型</span>
+    <span class="cover-term">AI监管</span>
+    <span class="cover-term">上下文窗口</span>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-  P2  全景总览
-════════════════════════════════════════════ -->
-<div class="slide" style="padding: 0 64px; justify-content:center; align-items:stretch; text-align:left;">
+<div class="slide" style="padding:0 64px; justify-content:center; align-items:stretch; text-align:left;">
   <div style="display:flex; align-items:baseline; gap:14px; margin-bottom:24px; flex-shrink:0;">
     <span style="font-size:11px; letter-spacing:0.35em; color:#8a96aa; font-weight:600; text-transform:uppercase;">全景</span>
-    <span style="font-size:22px; font-weight:700; color:#111827;">7 个难度层级 · 60 个词</span>
+    <span style="font-size:22px; font-weight:700; color:#111827;">5 个栏目 · 39 个词</span>
   </div>
-  <div class="overview-grid" style="gap:11px;">
+  <div class="overview-grid">
     <div class="overview-row ov-lv1">
-      <span class="ov-lv ov-lv1">Lv 1 · 零基础</span>
+      <span class="ov-lv ov-lv1">一 · 基础</span>
       <span class="ov-dot"></span>
-      <span class="ov-name">产品界面</span>
+      <span class="ov-name">基础概念</span>
       <div class="ov-tags">
         <span class="ov-tag">AI</span>
-        <span class="ov-tag">Chatbox</span>
-        <span class="ov-tag">输入/输出</span>
-        <span class="ov-tag">联网搜索</span>
-        <span class="ov-tag">对话历史</span>
+        <span class="ov-tag">大模型</span>
+        <span class="ov-tag">Token</span>
+        <span class="ov-tag">Prompt</span>
+        <span class="ov-tag">AGI</span>
+        <span class="ov-tag">+4</span>
       </div>
-      <span class="ov-count">5 词</span>
+      <span class="ov-count">9 词</span>
     </div>
     <div class="overview-row ov-lv2">
-      <span class="ov-lv ov-lv2">Lv 2 · 入门</span>
+      <span class="ov-lv ov-lv2">二 · 新热点</span>
       <span class="ov-dot"></span>
-      <span class="ov-name">使用基础</span>
+      <span class="ov-name">突然火的词</span>
       <div class="ov-tags">
-        <span class="ov-tag">Prompt</span>
-        <span class="ov-tag">模型</span>
-        <span class="ov-tag">AIGC</span>
-        <span class="ov-tag">上下文</span>
+        <span class="ov-tag">Agent</span>
+        <span class="ov-tag">Vibe Coding</span>
         <span class="ov-tag">多模态</span>
-        <span class="ov-tag">+6</span>
+        <span class="ov-tag">文生视频</span>
+        <span class="ov-tag">DeepSeek爆火</span>
+        <span class="ov-tag">+1</span>
       </div>
-      <span class="ov-count">11 词</span>
+      <span class="ov-count">6 词</span>
     </div>
     <div class="overview-row ov-lv3">
-      <span class="ov-lv ov-lv3">Lv 3 · 入门+</span>
+      <span class="ov-lv ov-lv3">三 · 行业词</span>
       <span class="ov-dot"></span>
-      <span class="ov-name">模型理解</span>
+      <span class="ov-name">新闻语境</span>
       <div class="ov-tags">
-        <span class="ov-tag">LLM</span>
-        <span class="ov-tag">幻觉</span>
-        <span class="ov-tag">Token</span>
-        <span class="ov-tag">上下文窗口</span>
-        <span class="ov-tag">+7</span>
+        <span class="ov-tag">参数量</span>
+        <span class="ov-tag">Benchmark</span>
+        <span class="ov-tag">算力</span>
+        <span class="ov-tag">芯片禁令</span>
+        <span class="ov-tag">GPU</span>
+        <span class="ov-tag">AI监管</span>
+        <span class="ov-tag">+5</span>
       </div>
       <span class="ov-count">11 词</span>
     </div>
     <div class="overview-row ov-lv4">
-      <span class="ov-lv ov-lv4">Lv 4 · 中级</span>
+      <span class="ov-lv ov-lv4">四 · 公司</span>
       <span class="ov-dot"></span>
-      <span class="ov-name">AI概念·自动化</span>
+      <span class="ov-name">主要玩家</span>
       <div class="ov-tags">
-        <span class="ov-tag">AGI</span>
-        <span class="ov-tag">涌现</span>
-        <span class="ov-tag">Agent</span>
-        <span class="ov-tag">Vibe Coding</span>
-        <span class="ov-tag">API</span>
-        <span class="ov-tag">+7</span>
-      </div>
-      <span class="ov-count">12 词</span>
-    </div>
-    <div class="overview-row ov-lv5">
-      <span class="ov-lv ov-lv5">Lv 5 · 进阶</span>
-      <span class="ov-dot"></span>
-      <span class="ov-name">开发·AI工程</span>
-      <div class="ov-tags">
-        <span class="ov-tag">GitHub</span>
-        <span class="ov-tag">MCP</span>
-        <span class="ov-tag">微调</span>
-        <span class="ov-tag">Debug</span>
-        <span class="ov-tag">+6</span>
+        <span class="ov-tag">OpenAI</span>
+        <span class="ov-tag">Anthropic</span>
+        <span class="ov-tag">NVIDIA</span>
+        <span class="ov-tag">DeepSeek</span>
+        <span class="ov-tag">月之暗面</span>
+        <span class="ov-tag">阿里千问</span>
+        <span class="ov-tag">+4</span>
       </div>
       <span class="ov-count">10 词</span>
     </div>
-    <div class="overview-row ov-lv6">
-      <span class="ov-lv ov-lv6">Lv 6 · 开发者</span>
+    <div class="overview-row ov-lv5">
+      <span class="ov-lv ov-lv5">五 · 产品</span>
       <span class="ov-dot"></span>
-      <span class="ov-name">系统·部署</span>
+      <span class="ov-name">常见工具</span>
       <div class="ov-tags">
-        <span class="ov-tag">Terminal</span>
-        <span class="ov-tag">环境变量</span>
-        <span class="ov-tag">服务器</span>
-        <span class="ov-tag">部署</span>
-        <span class="ov-tag">+3</span>
+        <span class="ov-tag">ChatGPT / Codex</span>
+        <span class="ov-tag">Claude / Claude Code</span>
       </div>
-      <span class="ov-count">7 词</span>
-    </div>
-    <div class="overview-row ov-lv7">
-      <span class="ov-lv ov-lv7">Lv 7 · 专家</span>
-      <span class="ov-dot"></span>
-      <span class="ov-name">模型原理·硬件</span>
-      <div class="ov-tags">
-        <span class="ov-tag">神经网络</span>
-        <span class="ov-tag">蒸馏</span>
-        <span class="ov-tag">GPU</span>
-        <span class="ov-tag">算力</span>
-        <span class="ov-tag">+7</span>
-      </div>
-      <span class="ov-count">11 词</span>
+      <span class="ov-count">2 词</span>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-  P3  Lv1 章节封面
-════════════════════════════════════════════ -->
 <div class="slide chapter ch-lv1">
   <div class="ch-deco">1</div>
-  <div class="ch-part">Lv 1 · 零基础</div>
+  <div class="ch-part">一 · 基础概念</div>
   <div class="ch-bar"></div>
-  <div class="ch-title">产品界面</div>
-  <div class="ch-sub">打开AI工具第一眼看到的东西，都在这里。</div>
+  <div class="ch-title">基础概念</div>
+  <div class="ch-sub">先把AI新闻里最常出现的底层词听明白。</div>
   <div class="ch-groups">
-    <span class="ch-badge">AI</span>
-    <span class="ch-badge">Chatbox</span>
-    <span class="ch-badge">输入 / 输出</span>
-    <span class="ch-badge">联网搜索</span>
-    <span class="ch-badge">对话历史</span>
+    <span class="ch-badge">人工智能</span>
+    <span class="ch-badge">大模型</span>
+    <span class="ch-badge">Token</span>
+    <span class="ch-badge">提示词</span>
+    <span class="ch-badge">AGI</span>
+    <span class="ch-badge">+4</span>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-  P4  Lv1 · 产品界面 5词
-════════════════════════════════════════════ -->
 <div class="slide cards lv1">
   <div class="cards-header">
-    <span class="cards-lv">Lv 1 · 零基础</span>
+    <span class="cards-lv">一 · 基础概念</span>
     <span class="cards-sep">/</span>
-    <span class="cards-group-name">产品界面</span>
-    <span class="cards-count">5 个词</span>
+    <span class="cards-group-name">底层认识</span>
+    <span class="cards-count">4 个词</span>
   </div>
-  <div class="cards-grid cols-3" style="grid-template-rows:1fr 1fr;">
+  <div class="cards-grid cols-2" style="grid-template-rows:1fr 1fr;">
     <div class="card lv1">
       <div class="card-num">No. 01</div>
-      <div class="card-term">AI</div>
-      <div class="card-desc">不是机器人，不是天网。就是<span class="hl">一套能理解你、回应你的软件</span>。你每天在用的聊天框背后，就是它。</div>
+      <div class="card-term">人工智能</div>
+      <div class="card-term-en">AI</div>
+      <div class="card-desc">不是机器人本身，而是<span class="hl">让机器能识别、理解、生成内容</span>的技术总称，也是AI新闻的主角。</div>
     </div>
     <div class="card lv1">
       <div class="card-num">No. 02</div>
-      <div class="card-term">Chatbox</div>
-      <div class="card-term-en">聊天框</div>
-      <div class="card-desc"><span class="hl">你跟AI说话的地方</span>。左边是它说的，右边是你说的——就这么简单。</div>
+      <div class="card-term">大模型</div>
+      <div class="card-desc">指参数规模很大的AI模型，<span class="hl">读过海量资料</span>，能写字、看图、推理和对话，是聊天工具的底座。</div>
     </div>
     <div class="card lv1">
       <div class="card-num">No. 03</div>
-      <div class="card-term">输入 / 输出</div>
-      <div class="card-desc">你打进去的是输入，AI回给你的是输出。<span class="hl">垃圾进，垃圾出</span>——问得好，答得才好。</div>
+      <div class="card-term term-with-tip">
+        <span>算法</span>
+        <span class="hover-tip">
+          <span class="hover-tip-emoji">👆</span>
+          <span class="hover-tip-box">
+            <span class="hover-tip-title">电脑不会自己思考，只会严格执行算法</span>
+            <span class="hover-tip-line"><strong>排序算法：</strong>把杂乱数字从小到大排好。</span>
+            <span class="hover-tip-line"><strong>推荐算法：</strong>短视频 APP 根据你的浏览记录推你爱看的内容。</span>
+            <span class="hover-tip-line"><strong>搜索算法：</strong>百度 / 谷歌输入关键词，快速匹配相关网页。</span>
+            <span class="hover-tip-line"><strong>AI 大模型算法：</strong>负责理解文字、生成回答、推理逻辑。</span>
+          </span>
+        </span>
+      </div>
+      <div class="card-term-en">Algorithm</div>
+      <div class="card-desc">可以理解成解决问题的步骤和规则，<span class="hl">AI靠算法从数据里学规律</span>，再用来判断和生成。</div>
     </div>
     <div class="card lv1">
       <div class="card-num">No. 04</div>
-      <div class="card-term">联网搜索</div>
-      <div class="card-desc">AI默认只知道训练截止前的事，<span class="hl">开启这个，它才能查今天的新闻</span>。找最新信息时记得开。</div>
+      <div class="card-term">训练模型</div>
+      <div class="card-term-en">Model Training</div>
+      <div class="card-desc">把大量数据喂给模型，让它<span class="hl">反复调整参数</span>，慢慢学会回答、分类和生成内容。</div>
     </div>
+  </div>
+</div>
+
+<div class="slide cards lv1">
+  <div class="cards-header">
+    <span class="cards-lv">一 · 基础概念</span>
+    <span class="cards-sep">/</span>
+    <span class="cards-group-name">使用常识</span>
+    <span class="cards-count">5 个词</span>
+  </div>
+  <div class="cards-grid cols-2" style="grid-template-rows:1fr 1fr 1fr;">
     <div class="card lv1">
       <div class="card-num">No. 05</div>
-      <div class="card-term">对话历史</div>
-      <div class="card-desc">你们聊过的记录。<span class="hl">新开一个对话，AI就忘了你是谁</span>——每次都是陌生人。</div>
+      <div class="card-term term-with-tip">
+        <span>Token</span>
+        <span class="hover-tip">
+          <span class="hover-tip-emoji">👆</span>
+          <span class="hover-tip-box">
+            <span class="hover-tip-title">Token 可以先理解成 AI 处理文字的最小单位</span>
+            <span class="hover-tip-line"><strong>简单示意：</strong>一句话不会整句丢给 AI，而会先被切成一个个 token 再处理。</span>
+            <span class="hover-tip-line"><strong>像“AI 的货币”：</strong>很多产品按 token 计费，所以字越多、输入输出越长，消耗通常越大。</span>
+            <span class="hover-tip-line"><strong>也是运算颗粒度：</strong>模型读问题、接上下文、往下生成，都是围绕 token 一步步完成的。</span>
+            <span class="hover-tip-line"><strong>影响上下文长度：</strong>一个模型能一次读多少内容，很多时候也是按 token 上限来算。</span>
+          </span>
+        </span>
+      </div>
+      <div class="card-desc">AI 不直接认识汉字和字母，而是先把文字切成一个个 <span class="hl">token 再计算</span>，它既是计费单位，也是模型运算基础。</div>
+    </div>
+    <div class="card lv1">
+      <div class="card-num">No. 06</div>
+      <div class="card-term">提示词</div>
+      <div class="card-term-en">Prompt</div>
+      <div class="card-desc">你给AI的任务说明。<span class="hl">目标、背景、格式越清楚</span>，AI越容易给出靠谱结果，也更少跑偏。</div>
+    </div>
+    <div class="card lv1">
+      <div class="card-num">No. 07</div>
+      <div class="card-term">幻觉</div>
+      <div class="card-term-en">Hallucination</div>
+      <div class="card-desc">AI把错信息说得很像真的。<span class="hl">遇到数字、新闻、引用时</span>，一定要再核实，别直接当事实。</div>
+    </div>
+    <div class="card lv1">
+      <div class="card-num">No. 08</div>
+      <div class="card-term">开源 vs 闭源</div>
+      <div class="card-term-en">Open Source vs Closed Source</div>
+      <div class="card-desc">开源允许外界下载研究甚至改造，<span class="hl">闭源只开放使用</span>，不公开核心细节，商业模式也不同。</div>
+    </div>
+    <div class="card lv1">
+      <div class="card-num">No. 09</div>
+      <div class="card-term term-with-tip">
+        <span>AGI</span>
+        <span class="hover-tip">
+          <span class="hover-tip-emoji">👆</span>
+          <span class="hover-tip-box">
+            <span class="hover-tip-title">人类追求 AGI 的几个里程碑</span>
+            <span class="hover-tip-line"><strong>1. 图灵时期：</strong>20 世纪 40 到 50 年代，图灵开始设想“机器是否能思考”，为 AI 奠定思想起点。</span>
+            <span class="hover-tip-line"><strong>2. 达特茅斯会议：</strong>1956 年，约翰·麦卡锡等人正式提出 “Artificial Intelligence”，AI 成为独立研究领域。</span>
+            <span class="hover-tip-line"><strong>3. 专家系统阶段：</strong>20 世纪 70 到 80 年代，研究者尝试把人的知识写成规则，让机器像专家一样解决具体问题。</span>
+            <span class="hover-tip-line"><strong>4. 深度学习突破：</strong>2010 年代，辛顿等人推动神经网络复兴，语音、图像和识别能力明显提升。</span>
+            <span class="hover-tip-line"><strong>5. 大模型时代：</strong>2020 年代，大模型展现出对话、写作、推理和多任务能力，AGI 再次成为全球焦点。</span>
+          </span>
+        </span>
+      </div>
+      <div class="card-term-en">通用人工智能</div>
+      <div class="card-desc">指能像人一样跨领域学习和解决问题的AI，<span class="hl">目前还未真正实现</span>，但几乎所有巨头都在追。</div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-  P5  Lv2 章节封面
-════════════════════════════════════════════ -->
 <div class="slide chapter ch-lv2">
   <div class="ch-deco">2</div>
-  <div class="ch-part">Lv 2 · 入门</div>
+  <div class="ch-part">二 · 最近突然火的词</div>
   <div class="ch-bar"></div>
-  <div class="ch-title">使用基础<br>对话机制</div>
-  <div class="ch-sub">开始真正用AI，这些词你必须懂。</div>
+  <div class="ch-title">最近突然<br>火的词</div>
+  <div class="ch-sub">这几个词决定了最近AI新闻为什么总让人觉得变化很快。</div>
   <div class="ch-groups">
-    <span class="ch-badge">Prompt</span>
-    <span class="ch-badge">模型</span>
-    <span class="ch-badge">AIGC</span>
-    <span class="ch-badge">上下文</span>
-    <span class="ch-badge">记忆</span>
+    <span class="ch-badge">Agent</span>
+    <span class="ch-badge">Vibe Coding</span>
     <span class="ch-badge">多模态</span>
-    <span class="ch-badge">+5</span>
+    <span class="ch-badge">文生视频</span>
+    <span class="ch-badge">DeepSeek现象</span>
+    <span class="ch-badge">+1</span>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-  P6  Lv2 · 使用基础 6词
-════════════════════════════════════════════ -->
 <div class="slide cards lv2">
   <div class="cards-header">
-    <span class="cards-lv">Lv 2 · 入门</span>
+    <span class="cards-lv">二 · 最近突然火的词</span>
     <span class="cards-sep">/</span>
-    <span class="cards-group-name">使用基础</span>
+    <span class="cards-group-name">新热点</span>
     <span class="cards-count">6 个词</span>
   </div>
   <div class="cards-grid cols-3">
     <div class="card lv2">
-      <div class="card-num">No. 06</div>
-      <div class="card-term">Prompt</div>
-      <div class="card-term-en">提示词</div>
-      <div class="card-desc">你给AI的"任务说明"。<span class="hl">说得越清楚，做得越准</span>。好的Prompt是AI时代最被低估的技能。</div>
-    </div>
-    <div class="card lv2">
-      <div class="card-num">No. 07</div>
-      <div class="card-term">模型</div>
-      <div class="card-desc">AI背后真正干活的那个"大脑"。<span class="hl">Claude、GPT、Gemini都是不同的模型</span>，能力和性格各不一样。</div>
-    </div>
-    <div class="card lv2">
-      <div class="card-num">No. 08</div>
-      <div class="card-term">模型版本</div>
-      <div class="card-desc">同一家公司的模型也分新旧。<span class="hl">数字越大越新，能力通常也越强</span>——Claude 4比Claude 3聪明，就这个意思。</div>
-    </div>
-    <div class="card lv2">
-      <div class="card-num">No. 09</div>
-      <div class="card-term">模型类型</div>
-      <div class="card-desc">有的专处理文字，有的能看图，有的生成视频。<span class="hl">不同任务用不同模型</span>，不是一个打天下。</div>
-    </div>
-    <div class="card lv2">
       <div class="card-num">No. 10</div>
-      <div class="card-term">AIGC</div>
-      <div class="card-desc">AI生成内容。<span class="hl">以前只有人能创作的东西，现在AI也能生成</span>。这一轮AI热潮的起点。</div>
+      <div class="card-term">智能体</div>
+      <div class="card-term-en">Agent</div>
+      <div class="card-desc">不只聊天，还能<span class="hl">自主拆解复杂目标、主动调用工具、多轮执行直到完成任务</span>。核心是一套规划 + 反思 + 工具调用的算法循环，像一个会执行的AI助手。</div>
     </div>
     <div class="card lv2">
       <div class="card-num">No. 11</div>
-      <div class="card-term">AI 应用</div>
-      <div class="card-desc">把AI能力包装成产品，直接解决问题的那一层。<span class="hl">你每天打开的对话框，就是AI应用</span>。</div>
+      <div class="card-term">Vibe Coding</div>
+      <div class="card-desc">靠自然语言和AI协作写代码，不必先精通语法，<span class="hl">关键是把需求说清楚</span>，再不断调试。</div>
     </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P7  Lv2 · 对话机制 5词
-════════════════════════════════════════════ -->
-<div class="slide cards lv2">
-  <div class="cards-header">
-    <span class="cards-lv">Lv 2 · 入门</span>
-    <span class="cards-sep">/</span>
-    <span class="cards-group-name">对话机制</span>
-    <span class="cards-count">5 个词</span>
-  </div>
-  <div class="cards-grid cols-3" style="grid-template-rows:1fr 1fr;">
     <div class="card lv2">
       <div class="card-num">No. 12</div>
-      <div class="card-term">上下文</div>
-      <div class="card-desc">这轮对话里你们说过的所有内容。<span class="hl">AI靠它理解你在说什么</span>——你越说越多，它越懂你。</div>
+      <div class="card-term">多模态</div>
+      <div class="card-term-en">Multimodal</div>
+      <div class="card-desc">AI不只处理文字，还能理解图片、声音、视频，<span class="hl">把多种信息放在一起判断</span>，更接近人的感知。</div>
     </div>
     <div class="card lv2">
       <div class="card-num">No. 13</div>
-      <div class="card-term">记忆</div>
-      <div class="card-desc">AI跨对话记住你信息的能力。<span class="hl">默认是没有的</span>——每次新对话都从零开始，除非产品专门做了这个功能。</div>
+      <div class="card-term">文生图 / AI绘画</div>
+      <div class="card-term-en">Text to Image</div>
+      <div class="card-desc">输入一句描述，AI生成对应图片。<span class="hl">适合海报、封面、分镜</span>和视觉草稿，能快速试风格。</div>
     </div>
     <div class="card lv2">
       <div class="card-num">No. 14</div>
-      <div class="card-term">知识库</div>
-      <div class="card-desc">你上传给AI的"参考资料"。<span class="hl">让它只在你提供的范围里回答</span>，不乱说，适合企业用。</div>
+      <div class="card-term">文生视频</div>
+      <div class="card-term-en">Text to Video</div>
+      <div class="card-desc">输入文字或图片，让AI生成短视频镜头，<span class="hl">是内容制作里增长最快</span>的方向，也最受创作者关注。</div>
     </div>
     <div class="card lv2">
       <div class="card-num">No. 15</div>
-      <div class="card-term">插件</div>
-      <div class="card-desc">给AI装上额外工具。装搜索插件，<span class="hl">它就能实时查网络</span>；装代码插件，它就能跑代码。</div>
-    </div>
-    <div class="card lv2">
-      <div class="card-num">No. 16</div>
-      <div class="card-term">多模态</div>
-      <div class="card-desc">AI从"只会聊天"变成"能看能听"。<span class="hl">同时理解文字、图片、声音</span>，更像真实的人。</div>
+      <div class="card-term">DeepSeek爆火</div>
+      <div class="card-desc">DeepSeek以低成本高表现出圈，让市场<span class="hl">重新关注国产模型</span>和开源路线，也改写行业预期。</div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-  P8  Lv3 章节封面
-════════════════════════════════════════════ -->
 <div class="slide chapter ch-lv3">
   <div class="ch-deco">3</div>
-  <div class="ch-part">Lv 3 · 入门+</div>
+  <div class="ch-part">三 · 新闻里的行业词</div>
   <div class="ch-bar"></div>
-  <div class="ch-title">模型理解<br>进阶使用</div>
-  <div class="ch-sub">你开始想知道AI怎么工作，并且想用得更好。</div>
+  <div class="ch-title">新闻里的<br>行业词</div>
+  <div class="ch-sub">看懂公司发布会、融资新闻和政策报道时最常遇到的术语。</div>
   <div class="ch-groups">
-    <span class="ch-badge">LLM</span>
-    <span class="ch-badge">幻觉</span>
-    <span class="ch-badge">Token</span>
-    <span class="ch-badge">System Prompt</span>
-    <span class="ch-badge">Temperature</span>
-    <span class="ch-badge">+6</span>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P9  Lv3 · 模型理解 5词
-════════════════════════════════════════════ -->
-<div class="slide cards lv3">
-  <div class="cards-header">
-    <span class="cards-lv">Lv 3 · 入门+</span>
-    <span class="cards-sep">/</span>
-    <span class="cards-group-name">模型理解</span>
-    <span class="cards-count">5 个词</span>
-  </div>
-  <div class="cards-grid cols-3" style="grid-template-rows:1fr 1fr;">
-    <div class="card lv3">
-      <div class="card-num">No. 17</div>
-      <div class="card-term">LLM</div>
-      <div class="card-term-en">大语言模型</div>
-      <div class="card-desc">Claude、GPT背后的技术本质。<span class="hl">吃进了海量文字，学会了语言规律</span>，所以才能和你对话。</div>
-    </div>
-    <div class="card lv3">
-      <div class="card-num">No. 18</div>
-      <div class="card-term">大模型</div>
-      <div class="card-desc">国内通用叫法，基本等于LLM。<span class="hl">"大"指参数多、能力强</span>——你在科技新闻里看到这个词，就是这意思。</div>
-    </div>
-    <div class="card lv3">
-      <div class="card-num">No. 19</div>
-      <div class="card-term">开源 / 闭源</div>
-      <div class="card-desc">开源是把代码公开，<span class="hl">谁都能下载、改造</span>。闭源只给你用，不给你看。Llama开源，Claude闭源。</div>
-    </div>
-    <div class="card lv3">
-      <div class="card-num">No. 20</div>
-      <div class="card-term">幻觉</div>
-      <div class="card-desc">AI一本正经说了一堆错话，<span class="hl">还不知道自己错了</span>。用AI查重要信息，一定要自己核实。</div>
-    </div>
-    <div class="card lv3">
-      <div class="card-num">No. 21</div>
-      <div class="card-term">预测下一个词</div>
-      <div class="card-desc">AI生成文字的底层机制——<span class="hl">每次只预测接下来最可能的词</span>，一个一个往下写。听起来简单，但就是这个涌现出了智能。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P10  Lv3 · 进阶使用 6词
-════════════════════════════════════════════ -->
-<div class="slide cards lv3">
-  <div class="cards-header">
-    <span class="cards-lv">Lv 3 · 入门+</span>
-    <span class="cards-sep">/</span>
-    <span class="cards-group-name">进阶使用</span>
-    <span class="cards-count">6 个词</span>
-  </div>
-  <div class="cards-grid cols-3">
-    <div class="card lv3">
-      <div class="card-num">No. 22</div>
-      <div class="card-term">System Prompt</div>
-      <div class="card-desc">产品方预设的"角色说明"，藏在对话框里。<span class="hl">你看不见，但它始终影响AI的风格</span>。</div>
-    </div>
-    <div class="card lv3">
-      <div class="card-num">No. 23</div>
-      <div class="card-term">Temperature</div>
-      <div class="card-desc">控制AI输出随机性的旋钮。<span class="hl">调低——更稳定；调高——更发散</span>。写作用高，做数据用低。</div>
-    </div>
-    <div class="card lv3">
-      <div class="card-num">No. 24</div>
-      <div class="card-term">Token</div>
-      <div class="card-desc">AI处理文字的最小单位，也是计费单位。<span class="hl">中文约每字1-2个Token</span>。模型越强，Token越贵。</div>
-    </div>
-    <div class="card lv3">
-      <div class="card-num">No. 25</div>
-      <div class="card-term">上下文窗口</div>
-      <div class="card-desc">AI每次对话能"看见"的最大范围，<span class="hl">超出这个范围的内容它就忘了</span>。窗口越大，能处理的文档越长。</div>
-    </div>
-    <div class="card lv3">
-      <div class="card-num">No. 26</div>
-      <div class="card-term">Markdown</div>
-      <div class="card-desc">用符号标记格式的写法。# 是标题，** 是加粗。<span class="hl">AI默认用Markdown回答你</span>，很多产品会自动渲染好。</div>
-    </div>
-    <div class="card lv3">
-      <div class="card-num">No. 27</div>
-      <div class="card-term">提示词工程</div>
-      <div class="card-desc">研究怎么问AI才能获得最好答案的学问。<span class="hl">模型越来越强，它的重要性在下降</span>——但基本功还是得有。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P11  Lv4 章节封面
-════════════════════════════════════════════ -->
-<div class="slide chapter ch-lv4">
-  <div class="ch-deco">4</div>
-  <div class="ch-part">Lv 4 · 中级</div>
-  <div class="ch-bar"></div>
-  <div class="ch-title">AI 概念<br>自动化 · 接入</div>
-  <div class="ch-sub">AI圈真正在聊的东西，开始变得有趣了。</div>
-  <div class="ch-groups">
-    <span class="ch-badge">AGI</span>
-    <span class="ch-badge">涌现</span>
-    <span class="ch-badge">Agent</span>
-    <span class="ch-badge">Vibe Coding</span>
-    <span class="ch-badge">API Key</span>
-    <span class="ch-badge">+7</span>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P12  Lv4 · AI概念 6词
-════════════════════════════════════════════ -->
-<div class="slide cards lv4">
-  <div class="cards-header">
-    <span class="cards-lv">Lv 4 · 中级</span>
-    <span class="cards-sep">/</span>
-    <span class="cards-group-name">AI 概念</span>
-    <span class="cards-count">6 个词</span>
-  </div>
-  <div class="cards-grid cols-3">
-    <div class="card lv4">
-      <div class="card-num">No. 28</div>
-      <div class="card-term">AGI</div>
-      <div class="card-term-en">通用人工智能</div>
-      <div class="card-desc">能做任何人类能做的智力任务的AI。<span class="hl">现在还没到，但硅谷所有人都在奔这个方向</span>。</div>
-    </div>
-    <div class="card lv4">
-      <div class="card-num">No. 29</div>
-      <div class="card-term">涌现</div>
-      <div class="card-desc">模型大到某个临界点，<span class="hl">突然会了一些没人教过的能力</span>。这是AI能力飞跃的核心秘密。</div>
-    </div>
-    <div class="card lv4">
-      <div class="card-num">No. 30</div>
-      <div class="card-term">深度思考</div>
-      <div class="card-desc">让AI在回答前先"想一想"，把推理过程显示出来。<span class="hl">时间长一点，答案准很多</span>。</div>
-    </div>
-    <div class="card lv4">
-      <div class="card-num">No. 31</div>
-      <div class="card-term">推理</div>
-      <div class="card-term-en">Reasoning</div>
-      <div class="card-desc">AI做逻辑分析、数学推导的能力。<span class="hl">推理能力强的模型，面对复杂问题不容易翻车</span>。</div>
-    </div>
-    <div class="card lv4">
-      <div class="card-num">No. 32</div>
-      <div class="card-term">To B / To C</div>
-      <div class="card-desc">To B卖给企业，客单价高、续费稳；To C卖给个人，<span class="hl">用户量大但很难让人持续付费</span>。</div>
-    </div>
-    <div class="card lv4">
-      <div class="card-num">No. 33</div>
-      <div class="card-term">AI Native</div>
-      <div class="card-desc">骨子里就是AI的产品——<span class="hl">不是给旧软件打补丁，而是从头用AI逻辑重新设计的</span>。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P13  Lv4 · 自动化+接入 6词
-════════════════════════════════════════════ -->
-<div class="slide cards lv4">
-  <div class="cards-header">
-    <span class="cards-lv">Lv 4 · 中级</span>
-    <span class="cards-sep">/</span>
-    <span class="cards-group-name">自动化 · 接入基础</span>
-    <span class="cards-count">6 个词</span>
-  </div>
-  <div class="cards-grid cols-3">
-    <div class="card lv4">
-      <div class="card-num">No. 34</div>
-      <div class="card-term">Agent</div>
-      <div class="card-term-en">智能体</div>
-      <div class="card-desc">聊天机器人是"嘴巴"，Agent是长了"手脚"的AI——<span class="hl">能自主拆解任务、调用工具、把事情做完</span>。</div>
-    </div>
-    <div class="card lv4">
-      <div class="card-num">No. 35</div>
-      <div class="card-term">工作流</div>
-      <div class="card-desc">把多个AI步骤串联成流水线。<span class="hl">A做完交给B，B做完交给C</span>——自动跑完全程，不用每次手动操作。</div>
-    </div>
-    <div class="card lv4">
-      <div class="card-num">No. 36</div>
-      <div class="card-term">Vibe Coding</div>
-      <div class="card-desc">不懂代码，靠跟AI聊天来做出产品。<span class="hl">门槛从"会编程"变成了"会表达"</span>。</div>
-    </div>
-    <div class="card lv4">
-      <div class="card-num">No. 37</div>
-      <div class="card-term">API</div>
-      <div class="card-term-en">应用程序接口</div>
-      <div class="card-desc">模型对外开放的"插座"——<span class="hl">开发者插进来，就能用上AI的能力</span>。大幅降低了做AI产品的门槛。</div>
-    </div>
-    <div class="card lv4">
-      <div class="card-num">No. 38</div>
-      <div class="card-term">API Key</div>
-      <div class="card-desc">调用API时证明"是你"的密码串。<span class="hl">泄露了别人就能用你的额度消费</span>——像银行卡密码一样保管。</div>
-    </div>
-    <div class="card lv4">
-      <div class="card-num">No. 39</div>
-      <div class="card-term">Error / 报错</div>
-      <div class="card-desc">代码或API出问题时的提示信息。<span class="hl">不要慌，把报错直接丢给AI</span>——大概率它知道怎么修。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P14  Lv5 章节封面
-════════════════════════════════════════════ -->
-<div class="slide chapter ch-lv5">
-  <div class="ch-deco">5</div>
-  <div class="ch-part">Lv 5 · 进阶</div>
-  <div class="ch-bar"></div>
-  <div class="ch-title">开发工具<br>AI 工程</div>
-  <div class="ch-sub">你开始动手做东西了。</div>
-  <div class="ch-groups">
-    <span class="ch-badge">GitHub</span>
-    <span class="ch-badge">HTML</span>
-    <span class="ch-badge">MCP</span>
-    <span class="ch-badge">微调</span>
-    <span class="ch-badge">Debug</span>
+    <span class="ch-badge">参数量</span>
+    <span class="ch-badge">上下文窗口</span>
+    <span class="ch-badge">算力</span>
+    <span class="ch-badge">GPU</span>
+    <span class="ch-badge">芯片禁令</span>
+    <span class="ch-badge">AI监管</span>
     <span class="ch-badge">+5</span>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-  P15  Lv5 · 开发工具 6词
-════════════════════════════════════════════ -->
-<div class="slide cards lv5">
+<div class="slide cards lv3">
   <div class="cards-header">
-    <span class="cards-lv">Lv 5 · 进阶</span>
+    <span class="cards-lv">三 · 新闻里的行业词</span>
     <span class="cards-sep">/</span>
-    <span class="cards-group-name">开发工具</span>
+    <span class="cards-group-name">模型指标</span>
     <span class="cards-count">6 个词</span>
   </div>
   <div class="cards-grid cols-3">
-    <div class="card lv5">
-      <div class="card-num">No. 40</div>
-      <div class="card-term">GitHub</div>
-      <div class="card-desc">程序员存放和协作代码的平台。<span class="hl">AI时代的开源圣地</span>——很多AI工具的源代码都在这里。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 16</div>
+      <div class="card-term term-with-tip">
+        <span>参数量</span>
+        <span class="hover-tip">
+          <span class="hover-tip-emoji">👆</span>
+          <span class="hover-tip-box">
+            <span class="hover-tip-title">同一句“今天心情很好”，大小模型差在哪</span>
+            <span class="hover-tip-line"><strong>先做什么：</strong>输入文字后，模型都会先转成 token，再交给多层参数去做语义计算，最后生成回复。</span>
+            <span class="hover-tip-line"><strong>小参数模型：</strong>更像只看懂字面意思，只知道“心情很好 = 开心”，但不太懂具体场景、细微情绪和适合延伸的生活联想。</span>
+            <span class="hover-tip-line"><strong>大参数模型：</strong>能联动更多情绪、场景、常识和表达风格，比如区分是放松、庆祝还是解脱后的开心，再给出更贴合的建议。</span>
+            <span class="hover-tip-line"><strong>所以结果会变：</strong>小模型常常回复简单、重复、容易跑偏；大模型通常更连贯、更细腻，也更能一口气写出多种风格。</span>
+          </span>
+        </span>
+      </div>
+      <div class="card-term-en">Parameters</div>
+      <div class="card-desc">模型内部可调数值的数量。<span class="hl">通常越多容量越大</span>，但能力不只看这个数字，还看训练质量。</div>
     </div>
-    <div class="card lv5">
-      <div class="card-num">No. 41</div>
-      <div class="card-term">HTML</div>
-      <div class="card-desc">网页的骨架语言。<span class="hl">你现在看到的这个PPT，就是HTML</span>——学会基础，Vibe Coding做出来的东西你才看得懂。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 17</div>
+      <div class="card-term">上下文窗口</div>
+      <div class="card-term-en">Context Window</div>
+      <div class="card-desc">AI一次能读进对话和资料的最大范围。<span class="hl">窗口越大</span>，越适合处理长文档和复杂任务。</div>
     </div>
-    <div class="card lv5">
-      <div class="card-num">No. 42</div>
-      <div class="card-term">前端</div>
-      <div class="card-desc">你眼睛能直接看到的那部分——页面、按钮、动画。<span class="hl">AI写代码最擅长的就是前端</span>。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 18</div>
+      <div class="card-term term-with-tip">
+        <span>基准测试</span>
+        <span class="hover-tip">
+          <span class="hover-tip-emoji">👆</span>
+          <span class="hover-tip-box">
+            <span class="hover-tip-title">常看的一些测试</span>
+            <span class="hover-tip-line"><strong>MMLU：</strong>综合学科大考，常拿来看模型通识能力。</span>
+            <span class="hover-tip-line"><strong>GPQA：</strong>高难理科题，常看科学推理够不够强。</span>
+            <span class="hover-tip-line"><strong>GSM8K / MATH / AIME：</strong>常见数学测试，用来看模型的算数和数学推理。</span>
+            <span class="hover-tip-line"><strong>MMMU：</strong>多模态测试，看模型能不能结合图片一起理解和推理。</span>
+            <span class="hover-tip-line"><strong>SWE-bench：</strong>代码实战测试，看模型能不能真的改 bug、修项目。</span>
+          </span>
+        </span>
+      </div>
+      <div class="card-term-en">Benchmark</div>
+      <div class="card-desc">用统一题目给模型考试，方便横向比较，<span class="hl">可作参考</span>，但分数不等于真实体验。</div>
     </div>
-    <div class="card lv5">
-      <div class="card-num">No. 43</div>
-      <div class="card-term">后端</div>
-      <div class="card-desc">藏在页面背后处理逻辑、存储数据的部分。<span class="hl">你看不见，但它决定了产品能不能用</span>。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 19</div>
+      <div class="card-term term-with-tip">
+        <span>大模型排行榜</span>
+        <span class="hover-tip">
+          <span class="hover-tip-emoji">👆</span>
+          <span class="hover-tip-box">
+            <span class="hover-tip-title">大家一般会从两类信息看模型</span>
+            <span class="hover-tip-line"><strong>1. 热度和采用率：</strong>看谁被更多人真正调用和使用，比如开发者常会参考 OpenRouter 的使用热度。</span>
+            <span class="hover-tip-line"><strong>2. 常看榜单和网站：</strong>Arena 看真人盲测，Artificial Analysis 看能力 + 速度 + 成本，Hugging Face 常看开源榜，SuperCLUE 常看中文榜。</span>
+            <span class="hover-tip-line"><strong>要注意：</strong>排行榜、调用量、专项测试看的不是同一件事，不能只看一个名次下结论。</span>
+          </span>
+        </span>
+      </div>
+      <div class="card-term-en">Leaderboard</div>
+      <div class="card-desc">把不同模型按测试分数排序。<span class="hl">可作参考</span>，但要结合价格、速度和具体使用场景。</div>
     </div>
-    <div class="card lv5">
-      <div class="card-num">No. 44</div>
-      <div class="card-term">Debug / 调试</div>
-      <div class="card-desc">找出代码里哪里出问题了，然后修掉。<span class="hl">Vibe Coding时AI会帮你Debug</span>——但你得能看懂它在改什么。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 20</div>
+      <div class="card-term">订阅制</div>
+      <div class="card-term-en">Free / Pro / Ultra</div>
+      <div class="card-desc">AI产品常分免费、Pro、Ultra等档位，<span class="hl">付费越高</span>通常额度更多，模型也更强。</div>
     </div>
-    <div class="card lv5">
-      <div class="card-num">No. 45</div>
-      <div class="card-term">测试 / Test</div>
-      <div class="card-desc">验证代码有没有按预期工作。<span class="hl">上线前一定要测</span>——AI写的代码也会有bug，你不测你不知道。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 21</div>
+      <div class="card-term term-with-tip">
+        <span>算力</span>
+        <span class="hover-tip">
+          <span class="hover-tip-emoji">👆</span>
+          <span class="hover-tip-box">
+            <span class="hover-tip-title">算力不只是“有没有 GPU”</span>
+            <span class="hover-tip-line"><strong>单卡质量：</strong>看一张 GPU 自己强不强，比如芯片代际、显存大小、显存带宽、张量计算能力。同样 1 张卡，H100 和普通消费卡差很多。</span>
+            <span class="hover-tip-line"><strong>卡的数量：</strong>一张强卡和一千张强卡不是一个量级。训练大模型常说“堆卡”，本质是在堆总算力。</span>
+            <span class="hover-tip-line"><strong>集群协同能力：</strong>不是把很多卡堆在一起就行，还要看卡和卡之间传数据快不快、机器之间联网顺不顺，不然很多时间都在“等别人”。</span>
+            <span class="hover-tip-line"><strong>利用率：</strong>理论算力不等于实际算力。如果程序、数据、通信没配好，GPU 会闲着，所以还要看能不能真正吃满。</span>
+          </span>
+        </span>
+      </div>
+      <div class="card-term-en">Compute</div>
+      <div class="card-desc">训练和运行AI所需的计算能力。<span class="hl">它决定模型能做多大</span>、响应能有多快，也是竞争焦点。</div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-  P16  Lv5 · AI工程 4词
-════════════════════════════════════════════ -->
-<div class="slide cards lv5">
+<div class="slide cards lv3">
   <div class="cards-header">
-    <span class="cards-lv">Lv 5 · 进阶</span>
+    <span class="cards-lv">三 · 新闻里的行业词</span>
     <span class="cards-sep">/</span>
-    <span class="cards-group-name">AI 工程</span>
-    <span class="cards-count">4 个词</span>
-  </div>
-  <div class="cards-grid cols-2" style="grid-template-rows:1fr 1fr;">
-    <div class="card lv5">
-      <div class="card-num">No. 46</div>
-      <div class="card-term">MCP</div>
-      <div class="card-term-en">Model Context Protocol</div>
-      <div class="card-desc" style="font-size:14px;">让AI能主动调用外部工具的标准协议。连日历、文件、数据库……<span class="hl">Agent有了MCP才真的能"动手"</span>。</div>
-    </div>
-    <div class="card lv5">
-      <div class="card-num">No. 47</div>
-      <div class="card-term">Skill</div>
-      <div class="card-term-en">技能 / 插件</div>
-      <div class="card-desc" style="font-size:14px;">给AI工具装上专用能力包。<span class="hl">Claude Code靠Skill扩展出各种专项能力</span>——写PPT、做设计、管内容。</div>
-    </div>
-    <div class="card lv5">
-      <div class="card-num">No. 48</div>
-      <div class="card-term">微调</div>
-      <div class="card-term-en">Fine-tuning</div>
-      <div class="card-desc" style="font-size:14px;">在已有模型基础上，<span class="hl">用你的专业数据继续训练</span>，让它更懂你的行业。成本远低于从头训练。</div>
-    </div>
-    <div class="card lv5">
-      <div class="card-num">No. 49</div>
-      <div class="card-term">训练</div>
-      <div class="card-desc" style="font-size:14px;">让模型从海量数据中学习规律的过程。<span class="hl">训练一个顶级模型要烧掉几亿美元</span>——这也是为什么大模型只有少数几家能做。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P17  Lv6 章节封面
-════════════════════════════════════════════ -->
-<div class="slide chapter ch-lv6">
-  <div class="ch-deco">6</div>
-  <div class="ch-part">Lv 6 · 开发者</div>
-  <div class="ch-bar"></div>
-  <div class="ch-title">系统操作<br>部署运维</div>
-  <div class="ch-sub">你开始和电脑的底层打交道了。</div>
-  <div class="ch-groups">
-    <span class="ch-badge">Terminal</span>
-    <span class="ch-badge">环境变量</span>
-    <span class="ch-badge">服务器</span>
-    <span class="ch-badge">部署</span>
-    <span class="ch-badge">端口</span>
-    <span class="ch-badge">+2</span>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P18  Lv6 · 系统操作 4词
-════════════════════════════════════════════ -->
-<div class="slide cards lv6">
-  <div class="cards-header">
-    <span class="cards-lv">Lv 6 · 开发者</span>
-    <span class="cards-sep">/</span>
-    <span class="cards-group-name">系统操作</span>
-    <span class="cards-count">4 个词</span>
-  </div>
-  <div class="cards-grid cols-2" style="grid-template-rows:1fr 1fr;">
-    <div class="card lv6">
-      <div class="card-num">No. 50</div>
-      <div class="card-term">Terminal / 终端</div>
-      <div class="card-desc" style="font-size:14px;">用命令行直接跟电脑对话的黑色窗口。<span class="hl">Claude Code就在这里运行</span>——打字就能控制一切。</div>
-    </div>
-    <div class="card lv6">
-      <div class="card-num">No. 51</div>
-      <div class="card-term">命令</div>
-      <div class="card-desc" style="font-size:14px;">在终端里输入的操作指令。<span class="hl">npm install、git push、python run.py</span>——每行命令都是一个具体动作。</div>
-    </div>
-    <div class="card lv6">
-      <div class="card-num">No. 52</div>
-      <div class="card-term">路径</div>
-      <div class="card-desc" style="font-size:14px;">文件在电脑里的地址。<span class="hl">搞清楚路径，能省掉Vibe Coding 90%的报错</span>。</div>
-    </div>
-    <div class="card lv6">
-      <div class="card-num">No. 53</div>
-      <div class="card-term">环境变量 / .env</div>
-      <div class="card-desc" style="font-size:14px;">把API Key存在隐藏文件里，<span class="hl">不让它出现在代码里被人看见</span>。.env文件是标准做法。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P19  Lv6 · 部署运维 3词
-════════════════════════════════════════════ -->
-<div class="slide cards lv6">
-  <div class="cards-header">
-    <span class="cards-lv">Lv 6 · 开发者</span>
-    <span class="cards-sep">/</span>
-    <span class="cards-group-name">部署运维</span>
-    <span class="cards-count">3 个词</span>
-  </div>
-  <div class="cards-grid cols-3" style="grid-template-rows:auto; align-content:start;">
-    <div class="card lv6" style="padding:28px 24px;">
-      <div class="card-num">No. 54</div>
-      <div class="card-term">服务器</div>
-      <div class="card-desc" style="font-size:14px; line-height:1.85;">24小时在线帮你运行程序、存储数据的远程电脑。<span class="hl">你的产品要让别人访问，就必须部署到服务器上</span>。</div>
-    </div>
-    <div class="card lv6" style="padding:28px 24px;">
-      <div class="card-num">No. 55</div>
-      <div class="card-term">部署</div>
-      <div class="card-desc" style="font-size:14px; line-height:1.85;">把本地做好的东西放到服务器上，<span class="hl">让全世界都能访问</span>的过程。Vibe Coding做完产品，部署是最后一步。</div>
-    </div>
-    <div class="card lv6" style="padding:28px 24px;">
-      <div class="card-num">No. 56</div>
-      <div class="card-term">端口</div>
-      <div class="card-desc" style="font-size:14px; line-height:1.85;">服务器上不同服务的"门牌号"。<span class="hl">localhost:3000里的3000就是端口</span>——本地开发时经常看见它。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P20  Lv7 章节封面
-════════════════════════════════════════════ -->
-<div class="slide chapter ch-lv7">
-  <div class="ch-deco">7</div>
-  <div class="ch-part">Lv 7 · 专家</div>
-  <div class="ch-bar"></div>
-  <div class="ch-title">模型原理<br>硬件基础设施</div>
-  <div class="ch-sub">这是AI的"发动机"和"基建"，烧钱最凶的地方。</div>
-  <div class="ch-groups">
-    <span class="ch-badge">神经网络</span>
-    <span class="ch-badge">蒸馏</span>
-    <span class="ch-badge">GPU</span>
-    <span class="ch-badge">算力</span>
-    <span class="ch-badge">数据中心</span>
-    <span class="ch-badge">+6</span>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P21  Lv7 · 模型原理 6词
-════════════════════════════════════════════ -->
-<div class="slide cards lv7">
-  <div class="cards-header">
-    <span class="cards-lv">Lv 7 · 专家</span>
-    <span class="cards-sep">/</span>
-    <span class="cards-group-name">模型原理</span>
-    <span class="cards-count">6 个词</span>
-  </div>
-  <div class="cards-grid cols-3">
-    <div class="card lv7">
-      <div class="card-num">No. 57</div>
-      <div class="card-term">神经网络</div>
-      <div class="card-desc">模仿人类大脑神经元设计的算法结构。<span class="hl">现代AI的底层骨架</span>——LLM就是一个超级巨大的神经网络。</div>
-    </div>
-    <div class="card lv7">
-      <div class="card-num">No. 58</div>
-      <div class="card-term">参数</div>
-      <div class="card-desc">神经网络里通过训练调整的数值。<span class="hl">参数越多，模型越大、通常也越聪明</span>——也越贵。</div>
-    </div>
-    <div class="card lv7">
-      <div class="card-num">No. 59</div>
-      <div class="card-term">AI 三要素</div>
-      <div class="card-desc">算法、数据、算力——<span class="hl">缺一个都做不出好模型</span>。算法是设计，数据是原料，算力是工厂。</div>
-    </div>
-    <div class="card lv7">
-      <div class="card-num">No. 60</div>
-      <div class="card-term">预训练</div>
-      <div class="card-desc">在海量互联网文字上学习语言规律的阶段。<span class="hl">烧钱最多、时间最长</span>——顶级模型的预训练要花好几个月和几亿美元。</div>
-    </div>
-    <div class="card lv7">
-      <div class="card-num">No. 61</div>
-      <div class="card-term">后训练</div>
-      <div class="card-desc">预训练之后，让模型学会"好好说话"的阶段。<span class="hl">通过人类反馈让它更对齐、更有用</span>——决定了模型的"性格"。</div>
-    </div>
-    <div class="card lv7">
-      <div class="card-num">No. 62</div>
-      <div class="card-term">蒸馏</div>
-      <div class="card-desc">用大模型的输出来训练小模型，<span class="hl">让小模型学到大模型的部分能力</span>。DeepSeek靠这个大幅压缩成本，震动了整个行业。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-  P22  Lv7 · 硬件基础设施 4词
-════════════════════════════════════════════ -->
-<div class="slide cards lv7">
-  <div class="cards-header">
-    <span class="cards-lv">Lv 7 · 专家</span>
-    <span class="cards-sep">/</span>
-    <span class="cards-group-name">硬件 / 基础设施</span>
+    <span class="cards-group-name">硬件与政策</span>
     <span class="cards-count">5 个词</span>
   </div>
   <div class="cards-grid cols-3" style="grid-template-rows:1fr 1fr;">
-    <div class="card lv7">
-      <div class="card-num">No. 63</div>
-      <div class="card-term">GPU / AI 芯片</div>
-      <div class="card-desc">AI计算的"发动机"。英伟达的GPU主导了这个市场，<span class="hl">黄仁勋靠这个成了AI时代最有权势的人之一</span>。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 22</div>
+      <div class="card-term">GPU</div>
+      <div class="card-desc">适合并行计算的芯片，是<span class="hl">训练大模型的主力硬件</span>，英伟达因此成为AI时代核心玩家。</div>
     </div>
-    <div class="card lv7">
-      <div class="card-num">No. 64</div>
-      <div class="card-term">算力</div>
-      <div class="card-desc">AI训练和推理的计算能力。<span class="hl">算力就是AI时代的石油</span>——谁有更多GPU，谁就能训练更强的模型。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 23</div>
+      <div class="card-term">芯片禁令</div>
+      <div class="card-term-en">Chip Export Controls</div>
+      <div class="card-desc">对高端AI芯片出口和购买的限制，会影响企业<span class="hl">获取算力和训练能力</span>，也是国际竞争焦点。</div>
     </div>
-    <div class="card lv7">
-      <div class="card-num">No. 65</div>
-      <div class="card-term">数据中心</div>
-      <div class="card-desc">放满GPU服务器的巨型机房。<span class="hl">训练顶级模型需要几万张GPU同时运转</span>——这是为什么AI公司要烧这么多钱。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 24</div>
+      <div class="card-term">国产大模型</div>
+      <div class="card-desc">中国公司研发的大模型，重点解决<span class="hl">中文场景、合规要求</span>和本地部署需求，适合国内业务。</div>
     </div>
-    <div class="card lv7">
-      <div class="card-num">No. 66</div>
-      <div class="card-term">推理</div>
-      <div class="card-term-en">Inference</div>
-      <div class="card-desc">训练完成后，模型实际回答你问题时消耗算力的过程。<span class="hl">用户越多，推理成本越高</span>——AI公司最大的运营开销。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 25</div>
+      <div class="card-term">具身智能 / 人形机器人</div>
+      <div class="card-term-en">Embodied AI</div>
+      <div class="card-desc">让AI进入机器人身体，能感知环境、移动操作，<span class="hl">把智能带到现实世界</span>，是AI落地的重要方向。</div>
     </div>
-    <div class="card lv7">
-      <div class="card-num">No. 67</div>
-      <div class="card-term">能源 / 电力</div>
-      <div class="card-desc">AI的隐形天花板。数据中心极度耗电，<span class="hl">电力供应正在成为限制AI扩张的瓶颈</span>——比芯片还难解决。</div>
+    <div class="card lv3">
+      <div class="card-num">No. 26</div>
+      <div class="card-term">AI监管</div>
+      <div class="card-term-en">AI Regulation</div>
+      <div class="card-desc">政府和平台制定规则，约束<span class="hl">数据、安全、版权</span>和内容风险，让AI可控使用，减少误伤。</div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-  P23  封底
-════════════════════════════════════════════ -->
+<div class="slide chapter ch-lv4">
+  <div class="ch-deco">4</div>
+  <div class="ch-part">四 · 公司</div>
+  <div class="ch-bar"></div>
+  <div class="ch-title">公司</div>
+  <div class="ch-sub">新闻里反复出现的国内外AI公司，一页页认清楚。</div>
+  <div class="ch-groups">
+    <span class="ch-badge">OpenAI</span>
+    <span class="ch-badge">Anthropic</span>
+    <span class="ch-badge">NVIDIA</span>
+    <span class="ch-badge">DeepSeek</span>
+    <span class="ch-badge">月之暗面</span>
+    <span class="ch-badge">阿里 / 通义</span>
+    <span class="ch-badge">百度 / 文心</span>
+    <span class="ch-badge">+5</span>
+  </div>
+</div>
+
+<div class="slide cards lv4">
+  <div class="cards-header">
+    <span class="cards-lv">四 · 公司</span>
+    <span class="cards-sep">/</span>
+    <span class="cards-group-name">国际玩家</span>
+    <span class="cards-count">5 个词</span>
+  </div>
+  <div class="cards-grid cols-3">
+    <div class="card lv4">
+      <div class="card-num">No. 27</div>
+      <div class="card-term">OpenAI</div>
+      <div class="card-desc">ChatGPT和Sora背后的公司，是<span class="hl">本轮生成式AI浪潮</span>的关键推动者，影响行业节奏。</div>
+    </div>
+    <div class="card lv4">
+      <div class="card-num">No. 28</div>
+      <div class="card-term">Anthropic</div>
+      <div class="card-desc">Claude背后的公司，强调<span class="hl">安全、可控和长文本能力</span>，在专业用户和企业市场口碑很高。</div>
+    </div>
+    <div class="card lv4">
+      <div class="card-num">No. 29</div>
+      <div class="card-term">Google DeepMind</div>
+      <div class="card-desc">谷歌的AI核心团队，既做Gemini，也做<span class="hl">科研型模型和前沿AI研究</span>，技术积累很深。</div>
+    </div>
+    <div class="card lv4">
+      <div class="card-num">No. 30</div>
+      <div class="card-term">英伟达</div>
+      <div class="card-term-en">NVIDIA</div>
+      <div class="card-desc">提供AI训练最关键的GPU和软件生态，是<span class="hl">AI基础设施里的超级受益者</span>，新闻常提到。</div>
+    </div>
+    <div class="card lv4">
+      <div class="card-num">No. 31</div>
+      <div class="card-term">DeepSeek</div>
+      <div class="card-desc">中国AI公司，因高性价比模型和开源策略出圈，推动行业<span class="hl">重新计算成本</span>，也带火国产模型。</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide cards lv4">
+  <div class="cards-header">
+    <span class="cards-lv">四 · 公司</span>
+    <span class="cards-sep">/</span>
+    <span class="cards-group-name">中国玩家</span>
+    <span class="cards-count">5 个词</span>
+  </div>
+  <div class="cards-grid cols-3">
+    <div class="card lv4">
+      <div class="card-num">No. 33</div>
+      <div class="card-term">智谱</div>
+      <div class="card-desc">清华系背景的大模型公司，GLM系列覆盖<span class="hl">聊天、代码、多模态</span>和企业应用，政企场景常见。</div>
+    </div>
+    <div class="card lv4">
+      <div class="card-num">No. 34</div>
+      <div class="card-term">MiniMax</div>
+      <div class="card-desc">中国AI创业公司，旗下有海螺视频等产品，擅长<span class="hl">多模态和娱乐内容场景</span>，增长很快。</div>
+    </div>
+    <div class="card lv4">
+      <div class="card-num">No. 35</div>
+      <div class="card-term">月之暗面</div>
+      <div class="card-desc">Kimi背后的公司，因长文本阅读能力走红，常被用来<span class="hl">读报告和整理资料</span>，用户认知很强。</div>
+    </div>
+    <div class="card lv4">
+      <div class="card-num">No. 36</div>
+      <div class="card-term">字节 / 豆包</div>
+      <div class="card-desc">字节跳动的AI产品线，豆包面向大众使用，背后也服务<span class="hl">创作和办公场景</span>，生态很广。</div>
+    </div>
+    <div class="card lv4">
+      <div class="card-num">No. 37</div>
+      <div class="card-term">阿里 / 千问</div>
+      <div class="card-desc">阿里的大模型体系，通义千问服务<span class="hl">个人、企业和云上开发者</span>，也支持多场景落地。</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide chapter ch-lv5">
+  <div class="ch-deco">5</div>
+  <div class="ch-part">五 · 产品</div>
+  <div class="ch-bar"></div>
+  <div class="ch-title">产品</div>
+  <div class="ch-sub">这些不是抽象公司名，而是你真的会打开来用的AI工具。</div>
+  <div class="ch-groups">
+    <span class="ch-badge">ChatGPT / Codex</span>
+    <span class="ch-badge">Claude / Claude Code</span>
+  </div>
+</div>
+
+<div class="slide cards lv5">
+  <div class="cards-header">
+    <span class="cards-lv">五 · 产品</span>
+    <span class="cards-sep">/</span>
+    <span class="cards-group-name">海外产品</span>
+    <span class="cards-count">2 个词</span>
+  </div>
+  <div class="cards-grid cols-2" style="grid-template-rows:1fr;">
+    <div class="card lv5">
+      <div class="card-num">No. 38</div>
+      <div class="card-term">ChatGPT 和 Codex</div>
+      <div class="card-desc">OpenAI 的两类代表产品：ChatGPT 面向大众对话与创作，Codex 更偏<span class="hl">编程、执行任务和开发协作</span>，都是 AI 应用入口。</div>
+    </div>
+    <div class="card lv5">
+      <div class="card-num">No. 39</div>
+      <div class="card-term">Claude 和 Claude Code</div>
+      <div class="card-desc">Anthropic 的两类代表产品：Claude 偏<span class="hl">长文阅读、写作和深度思考</span>，Claude Code 更偏编程协作、终端执行和开发工作流。</div>
+    </div>
+  </div>
+</div>
+
 <div class="slide ending">
   <div class="label">Miss 发行人 · 大白话讲AI</div>
   <div class="accent-bar"></div>
   <div class="ending-title">
-    从 AI 聊天框<br>到 GPU 芯片，<br>你现在全懂了。
+    从 Token 到 Codex，<br>从算力到监管，<br>AI新闻终于能听懂了。
   </div>
   <div class="ending-sub">
-    67个词，7个难度层级。<br>
-    下次听到这些词，你不再是那个默默点头<br>却不知道在说什么的人了。
+    39个词，5个栏目。<br>
+    下次看到AI新闻，不用假装懂，是真的懂。
   </div>
   <div class="ending-note">关注 Miss 发行人 · AI没有黑话</div>
 </div>
 
-</div><!-- /deck -->
+</div>
 
 <div class="nav">
   <button id="prev" disabled>←</button>
-  <span class="counter" id="counter">1 / 23</span>
+  <span class="counter" id="counter">1 / 17</span>
   <button id="next">→</button>
 </div>
 <div class="hint">← → 或点击按钮翻页</div>
@@ -1271,7 +1118,7 @@
   next.addEventListener('click', () => { if (cur < total - 1) go(cur + 1); });
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (cur < total - 1) go(cur + 1); }
-    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { if (cur > 0) go(cur - 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if (cur > 0) go(cur - 1); }
   });
 </script>
 </body>
