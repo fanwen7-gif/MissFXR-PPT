@@ -7,6 +7,7 @@ Miss 发行人的 Web PPT 合集，所有作品均可在浏览器直接打开。
 | 文件夹 | 主题 |
 |--------|------|
 | `20260708-Harness设计文档` | 官方教程：如何让 AI 独立负责项目，连续 6 小时深度工作 |
+| `20260708-多Agent协作图解` | 多 Agent 协作 & Dynamic Workflow 图解 |
 | `ai-tools-slides` | 我最常用的8个AI工具 / 我抛弃的AI工具 |
 | `miss-ai-tools-recommended` | AI工具推荐（早期版） |
 | `ai-terms-60` | AI入门必会60词（完整版） |

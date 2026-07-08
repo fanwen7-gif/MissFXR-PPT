@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多 Agent 协作｜图解笔记</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf4e9;
+  --cream-2:#f3ead8;
+  --paper:#fffdf8;
+  --ink:#3b3228;
+  --ink-soft:#6b5d4d;
+  --ink-faint:#9a8b77;
+  --line:#e6d9c2;
+  --plan:#e8883a;
+  --plan-bg:#fdecd6;
+  --plan-ink:#a85410;
+  --gen:#2f9e8f;
+  --gen-bg:#d9f2ec;
+  --gen-ink:#12655a;
+  --eval:#e0567a;
+  --eval-bg:#fce0e6;
+  --eval-ink:#a52746;
+  --sun:#f4c651;
+  --sky:#6aa5cf;
+  --shadow:0 14px 34px rgba(90,66,40,.14);
+  --shadow-sm:0 6px 16px rgba(90,66,40,.12);
+  --radius:26px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:"Noto Sans SC","Baloo 2",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 12% 8%,#fdeecb 0,transparent 42%),
+    radial-gradient(circle at 88% 4%,#ddf0eb 0,transparent 34%),
+    radial-gradient(circle at 72% 92%,#fdecd6 0,transparent 38%),
+    var(--cream);
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+#progress{position:fixed;top:0;left:0;height:5px;width:0%;background:linear-gradient(90deg,var(--plan),var(--sun),var(--gen),var(--eval));z-index:999;border-bottom-right-radius:6px;transition:width .1s linear;}
+.wrap{max-width:960px;margin:0 auto;padding:0 clamp(18px,5vw,40px);}
+h1,h2,h3{font-family:"Fraunces","Noto Sans SC",serif;line-height:1.12;letter-spacing:-.01em;}
+section{padding:clamp(52px,9vw,100px) 0;position:relative;}
+section+section{border-top:2px dashed var(--line);}
+.kicker{display:inline-flex;align-items:center;gap:9px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.86rem;letter-spacing:.06em;padding:7px 16px;border-radius:100px;background:var(--paper);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);margin-bottom:26px;}
+h2.sec-title{font-size:clamp(1.9rem,5vw,2.9rem);font-weight:900;margin:.1em 0 .5em;}
+.lead{font-size:clamp(1.02rem,2.3vw,1.18rem);color:var(--ink-soft);max-width:60ch;}
+p{margin:0 0 1.1em;}
+strong{color:var(--plan-ink);font-weight:700;}
+
+/* Card */
+.card{background:var(--paper);border:2px solid var(--ink);border-radius:var(--radius);padding:clamp(22px,4vw,34px);box-shadow:6px 6px 0 rgba(59,50,40,.14);}
+
+/* Quote */
+.quote{position:relative;background:#fffdf6;border-radius:18px;padding:24px 26px 24px 30px;margin:26px 0;font-family:"Fraunces",serif;font-style:italic;font-size:1.1rem;color:var(--ink);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--sun);}
+.quote::before{content:"\201C";position:absolute;left:14px;top:-14px;font-family:"Fraunces",serif;font-size:3rem;color:var(--sun);background:var(--paper);line-height:1;padding:0 4px;}
+.quote .en{display:block;color:var(--ink-faint);font-size:.9rem;font-style:normal;margin-top:8px;}
+
+/* Tape */
+.tape{position:absolute;top:-14px;left:26px;transform:rotate(-3deg);background:var(--sun);color:var(--ink);font-family:"Baloo 2";font-weight:800;font-size:.82rem;padding:5px 16px;border-radius:6px;box-shadow:2px 2px 0 rgba(59,50,40,.25);}
+
+/* Hero */
+.hero{padding:clamp(60px,10vw,120px) 0 clamp(40px,6vw,60px);}
+.hero .eyebrow{font-family:"Baloo 2";font-weight:700;color:var(--eval-ink);letter-spacing:.04em;margin-bottom:14px;font-size:1rem;}
+.hero h1{font-size:clamp(2rem,6.5vw,3.7rem);font-weight:900;margin:0 0 .28em;letter-spacing:-.02em;}
+.hero h1 .hl{position:relative;isolation:isolate;white-space:nowrap;color:#5a97c4;}
+.hero h1 .hl::after{content:"";position:absolute;left:-3%;right:-3%;bottom:.04em;height:.32em;background:#f5b0c6;z-index:-1;border-radius:4px;transform:rotate(-.8deg);}
+.hero-sub{font-size:clamp(1.05rem,2.6vw,1.3rem);color:var(--ink-soft);max-width:52ch;margin-bottom:36px;}
+
+/* Nav */
+nav.sticky-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(250,244,233,.88);border-bottom:2px solid var(--line);}
+nav.sticky-nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:11px 0;scrollbar-width:none;}
+nav.sticky-nav a{white-space:nowrap;font-family:"Baloo 2";font-weight:700;font-size:.88rem;color:var(--ink-soft);text-decoration:none;padding:7px 16px;border-radius:100px;transition:.2s;}
+nav.sticky-nav a:hover{color:var(--plan-ink);background:var(--plan-bg);}
+nav.sticky-nav a.active{color:#fff;background:#5a97c4;}
+
+/* Button */
+.btn{font-family:"Baloo 2";font-weight:800;font-size:1rem;cursor:pointer;border:2px solid var(--ink);border-radius:100px;padding:12px 28px;background:var(--sun);color:var(--ink);box-shadow:4px 4px 0 var(--ink);transition:transform .12s,box-shadow .12s;display:inline-block;}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink);}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+
+/* Roles */
+.roles{display:grid;gap:20px;grid-template-columns:1fr;margin-top:14px;}
+@media(min-width:720px){.roles{grid-template-columns:repeat(3,1fr);}}
+.role{cursor:pointer;border-radius:22px;padding:24px 22px;border:2px solid var(--ink);box-shadow:5px 5px 0 rgba(59,50,40,.16);transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden;}
+.role:hover{transform:translateY(-4px);box-shadow:7px 9px 0 rgba(59,50,40,.18);}
+.role .r-emoji{font-size:2.4rem;line-height:1;display:block;margin-bottom:8px;}
+.role h3{font-size:1.45rem;font-weight:900;margin:0;}
+.role .role-job{font-family:"Baloo 2";font-weight:700;font-size:.92rem;margin:2px 0 10px;}
+.role .r-hint{font-size:.84rem;color:var(--ink-soft);display:flex;align-items:center;gap:6px;}
+.role .r-chevron{transition:transform .25s;display:inline-block;margin-left:auto;}
+.role[data-open="true"] .r-chevron{transform:rotate(90deg);}
+.role .r-detail{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease;}
+.role[data-open="true"] .r-detail{grid-template-rows:1fr;}
+.role .r-detail-inner{overflow:hidden;}
+.role .r-detail ul{margin:14px 0 4px;padding-left:1.1em;font-size:.95rem;color:var(--ink);}
+.role .r-detail li{margin-bottom:7px;}
+.role .r-note{font-family:"Baloo 2";font-weight:800;font-size:.82rem;margin-top:8px;}
+.role.plan{background:var(--plan-bg);} .role.plan h3,.role.plan .role-job{color:var(--plan-ink);} .role.plan .r-note{color:var(--plan-ink);}
+.role.gen{background:var(--gen-bg);} .role.gen h3,.role.gen .role-job{color:var(--gen-ink);} .role.gen .r-note{color:var(--gen-ink);}
+.role.eval{background:var(--eval-bg);} .role.eval h3,.role.eval .role-job{color:var(--eval-ink);} .role.eval .r-note{color:var(--eval-ink);}
+
+/* Agent sim */
+.sim-wrap{margin-top:36px;}
+.sim-task{background:var(--paper);border:2px solid var(--ink);border-radius:18px;padding:18px 24px;box-shadow:6px 6px 0 rgba(59,50,40,.14);text-align:center;margin-bottom:22px;}
+.sim-task .st-label{font-family:"Baloo 2";font-weight:800;font-size:.8rem;letter-spacing:.06em;color:var(--ink-faint);margin-bottom:4px;}
+.sim-task .st-name{font-family:"Fraunces";font-size:1.3rem;font-weight:900;}
+.agents-row{display:grid;gap:14px;grid-template-columns:1fr;margin-bottom:20px;}
+@media(min-width:600px){.agents-row{grid-template-columns:repeat(3,1fr);}}
+.agent-card{border:2px solid var(--ink);border-radius:16px;padding:18px 14px;background:var(--paper);box-shadow:4px 4px 0 rgba(59,50,40,.12);text-align:center;transition:all .35s ease;}
+.agent-card .ac-icon{font-size:1.7rem;margin-bottom:6px;}
+.agent-card .ac-name{font-family:"Baloo 2";font-weight:800;font-size:.86rem;margin-bottom:8px;}
+.agent-card .ac-status{font-size:.82rem;color:var(--ink-faint);min-height:2.4em;transition:color .3s;}
+.agent-card.running{background:var(--gen-bg);border-color:var(--gen);}
+.agent-card.running .ac-status{color:var(--gen-ink);}
+.agent-card.done{background:var(--plan-bg);border-color:var(--plan);}
+.agent-card.done .ac-status{color:var(--plan-ink);font-weight:700;}
+.sim-result{background:var(--ink);color:var(--cream);border-radius:18px;padding:20px 24px;display:none;animation:popIn .4s ease;}
+.sim-result.show{display:block;}
+.sim-result .sr-label{font-family:"Baloo 2";font-weight:800;color:var(--sun);font-size:.85rem;margin-bottom:6px;}
+.sim-result p{margin:0;font-size:.94rem;opacity:.9;}
+@keyframes popIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+/* Before/After */
+.ba-grid{display:grid;gap:0;grid-template-columns:1fr;margin-top:28px;}
+@media(min-width:760px){.ba-grid{grid-template-columns:1fr 1fr;gap:0;}}
+.ba-card{padding:32px 28px;border:2px solid var(--ink);}
+.ba-card.before{background:linear-gradient(160deg,#fff8f6,#fce0e6);border-right:none;border-radius:var(--radius) 0 0 var(--radius);box-shadow:-6px 6px 0 rgba(59,50,40,.12);}
+.ba-card.after{background:linear-gradient(160deg,#f0fbf8,#d9f2ec);border-radius:0 var(--radius) var(--radius) 0;box-shadow:6px 6px 0 rgba(59,50,40,.12);}
+@media(max-width:759px){
+  .ba-card.before{border-right:2px solid var(--ink);border-bottom:none;border-radius:var(--radius) var(--radius) 0 0;box-shadow:none;}
+  .ba-card.after{border-top:none;border-radius:0 0 var(--radius) var(--radius);box-shadow:6px 6px 0 rgba(59,50,40,.12);}
+}
+.ba-label{font-family:"Baloo 2";font-weight:800;font-size:.82rem;letter-spacing:.06em;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.ba-label.bad{color:var(--eval-ink);}
+.ba-label.good{color:var(--gen-ink);}
+.ba-label .bl-dot{width:10px;height:10px;border-radius:50%;}
+.ba-label.bad .bl-dot{background:var(--eval);}
+.ba-label.good .bl-dot{background:var(--gen);}
+.ba-title{font-family:"Fraunces";font-size:1.3rem;font-weight:900;margin:0 0 20px;}
+.ba-card.before .ba-title{color:var(--eval-ink);}
+.ba-card.after .ba-title{color:var(--gen-ink);}
+
+/* Before — chain steps */
+.chain{display:flex;flex-direction:column;gap:0;}
+.chain-step{display:flex;gap:14px;align-items:flex-start;}
+.chain-dot{width:28px;height:28px;border-radius:50%;background:var(--eval);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Baloo 2";font-weight:800;font-size:.82rem;flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.chain-body{padding-bottom:20px;position:relative;}
+.chain-body::before{content:"";position:absolute;left:-26px;top:30px;width:2px;height:calc(100% - 10px);background:var(--line);}
+.chain-step:last-child .chain-body::before{display:none;}
+.chain-action{font-weight:700;font-size:.94rem;margin-bottom:3px;}
+.chain-discovery{font-size:.83rem;color:var(--eval-ink);font-style:italic;background:var(--eval-bg);border-radius:8px;padding:5px 10px;display:inline-block;margin-top:3px;}
+.chain-verdict{margin-top:16px;padding:12px 16px;background:var(--eval-bg);border:2px solid var(--eval);border-radius:12px;font-family:"Baloo 2";font-weight:800;font-size:.86rem;color:var(--eval-ink);}
+
+/* After — parallel */
+.par-wrap{display:flex;flex-direction:column;gap:12px;}
+.par-global{background:var(--plan-bg);border:2px solid var(--plan);border-radius:12px;padding:12px 16px;font-family:"Baloo 2";font-weight:800;font-size:.9rem;color:var(--plan-ink);text-align:center;}
+.par-row-agents{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+@media(min-width:900px){.par-row-agents{grid-template-columns:repeat(4,1fr);}}
+.par-a{border:2px solid var(--ink);border-radius:11px;padding:10px 8px;text-align:center;font-size:.82rem;}
+.par-a.a1{background:var(--plan-bg);}
+.par-a.a2{background:var(--gen-bg);}
+.par-a.a3{background:var(--eval-bg);}
+.par-a.a4{background:#fff8dc;}
+.par-a .pa-icon{font-size:1.2rem;display:block;margin-bottom:3px;}
+.par-a .pa-name{font-family:"Baloo 2";font-weight:800;font-size:.78rem;}
+.par-merge{background:var(--gen-bg);border:2px solid var(--gen);border-radius:12px;padding:12px 16px;font-family:"Baloo 2";font-weight:800;font-size:.9rem;color:var(--gen-ink);text-align:center;}
+.par-verdict{margin-top:4px;padding:12px 16px;background:var(--gen-bg);border:2px solid var(--gen);border-radius:12px;font-family:"Baloo 2";font-weight:800;font-size:.86rem;color:var(--gen-ink);}
+
+/* Pitfalls */
+.fail-grid{display:grid;gap:20px;grid-template-columns:1fr;margin-top:8px;}
+@media(min-width:700px){.fail-grid{grid-template-columns:repeat(3,1fr);}}
+.fail-c{border:2px solid var(--ink);border-radius:20px;padding:24px 22px;background:var(--paper);box-shadow:5px 5px 0 rgba(59,50,40,.14);}
+.fail-c .fx{font-size:2rem;}
+.fail-c h4{font-family:"Fraunces";font-size:1.2rem;margin:8px 0 4px;font-weight:900;}
+.fail-c p{font-size:.92rem;color:var(--ink-soft);margin:0 0 12px;}
+.fail-fix{font-family:"Baloo 2";font-weight:800;display:inline-block;padding:5px 14px;border-radius:100px;font-size:.82rem;}
+.fail-c:nth-child(1) .fail-fix{background:var(--plan-bg);color:var(--plan-ink);}
+.fail-c:nth-child(2) .fail-fix{background:var(--gen-bg);color:var(--gen-ink);}
+.fail-c:nth-child(3) .fail-fix{background:var(--eval-bg);color:var(--eval-ink);}
+
+/* Case */
+.case-toggle{display:flex;gap:0;border:2px solid var(--ink);border-radius:100px;overflow:hidden;width:max-content;box-shadow:4px 4px 0 var(--ink);margin-bottom:28px;}
+.case-tab{font-family:"Baloo 2";font-weight:800;font-size:.92rem;cursor:pointer;border:none;padding:10px 22px;background:var(--paper);color:var(--ink-soft);transition:.2s;}
+.case-tab.on-bad{background:var(--eval);color:#fff;}
+.case-tab.on-good{background:var(--gen);color:#fff;}
+.case-panel{display:none;}
+.case-panel.show{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.case-steps{display:flex;flex-direction:column;gap:11px;margin-top:4px;}
+.cs{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:14px;border:2px solid var(--ink);background:var(--paper);}
+.cs-num{width:28px;height:28px;border-radius:8px;color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Baloo 2";font-weight:800;font-size:.85rem;flex-shrink:0;margin-top:2px;}
+.cs.bad .cs-num{background:var(--eval);}
+.cs.good .cs-num{background:var(--gen);}
+.cs.merge .cs-num{background:var(--plan);}
+.cs-text b{display:block;font-size:.94rem;font-weight:700;margin-bottom:2px;}
+.cs-text small{color:var(--ink-faint);font-size:.84rem;font-style:italic;}
+.case-insight{margin-top:16px;border:2px solid var(--ink);border-radius:13px;padding:14px 18px;font-weight:700;font-family:"Baloo 2";font-size:.9rem;}
+.case-insight.bad{background:var(--eval-bg);color:var(--eval-ink);}
+.case-insight.good{background:var(--gen-bg);color:var(--gen-ink);}
+
+/* Compare table */
+.cmp-table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:4px;}
+.cmp-table th,.cmp-table td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:middle;}
+.cmp-table thead th{font-family:"Baloo 2";font-weight:800;border-bottom:2px solid var(--ink);}
+.cmp-table td:first-child{font-weight:700;}
+.cmp-table .bad-cell{color:var(--eval-ink);}
+.cmp-table .good-cell{color:var(--gen-ink);font-weight:600;}
+.cmp-table tr:last-child td{border-bottom:none;}
+
+/* Megaquote */
+.megaquote{text-align:center;background:var(--ink);color:var(--cream);border-radius:var(--radius);padding:clamp(40px,7vw,68px) clamp(24px,5vw,54px);box-shadow:var(--shadow);position:relative;overflow:hidden;margin-top:40px;}
+.megaquote::before{content:"\275D";position:absolute;top:8px;left:24px;font-size:5rem;color:var(--sun);opacity:.35;font-family:"Fraunces";}
+.megaquote p{font-family:"Fraunces";font-weight:600;font-size:clamp(1.35rem,3.5vw,1.95rem);line-height:1.38;margin:0 0 .5em;}
+.megaquote .mq-sub{font-family:"Baloo 2";font-weight:600;font-size:.98rem;color:var(--sun);}
+
+/* Hero enhancements */
+.hero h1 strong{color:var(--ink);font-weight:900;}
+.tai{color:var(--plan);font-style:normal;}
+.hero-statement{font-family:"Fraunces",serif;font-size:clamp(1.15rem,2.8vw,1.5rem);font-weight:900;color:var(--ink);margin:4px 0 16px;line-height:1.3;}
+.hero-statement strong{color:var(--ink);font-weight:900;}
+.hero-statement .hl{position:relative;isolation:isolate;color:#5a97c4;}
+.hero-statement .hl::after{content:"";position:absolute;left:-3%;right:-3%;bottom:.04em;height:.32em;background:#f5b0c6;z-index:-1;border-radius:4px;transform:rotate(-.8deg);}
+.tagline-pill{display:inline-flex;align-items:center;background:var(--sun);border:2px solid var(--ink);border-radius:100px;padding:10px 24px;font-family:"Baloo 2";font-weight:800;font-size:.95rem;box-shadow:4px 4px 0 var(--ink);margin:18px 0 22px;}
+.thesis-box{background:var(--paper);border:2px solid var(--ink);border-radius:18px;padding:18px 22px;box-shadow:5px 5px 0 rgba(59,50,40,.14);max-width:58ch;margin-top:4px;}
+.thesis-box .tb-label{font-family:"Baloo 2";font-weight:800;font-size:.78rem;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:7px;}
+.thesis-box p{margin:0;font-size:.94rem;}
+
+/* Nav buttons */
+nav.sticky-nav .wrap{gap:9px;}
+nav.sticky-nav a.nb{display:inline-flex;align-items:center;gap:7px;border:2px solid var(--ink);border-radius:100px;padding:6px 15px 6px 8px;box-shadow:3px 3px 0 rgba(59,50,40,.14);background:var(--paper);color:var(--ink-soft);}
+nav.sticky-nav a.nb:hover{color:var(--ink);background:var(--cream-2);transform:translate(-1px,-1px);box-shadow:4px 4px 0 rgba(59,50,40,.2);}
+nav.sticky-nav a.nb.active{background:#5a97c4;color:#fff;box-shadow:3px 3px 0 rgba(59,50,40,.22);}
+nav.sticky-nav a.nb.active .nb-num{background:rgba(255,255,255,.28);color:#fff;}
+.nb-num{width:20px;height:20px;border-radius:6px;background:var(--ink);color:var(--cream);display:inline-flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;}
+
+/* Num badge */
+.num-badge{display:inline-grid;place-items:center;width:48px;height:48px;border-radius:14px;font-family:"Fraunces",serif;font-weight:900;font-size:1.4rem;color:var(--paper);transform:rotate(-6deg);box-shadow:4px 4px 0 rgba(59,50,40,.22);margin-bottom:18px;}
+
+/* Context callout */
+.context-callout{display:flex;gap:16px;align-items:flex-start;background:var(--gen-bg);border:2px solid var(--ink);border-radius:18px;padding:20px 22px;box-shadow:5px 5px 0 rgba(59,50,40,.12);margin-bottom:28px;}
+.cc-emoji{font-size:1.8rem;flex-shrink:0;margin-top:2px;}
+.cc-title{font-family:"Baloo 2";font-weight:800;font-size:.96rem;color:var(--gen-ink);margin-bottom:5px;}
+.context-callout p{margin:0;font-size:.92rem;}
+
+/* Parallel guide */
+.parallel-guide{margin-top:36px;}
+.parallel-guide > h3{font-family:"Fraunces";font-size:1.38rem;font-weight:900;margin:0 0 6px;}
+.pg-grid{display:grid;gap:16px;grid-template-columns:1fr 1fr;margin-top:20px;}
+@media(max-width:640px){.pg-grid{grid-template-columns:1fr;}}
+.pg-yes,.pg-no{border:2px solid var(--ink);border-radius:18px;padding:20px;background:var(--paper);}
+.pg-yes{box-shadow:5px 5px 0 var(--gen);}
+.pg-no{box-shadow:5px 5px 0 var(--eval);}
+.pg-label{font-family:"Baloo 2";font-weight:800;font-size:.82rem;padding:4px 14px;border-radius:100px;border:2px solid var(--ink);display:inline-block;margin-bottom:12px;}
+.pg-label.yes{background:var(--gen-bg);color:var(--gen-ink);}
+.pg-label.no{background:var(--eval-bg);color:var(--eval-ink);}
+.pg-item{font-size:.91rem;padding:9px 0;border-bottom:1px solid var(--line);color:var(--ink);}
+.pg-item:last-of-type{border-bottom:none;}
+.pg-counter{margin-top:14px;background:var(--eval-bg);border-radius:12px;padding:14px 16px;}
+.pg-counter .pcl{font-family:"Baloo 2";font-weight:800;font-size:.74rem;color:var(--eval-ink);letter-spacing:.05em;margin-bottom:5px;}
+.pg-counter p{margin:0;font-size:.84rem;color:var(--eval-ink);}
+
+/* Orchestrator insight */
+.orch-insight{background:var(--plan-bg);border-radius:12px;padding:13px 16px;font-size:.88rem;color:var(--plan-ink);margin:12px 0 8px;line-height:1.65;}
+.orch-insight strong{color:var(--plan-ink);}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.in{opacity:1;transform:none;}
+
+/* Workflow Visual */
+.workflow-vis{background:var(--paper);border:2px solid var(--ink);border-radius:var(--radius);padding:26px 28px;box-shadow:6px 6px 0 rgba(59,50,40,.14);margin:24px 0;}
+.scen-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+.scen-tab{font-family:"Baloo 2";font-weight:800;font-size:.82rem;cursor:pointer;border:2px solid var(--ink);border-radius:100px;padding:7px 16px;background:var(--paper);color:var(--ink-soft);transition:.2s;box-shadow:3px 3px 0 rgba(59,50,40,.12);}
+.scen-tab.on-plan{background:var(--plan);color:#fff;box-shadow:3px 3px 0 rgba(59,50,40,.25);}
+.scen-tab.on-gen{background:var(--gen);color:#fff;box-shadow:3px 3px 0 rgba(59,50,40,.25);}
+.scen-tab.on-eval{background:var(--eval);color:#fff;box-shadow:3px 3px 0 rgba(59,50,40,.25);}
+.scen-panel{display:none;}
+.scen-panel.show{display:block;animation:sceneIn .32s ease;}
+@keyframes sceneIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+.wf-task{background:var(--ink);color:var(--cream);border-radius:14px;padding:14px 20px;font-family:"Baloo 2";font-weight:800;font-size:.98rem;text-align:center;margin-bottom:14px;}
+.wf-split{text-align:center;font-family:"Baloo 2";font-weight:700;font-size:.8rem;color:var(--ink-faint);margin-bottom:12px;letter-spacing:.03em;}
+.wf-agents{display:grid;gap:10px;grid-template-columns:repeat(2,1fr);margin-bottom:14px;}
+.wf-agents.cols4{} @media(min-width:600px){.wf-agents.cols4{grid-template-columns:repeat(4,1fr);}.wf-agents.cols3{grid-template-columns:repeat(3,1fr);}}
+.wf-agent{border:2px solid var(--ink);border-radius:13px;padding:13px 10px;text-align:center;}
+.wf-agent .wa-icon{font-size:1.45rem;display:block;margin-bottom:4px;}
+.wf-agent .wa-name{font-family:"Baloo 2";font-weight:800;font-size:.82rem;margin-bottom:3px;}
+.wf-agent .wa-desc{font-size:.76rem;color:var(--ink-soft);}
+.wf-merge{text-align:center;font-family:"Baloo 2";font-weight:700;font-size:.8rem;color:var(--ink-faint);margin-bottom:12px;}
+.wf-result{border-radius:13px;padding:13px 20px;font-family:"Baloo 2";font-weight:800;font-size:.88rem;text-align:center;}
+/* 每个场景 = 一套同色系的世界：切 tab 时，下面整片区域跟着换色，四张卡用同色深浅区分 */
+.theme-plan .wf-agent{border-color:var(--plan);}
+.theme-plan .wf-agent:nth-child(1){background:color-mix(in srgb,var(--plan) 8%,#fff);}
+.theme-plan .wf-agent:nth-child(2){background:color-mix(in srgb,var(--plan) 14%,#fff);}
+.theme-plan .wf-agent:nth-child(3){background:color-mix(in srgb,var(--plan) 20%,#fff);}
+.theme-plan .wf-agent:nth-child(4){background:color-mix(in srgb,var(--plan) 26%,#fff);}
+.theme-plan .wf-task{box-shadow:0 0 0 3px color-mix(in srgb,var(--plan) 45%,#fff);}
+.theme-plan .wf-result{background:var(--plan-bg);border:2px solid var(--plan);color:var(--plan-ink);}
+.theme-gen .wf-agent{border-color:var(--gen);}
+.theme-gen .wf-agent:nth-child(1){background:color-mix(in srgb,var(--gen) 8%,#fff);}
+.theme-gen .wf-agent:nth-child(2){background:color-mix(in srgb,var(--gen) 14%,#fff);}
+.theme-gen .wf-agent:nth-child(3){background:color-mix(in srgb,var(--gen) 20%,#fff);}
+.theme-gen .wf-agent:nth-child(4){background:color-mix(in srgb,var(--gen) 26%,#fff);}
+.theme-gen .wf-task{box-shadow:0 0 0 3px color-mix(in srgb,var(--gen) 45%,#fff);}
+.theme-gen .wf-result{background:var(--gen-bg);border:2px solid var(--gen);color:var(--gen-ink);}
+.theme-eval .wf-agent{border-color:var(--eval);}
+.theme-eval .wf-agent:nth-child(1){background:color-mix(in srgb,var(--eval) 7%,#fff);}
+.theme-eval .wf-agent:nth-child(2){background:color-mix(in srgb,var(--eval) 12%,#fff);}
+.theme-eval .wf-agent:nth-child(3){background:color-mix(in srgb,var(--eval) 17%,#fff);}
+.theme-eval .wf-task{box-shadow:0 0 0 3px color-mix(in srgb,var(--eval) 40%,#fff);}
+.theme-eval .wf-result{background:var(--eval-bg);border:2px solid var(--eval);color:var(--eval-ink);}
+
+/* 三个好处卡 */
+.benefit-grid{display:grid;gap:16px;grid-template-columns:1fr;margin:22px 0 6px;}
+@media(min-width:760px){.benefit-grid{grid-template-columns:repeat(3,1fr);}}
+.benefit-card{position:relative;border:2px solid var(--ink);border-radius:var(--radius);padding:22px 20px 18px;box-shadow:6px 6px 0 rgba(59,50,40,.14);display:flex;flex-direction:column;}
+.benefit-card .bc-icon{font-size:2rem;line-height:1;margin-bottom:12px;}
+.benefit-card .bc-title{font-family:"Fraunces",serif;font-size:1.16rem;font-weight:900;color:var(--ink);margin-bottom:9px;}
+.benefit-card .bc-body{font-size:.9rem;color:var(--ink-soft);line-height:1.72;flex:1;margin:0;}
+.benefit-card .bc-body strong{color:var(--ink);}
+.benefit-card .bc-tag{margin-top:14px;align-self:flex-start;font-family:"Baloo 2";font-weight:800;font-size:.78rem;border-radius:100px;padding:5px 14px;border:2px solid var(--ink);}
+.benefit-card.b-time{background:linear-gradient(165deg,#fffdf4,#fdefcf);}
+.benefit-card.b-time .bc-tag{background:var(--sun);color:#7a5605;}
+.benefit-card.b-mind{background:linear-gradient(165deg,#f3fbf8,#d9f2ec);}
+.benefit-card.b-mind .bc-tag{background:var(--gen);color:#fff;}
+.benefit-card.b-plan{background:linear-gradient(165deg,#fff7f0,#fce0cf);}
+.benefit-card.b-plan .bc-tag{background:var(--plan);color:#fff;}
+.benefit-star{position:absolute;top:-13px;right:-6px;background:var(--eval);color:#fff;font-family:"Baloo 2";font-weight:800;font-size:.72rem;padding:4px 12px;border-radius:100px;border:2px solid var(--ink);transform:rotate(4deg);box-shadow:2px 2px 0 rgba(59,50,40,.25);}
+
+/* 协作流程图：规划 → 并行执行 → 整合 */
+.flow{margin:10px 0 6px;}
+.flow-stage{display:flex;flex-direction:column;align-items:center;}
+.flow-badge{font-family:"Baloo 2";font-weight:800;font-size:.8rem;color:#fff;border:2px solid var(--ink);border-radius:100px;padding:4px 16px;margin-bottom:11px;box-shadow:2px 2px 0 rgba(59,50,40,.22);}
+.flow-badge.plan{background:var(--plan);}
+.flow-badge.gen{background:var(--gen);}
+.flow-badge.eval{background:var(--eval);}
+.flow-node{background:var(--paper);border:2px solid var(--ink);border-radius:16px;padding:14px 20px;text-align:center;box-shadow:4px 4px 0 rgba(59,50,40,.16);}
+.flow-node .fn-emoji{font-size:1.55rem;display:block;margin-bottom:4px;line-height:1;}
+.flow-node .fn-title{font-family:"Baloo 2";font-weight:800;font-size:.92rem;color:var(--ink);}
+.flow-node .fn-desc{font-size:.78rem;color:var(--ink-soft);margin-top:3px;}
+.flow-node.wide{min-width:min(360px,92%);}
+.flow-node.node-plan{background:var(--plan-bg);border-color:var(--plan);}
+.flow-node.node-eval{background:var(--eval-bg);border-color:var(--eval);}
+.flow-split,.flow-merge{text-align:center;font-family:"Baloo 2";font-weight:700;font-size:.82rem;color:var(--ink-faint);padding:6px 0 8px;}
+.flow-arrow{font-size:1.5rem;line-height:1;margin-bottom:2px;}
+.flow-parallel{display:grid;gap:10px;grid-template-columns:repeat(2,1fr);width:100%;}
+@media(min-width:640px){.flow-parallel{grid-template-columns:repeat(4,1fr);}}
+.flow-parallel .flow-node{background:var(--gen-bg);border-color:var(--gen);position:relative;padding:13px 8px;}
+.flow-parallel .flow-node::before{content:"";position:absolute;top:-11px;left:50%;width:2px;height:11px;background:var(--gen);transform:translateX(-50%);}
+
+/* case 并行收口图：三路横排 → 收口整合 */
+.par-flow{margin:4px 0;}
+.par-cols{display:grid;gap:12px;grid-template-columns:1fr;}
+@media(min-width:600px){.par-cols{grid-template-columns:repeat(3,1fr);}}
+.par-col{position:relative;background:var(--gen-bg);border:2px solid var(--gen);border-radius:14px;padding:16px 14px 15px;box-shadow:3px 3px 0 rgba(59,50,40,.14);}
+.par-col b{display:block;font-family:"Baloo 2";font-weight:800;font-size:.95rem;color:var(--gen-ink);margin:8px 0 5px;}
+.par-col small{font-size:.8rem;color:var(--ink-soft);line-height:1.6;display:block;}
+.par-col::after{content:"";position:absolute;bottom:-13px;left:50%;width:2px;height:12px;background:var(--gen);transform:translateX(-50%);}
+@media(max-width:599px){.par-col::after{display:none;}}
+.pc-tag{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-family:"Fraunces",serif;font-weight:900;font-size:1rem;color:#fff;background:var(--gen);border:2px solid var(--ink);}
+.par-down{text-align:center;font-family:"Baloo 2";font-weight:700;font-size:.85rem;color:var(--ink-faint);padding:16px 0 12px;}
+.par-close{display:flex;gap:14px;align-items:flex-start;background:var(--plan-bg);border:2px solid var(--plan);border-radius:14px;padding:16px 18px;box-shadow:4px 4px 0 rgba(59,50,40,.14);}
+.par-close .pc-tag{background:var(--plan);flex-shrink:0;}
+.par-close b{display:block;font-family:"Baloo 2";font-weight:800;font-size:.98rem;color:var(--plan-ink);margin-bottom:4px;}
+.par-close small{font-size:.82rem;color:var(--ink-soft);line-height:1.6;}
+
+/* Footer */
+.footer{text-align:center;padding:60px 0 80px;color:var(--ink-faint);font-size:.88rem;}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- HERO -->
+<div class="hero">
+<div class="wrap">
+  <div class="eyebrow">✦ 图解笔记</div>
+  <h1>多 Agent 同时开工<br><span class="tai">太太太太太</span>香了！</h1>
+  <div class="tagline-pill">为什么要尝试 Multi-Agent 协作？ →</div>
+  <p class="hero-statement">从<strong>步步为营</strong>，到<span class="hl">全局掌控</span></p>
+  <p class="hero-sub">以前你做完第一步，才知道第二步要怎么做。现在你先看全地图，再踏出第一步。</p>
+  <div class="thesis-box">
+    <div class="tb-label">📌 核心洞察</div>
+    <p>最大的变化不是效率，是并行的工具逻辑<strong>倒逼你整体规划</strong>——先把全局想清楚，第一步就不会踩错。</p>
+  </div>
+</div>
+</div>
+
+<!-- NAV -->
+<nav class="sticky-nav">
+<div class="wrap">
+  <a href="#what" class="nb"><span class="nb-num">01</span>Multi-Agent 是什么</a>
+  <a href="#why" class="nb"><span class="nb-num">02</span>为什么值得试</a>
+  <a href="#how" class="nb"><span class="nb-num">03</span>协作机制</a>
+  <a href="#pitfalls" class="nb"><span class="nb-num">04</span>踩坑与案例</a>
+</div>
+</nav>
+
+<!-- S1: WHAT -->
+<section id="what">
+<div class="wrap">
+  <div class="num-badge" style="background:var(--sky);">1</div>
+  <div class="kicker">🤖 概念</div>
+  <h2 class="sec-title">多 Agent，就是给 AI 组一支团队</h2>
+  <p class="lead">一个 AI 处理整个任务叫单 Agent，多个 AI 分工协作叫多 Agent。</p>
+
+  <div class="workflow-vis">
+    <div class="scen-tabs">
+      <button class="scen-tab on-plan" onclick="showScen('social', this, 'plan')">📱 内容选题</button>
+      <button class="scen-tab" onclick="showScen('research', this, 'gen')">🔍 周一信息追踪</button>
+      <button class="scen-tab" onclick="showScen('review', this, 'eval')">📊 笔记复盘</button>
+    </div>
+
+    <div class="scen-panel theme-plan show" id="scen-social">
+      <div class="wf-task">📱 选题：写一篇「Cursor + Claude」工具流科普</div>
+      <div class="wf-split">↓ 四个 Agent 同时搜索不同维度，互不依赖</div>
+      <div class="wf-agents cols4">
+        <div class="wf-agent orange">
+          <span class="wa-icon">🔥</span>
+          <div class="wa-name">热点 Agent</div>
+          <div class="wa-desc">过去 7 天内这个话题的讨论热度和触发事件</div>
+        </div>
+        <div class="wf-agent teal">
+          <span class="wa-icon">🔭</span>
+          <div class="wa-name">差异化 Agent</div>
+          <div class="wa-desc">小红书上已有的同类帖子，找还没被写过的角度</div>
+        </div>
+        <div class="wf-agent pink">
+          <span class="wa-icon">💬</span>
+          <div class="wa-name">读者视角 Agent</div>
+          <div class="wa-desc">从评论区 / 私信挖掘读者最常见的问题和误解</div>
+        </div>
+        <div class="wf-agent sun">
+          <span class="wa-icon">📎</span>
+          <div class="wa-name">素材 Agent</div>
+          <div class="wa-desc">可引用的数据、截图来源、真实使用案例</div>
+        </div>
+      </div>
+      <div class="wf-merge">↓ 你整合四路信息，决定切入角度</div>
+      <div class="wf-result">✓ 有热点锚点 · 有差异化角度 · 有读者共鸣点 · 有素材支撑</div>
+    </div>
+
+    <div class="scen-panel theme-gen" id="scen-research">
+      <div class="wf-task">🔍 完成本周 AI 信息追踪</div>
+      <div class="wf-split">↓ 四个渠道同时抓取，彼此独立</div>
+      <div class="wf-agents cols4">
+        <div class="wf-agent orange">
+          <span class="wa-icon">🏆</span>
+          <div class="wa-name">里程碑 Agent</div>
+          <div class="wa-desc">本周 AI 领域重大发布、融资、产品突破</div>
+        </div>
+        <div class="wf-agent teal">
+          <span class="wa-icon">👤</span>
+          <div class="wa-name">博主 Agent</div>
+          <div class="wa-desc">关注博主的新内容，每人提炼一句核心观点</div>
+        </div>
+        <div class="wf-agent pink">
+          <span class="wa-icon">⭐</span>
+          <div class="wa-name">收藏夹 Agent</div>
+          <div class="wa-desc">上周收藏未消化的内容，提取 3 条关键信息</div>
+        </div>
+        <div class="wf-agent sun">
+          <span class="wa-icon">💡</span>
+          <div class="wa-name">灵感 Agent</div>
+          <div class="wa-desc">之前记下「待研究」的问题，现在有没有现成答案</div>
+        </div>
+      </div>
+      <div class="wf-merge">↓ 整合四路，生成本周选题建议</div>
+      <div class="wf-result">✓ 有来源、有分类、有选题方向的 AI 周报</div>
+    </div>
+
+    <div class="scen-panel theme-eval" id="scen-review">
+      <div class="wf-task">📊 分析本月 10 篇笔记表现，找规律</div>
+      <div class="wf-split">↓ 三个视角同时分析同一批数据</div>
+      <div class="wf-agents cols3">
+        <div class="wf-agent orange">
+          <span class="wa-icon">📈</span>
+          <div class="wa-name">数据趋势 Agent</div>
+          <div class="wa-desc">收藏率 / 评论率 / 涨粉，哪些指标本月在变化</div>
+        </div>
+        <div class="wf-agent teal">
+          <span class="wa-icon">🏆</span>
+          <div class="wa-name">爆款解剖 Agent</div>
+          <div class="wa-desc">表现最好的 3 篇，共同特征是话题、结构还是标题</div>
+        </div>
+        <div class="wf-agent pink">
+          <span class="wa-icon">📉</span>
+          <div class="wa-name">低效分析 Agent</div>
+          <div class="wa-desc">表现最差的 3 篇，问题出在选题还是写法</div>
+        </div>
+      </div>
+      <div class="wf-merge">↓ 三路对比，形成下月策略</div>
+      <div class="wf-result">✓ 知道下个月重点做什么 · 要避开什么</div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="position:relative;margin-top:8px;">
+    <div class="tape">关键不只是快，是改变了你规划的方式</div>
+    <p style="margin-top:12px;">多 Agent 最大的变化不是效率，而是它<strong>倒逼你整体规划</strong>——你要同时分配任务给所有 Agent，你必须先想清楚全局。</p>
+    <p style="margin:0;">以前：做完第一块才想第二块。<br>现在：先把一二三四都想清楚，再开始干。</p>
+  </div>
+</div>
+</section>
+
+<!-- S2: WHY -->
+<section id="why">
+<div class="wrap">
+  <div class="num-badge" style="background:var(--plan);">2</div>
+  <div class="kicker">💡 好处</div>
+  <h2 class="sec-title">三个好处，<br>第 ② 个最戳我</h2>
+  <p class="lead">效率只是表面。真正让我离不开它的，是下面这三点。</p>
+
+  <div class="benefit-grid reveal">
+    <div class="benefit-card b-time">
+      <span class="bc-icon">⏳</span>
+      <div class="bc-title">① 像一台时光机</div>
+      <p class="bc-body">三件事<strong>同时开跑</strong>，你不用一件一件干等。别人还在排第一步，你已经同时拿回了三份结果——<strong>时间被折叠了</strong>。</p>
+      <span class="bc-tag">快，是一种爽感</span>
+    </div>
+    <div class="benefit-card b-mind">
+      <span class="benefit-star">⭐ 最戳我</span>
+      <span class="bc-icon">🌱</span>
+      <div class="bc-title">② 迈第一步，没那么难了</div>
+      <p class="bc-body">以前总觉得「要想清楚才敢动」。现在多个 Agent 帮你<strong>并行探路</strong>，很快就能看到全貌——<strong>开始的心理摩擦力，一下子小了很多</strong>。</p>
+      <span class="bc-tag">先完成，后完美</span>
+    </div>
+    <div class="benefit-card b-plan">
+      <span class="bc-icon">🧭</span>
+      <div class="bc-title">③ 倒逼你看清全局</div>
+      <p class="bc-body">要同时给几个 Agent 派活，你<strong>必须先把全局想清楚</strong>。工具的并行，逼着你的思维也变整体。</p>
+      <span class="bc-tag">局部最优 → 全局最优</span>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin:34px 0 2px;font-family:'Fraunces';font-size:1.15rem;font-weight:900;color:var(--ink);">其中第 ③ 点，值得说透 ↓</div>
+
+  <div class="ba-grid reveal">
+    <!-- BEFORE -->
+    <div class="ba-card before">
+      <div class="ba-label bad"><span class="bl-dot"></span>以前 · 串行思维</div>
+      <div class="ba-title">一步一步走，<br>走偏了才知道</div>
+      <div class="chain">
+        <div class="chain-step">
+          <div class="chain-dot">1</div>
+          <div class="chain-body">
+            <div class="chain-action">开始做第一块</div>
+            <div class="chain-discovery">→ 才发现：第二块原来这么复杂，第一块方向要调</div>
+          </div>
+        </div>
+        <div class="chain-step">
+          <div class="chain-dot">2</div>
+          <div class="chain-body">
+            <div class="chain-action">调整，继续做第二块</div>
+            <div class="chain-discovery">→ 才发现：第一块做出来的东西，到这里用不上了</div>
+          </div>
+        </div>
+        <div class="chain-step">
+          <div class="chain-dot">3</div>
+          <div class="chain-body">
+            <div class="chain-action">返工第一块 + 推进第三块</div>
+            <div class="chain-discovery">→ 才发现：整体框架从一开始就偏了</div>
+          </div>
+        </div>
+        <div class="chain-step">
+          <div class="chain-dot">4</div>
+          <div class="chain-body">
+            <div class="chain-action">重新规划…</div>
+          </div>
+        </div>
+      </div>
+      <div class="chain-verdict">❌ 每次"才发现"都是一次返工。局部最优，路径依赖。</div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="ba-card after">
+      <div class="ba-label good"><span class="bl-dot"></span>现在 · 整体思维</div>
+      <div class="ba-title">先看全地图，<br>再踏出第一步</div>
+      <div class="par-wrap">
+        <div class="par-global">🗺️ 先把一二三四全部想清楚</div>
+        <div style="text-align:center;font-size:.78rem;color:var(--ink-faint);font-family:'Baloo 2';font-weight:700;">↓ 同时分配给多个 Agent</div>
+        <div class="par-row-agents">
+          <div class="par-a a1"><span class="pa-icon">⚡</span><div class="pa-name">A 同时做</div></div>
+          <div class="par-a a2"><span class="pa-icon">⚡</span><div class="pa-name">B 同时做</div></div>
+          <div class="par-a a3"><span class="pa-icon">⚡</span><div class="pa-name">C 同时做</div></div>
+          <div class="par-a a4"><span class="pa-icon">⚡</span><div class="pa-name">D 同时做</div></div>
+        </div>
+        <div style="text-align:center;font-size:.78rem;color:var(--ink-faint);font-family:'Baloo 2';font-weight:700;">↓ 同时完成，规划者整合</div>
+        <div class="par-merge">✓ 全局最优的方向，一次做对</div>
+      </div>
+      <div class="par-verdict">✓ 出发前就看清全貌，第一步踩在对的位置上。</div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:28px;border-left:6px solid var(--plan);">
+    <h3 style="font-family:'Fraunces';font-size:1.35rem;font-weight:900;margin:0 0 10px;">为什么不得不这么想？</h3>
+    <p>当你只有一个 Agent，你可以偷懒——先做第一步，做完了再想第二步。</p>
+    <p>当你要同时分配任务给 3 个 Agent，你<strong>必须提前想清楚三件事</strong>。工具的并行逻辑，把你的思维也逼成了并行。</p>
+    <p style="margin:0;">这不是做事顺序的变化——是从「局部最优」到「全局最优」的决策方式升级。</p>
+  </div>
+
+  <div class="megaquote reveal">
+    <p>做完第一块才规划第二块，<br>走到第三步才发现方向偏了。<br>先看全地图，再踏出第一步。</p>
+    <div class="mq-sub">→ 工具塑造思维，不只是加速执行</div>
+  </div>
+</div>
+</section>
+
+<!-- S3: HOW -->
+<section id="how">
+<div class="wrap">
+  <div class="num-badge" style="background:var(--gen);">3</div>
+  <div class="kicker">⚙️ 机制</div>
+  <h2 class="sec-title">三个角色，一套协作机制</h2>
+  <p class="lead">点击每个角色卡片，看它具体做什么。</p>
+
+  <div class="context-callout reveal">
+    <div class="cc-emoji">💡</div>
+    <div>
+      <div class="cc-title">先说清楚一件事：多 Agent ≠ 把同一个问题问好几遍</div>
+      <p>每个 Agent 有<strong>独立的上下文窗口</strong>，不会被上一步的信息污染。Agent A 的思路不会干扰 Agent B 的判断——这是质量上的突破，不只是速度。</p>
+    </div>
+  </div>
+
+  <!-- 上下流程图：分 → 并 → 合 -->
+  <div class="flow reveal">
+    <div class="flow-stage">
+      <span class="flow-badge plan">① 规划</span>
+      <div class="flow-node wide node-plan">
+        <span class="fn-emoji">🗺️</span>
+        <div class="fn-title">规划者 · Orchestrator</div>
+        <div class="fn-desc">把大任务拆成子任务，决定谁做什么</div>
+      </div>
+    </div>
+    <div class="flow-split"><div class="flow-arrow">↓</div>分拆，并分配给多个子 Agent</div>
+    <div class="flow-stage">
+      <span class="flow-badge gen">② 执行 · 多条线同时并行</span>
+      <div class="flow-parallel">
+        <div class="flow-node"><span class="fn-emoji">⚡</span><div class="fn-title">Agent A</div><div class="fn-desc">子任务 ①</div></div>
+        <div class="flow-node"><span class="fn-emoji">⚡</span><div class="fn-title">Agent B</div><div class="fn-desc">子任务 ②</div></div>
+        <div class="flow-node"><span class="fn-emoji">⚡</span><div class="fn-title">Agent C</div><div class="fn-desc">子任务 ③</div></div>
+        <div class="flow-node"><span class="fn-emoji">⚡</span><div class="fn-title">Agent D</div><div class="fn-desc">子任务 ④</div></div>
+      </div>
+    </div>
+    <div class="flow-merge"><div class="flow-arrow">↓</div>多条线并行完成，结果汇总到一起</div>
+    <div class="flow-stage">
+      <span class="flow-badge eval">③ 整合</span>
+      <div class="flow-node wide node-eval">
+        <span class="fn-emoji">🎯</span>
+        <div class="fn-title">整合者 · Synthesizer</div>
+        <div class="fn-desc">合并结果、校验一致，产出最终答案</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="lead" style="margin:26px 0 6px;text-align:center;">↓ 每个角色具体做什么，点开卡片看看</p>
+
+  <div class="roles">
+    <div class="role plan" onclick="toggleRole(this)" data-open="false">
+      <span class="r-emoji">🗺️</span>
+      <h3>规划者</h3>
+      <div class="role-job">Orchestrator</div>
+      <div class="r-hint">拆任务、分工作 <span class="r-chevron">▶</span></div>
+      <div class="r-detail"><div class="r-detail-inner">
+        <ul>
+          <li>把大任务拆成若干子任务</li>
+          <li>决定每个子任务分给哪个 Agent</li>
+          <li>整合所有结果，发现冲突</li>
+          <li>遇到问题时重新调度</li>
+        </ul>
+        <div class="orch-insight">Orchestrator 不是魔法，<strong>是你的思维被编码进去的地方</strong>。多 Agent 真正逼你做的事：开跑之前先想清楚怎么拆——这才是思维升级的来源。</div>
+        <div class="r-note">→ 通常是你，或者主控 Agent</div>
+      </div></div>
+    </div>
+
+    <div class="role gen" onclick="toggleRole(this)" data-open="false">
+      <span class="r-emoji">⚡</span>
+      <h3>执行者</h3>
+      <div class="role-job">Worker Agents</div>
+      <div class="r-hint">并行处理子任务 <span class="r-chevron">▶</span></div>
+      <div class="r-detail"><div class="r-detail-inner">
+        <ul>
+          <li>专注做好一件具体的事</li>
+          <li>不管其他 Agent 在做什么</li>
+          <li>可以同时有 2–10+ 个并行</li>
+          <li>完成后把结果交回给规划者</li>
+        </ul>
+        <div class="r-note">→ 数量越多，并行越强，速度越快</div>
+      </div></div>
+    </div>
+
+    <div class="role eval" onclick="toggleRole(this)" data-open="false">
+      <span class="r-emoji">🎯</span>
+      <h3>整合者</h3>
+      <div class="role-job">Synthesizer</div>
+      <div class="r-hint">合并结果、校验一致 <span class="r-chevron">▶</span></div>
+      <div class="r-detail"><div class="r-detail-inner">
+        <ul>
+          <li>把多个 Agent 的输出合并</li>
+          <li>发现不一致或互相矛盾的地方</li>
+          <li>生成最终统一结果</li>
+          <li>判断是否需要重跑某个子任务</li>
+        </ul>
+        <div class="r-note">→ 质量的最后一道关卡</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="parallel-guide reveal">
+    <h3>什么任务才真正适合多 Agent？</h3>
+    <p class="lead" style="margin-bottom:0;">不是所有任务都适合并行——用错了比单 Agent 更乱。</p>
+    <div class="pg-grid">
+      <div class="pg-yes">
+        <span class="pg-label yes">✓ 适合并行</span>
+        <div class="pg-item">子任务互相独立，不依赖彼此的输出</div>
+        <div class="pg-item">需要从不同视角审视同一个问题</div>
+        <div class="pg-item">单个 Agent 的 context 放不下整个任务</div>
+      </div>
+      <div class="pg-no">
+        <span class="pg-label no">✗ 不适合并行</span>
+        <div class="pg-item">步骤 B 必须等步骤 A 的结果才能开始</div>
+        <div class="pg-item">任务本身很小，拆开反而多了传递成本</div>
+        <div class="pg-counter">
+          <div class="pcl">⚠ 反例</div>
+          <p>「分析反馈 → 诊断问题 → 设计方案」看起来像并行，其实是串行——方案依赖诊断，诊断依赖数据。强行并行只会让三个 Agent 在错误前提上各自跑偏。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simulator -->
+  <div class="sim-wrap reveal">
+    <div style="font-family:'Fraunces';font-size:1.45rem;font-weight:900;margin-bottom:6px;">🔬 模拟一次协作</div>
+    <p class="lead" style="margin-bottom:20px;">以「写一篇 AI 科普笔记」为例，看三个 Agent 怎么并行：</p>
+
+    <div class="sim-task">
+      <div class="st-label">总任务</div>
+      <div class="st-name">📱 写一篇「AI Agent」科普笔记</div>
+    </div>
+
+    <div class="agents-row">
+      <div class="agent-card" id="agent1">
+        <div class="ac-icon">📡</div>
+        <div class="ac-name">Agent A · 信息调研</div>
+        <div class="ac-status" id="a1s">等待任务分配...</div>
+      </div>
+      <div class="agent-card" id="agent2">
+        <div class="ac-icon">🔭</div>
+        <div class="ac-name">Agent B · 竞品分析</div>
+        <div class="ac-status" id="a2s">等待任务分配...</div>
+      </div>
+      <div class="agent-card" id="agent3">
+        <div class="ac-icon">👥</div>
+        <div class="ac-name">Agent C · 受众洞察</div>
+        <div class="ac-status" id="a3s">等待任务分配...</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:20px;">
+      <button class="btn" id="simBtn" onclick="runSim()">🚀 开始协作</button>
+    </div>
+
+    <div class="sim-result" id="simResult">
+      <div class="sr-label">✓ 规划者整合结果</div>
+      <p>三路并行完成 → 调研发现「Claude Workflow 本周最热」；竞品分析发现「都在讲工具，没人讲思维变化」；受众洞察显示「读者更关心对自己的影响」。整合结论：<strong style="color:var(--sun)">角度定了——讲「工具如何改变你的规划方式」，而非工具本身。</strong></p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- S4: PITFALLS -->
+<section id="pitfalls">
+<div class="wrap">
+  <div class="num-badge" style="background:var(--eval);">4</div>
+  <div class="kicker">⚠️ 反直觉</div>
+  <h2 class="sec-title">3 个容易踩的坑</h2>
+  <p class="lead">多 Agent 不是银弹，用不好会比单 Agent 更混乱。</p>
+
+  <div class="fail-grid reveal">
+    <div class="fail-c">
+      <div class="fx">🪞</div>
+      <h4>结果互相矛盾</h4>
+      <p>不同 Agent 可能从同一数据得出相反结论。你是规划者，要负责仲裁——没有仲裁就没法合并。</p>
+      <span class="fail-fix">对策：加一个整合 Agent 专门做一致性校验</span>
+    </div>
+    <div class="fail-c">
+      <div class="fx">📦</div>
+      <h4>上下文在传递中丢失</h4>
+      <p>Agent 之间传信息，细节会丢。越往后的 Agent，越可能在不准确的前提上工作。</p>
+      <span class="fail-fix">对策：规划阶段写清楚「共同上下文」，每个 Agent 都读</span>
+    </div>
+    <div class="fail-c">
+      <div class="fx">🌀</div>
+      <h4>没想清楚就开跑</h4>
+      <p>多 Agent 会放大规划质量。想清楚了，结果翻倍好；想模糊了，N 个 Agent 一起跑偏，代价更大。</p>
+      <span class="fail-fix">对策：先花 10 分钟写清楚目标 + 子任务边界，再启动</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- S5: CASE -->
+<section id="case">
+<div class="wrap">
+  <div class="kicker">📁 真实案例</div>
+  <h2 class="sec-title">一次「X 功能」的战略级重构</h2>
+  <p class="lead">同一个任务——梳理某功能积累的 160 条用户反馈、重做整套系统的战略规划——两种工作方式的对比。</p>
+
+  <div class="case-toggle">
+    <button class="case-tab on-bad" id="tab-before" onclick="showCase('before')">以前：手工串行</button>
+    <button class="case-tab" id="tab-after" onclick="showCase('after')">现在：多 Agent 整体</button>
+  </div>
+
+  <div class="case-panel show" id="case-before">
+    <div class="case-steps">
+      <div class="cs bad">
+        <div class="cs-num">1</div>
+        <div class="cs-text">
+          <b>导出 160 条 case，开始整理</b>
+          <small>→ 才发现：3 套系统各记各的，格式全不一样，光清洗数据就要半天</small>
+        </div>
+      </div>
+      <div class="cs bad">
+        <div class="cs-num">2</div>
+        <div class="cs-text">
+          <b>开始做分类整理</b>
+          <small>→ 才发现：建议和 bug 混在一起，没法分开统计，分类体系要重做</small>
+        </div>
+      </div>
+      <div class="cs bad">
+        <div class="cs-num">3</div>
+        <div class="cs-text">
+          <b>想设计新的字段结构</b>
+          <small>→ 才发现：数据来源不止 2 个渠道，原来的设计要推倒重来</small>
+        </div>
+      </div>
+      <div class="cs bad">
+        <div class="cs-num">4</div>
+        <div class="cs-text">
+          <b>想加自动化</b>
+          <small>→ 才发现：负责人 / 处理进度 / 反馈来源这些关键字段根本不存在，自动化没有基础</small>
+        </div>
+      </div>
+    </div>
+    <div class="case-insight bad">❌ 每次「才发现」都是一次返工。走到第 4 步，已经不知道第 1 步要不要重做了。</div>
+  </div>
+
+  <div class="case-panel" id="case-after">
+    <div class="par-flow">
+      <div class="par-cols">
+        <div class="par-col">
+          <div class="pc-tag">A</div>
+          <b>现状分析</b>
+          <small>统计 160 条分类分布、渠道来源、字段填写率、处理状态——全部同步产出</small>
+        </div>
+        <div class="par-col">
+          <div class="pc-tag">B</div>
+          <b>问题诊断</b>
+          <small>4 大痛点（无全渠道聚合 / 分级形同虚设 / bug 建议混杂 / 处理闭环全空）同时找到</small>
+        </div>
+        <div class="par-col">
+          <div class="pc-tag">C</div>
+          <b>方案设计</b>
+          <small>三层结构（采集层 → 分类分级层 → 处理闭环层）整体设计，不分先后</small>
+        </div>
+      </div>
+      <div class="par-down">↓ 三路同时开跑，完成后收口到一起</div>
+      <div class="par-close">
+        <div class="pc-tag">整</div>
+        <div class="par-close-text">
+          <b>规划者整合：一次性看全貌</b>
+          <small>同时拿到三份结论 → 发现「3 套并 1 套」是根本解 → 设计 22 字段新表 → 全局最优，不是局部最优</small>
+        </div>
+      </div>
+    </div>
+    <div class="case-insight good">✓ 先看全地图，再踏出第一步。方向定了，执行才不会偏。</div>
+  </div>
+
+  <div class="card reveal" style="margin-top:32px;">
+    <div style="font-family:'Fraunces';font-size:1.3rem;font-weight:900;margin-bottom:16px;">同一个结果，不一样的路径</div>
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th style="color:var(--eval-ink);">手工串行</th>
+          <th style="color:var(--gen-ink);">多 Agent 整体</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>规划方式</td><td class="bad-cell">局部 → 局部 → 局部</td><td class="good-cell">整体 → 执行</td></tr>
+        <tr><td>发现问题的时机</td><td class="bad-cell">做完才发现，要返工</td><td class="good-cell">出发前就知道</td></tr>
+        <tr><td>返工风险</td><td class="bad-cell">高（路径依赖）</td><td class="good-cell">低（全局规划）</td></tr>
+        <tr><td>大议题的启动门槛</td><td class="bad-cell">高，怕开了头才发现偏</td><td class="good-cell">低，先探再定</td></tr>
+        <tr><td>碎片时间能推进吗</td><td class="bad-cell">难，每次要重建上下文</td><td class="good-cell">可以，全局图已经在脑子里</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<div class="wrap">
+  <div class="footer">多 Agent 协作图解笔记 · Miss 发行人 · 2026-07</div>
+</div>
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const d = document.documentElement;
+  document.getElementById('progress').style.width =
+    (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+});
+
+// Nav active
+const navLinks = document.querySelectorAll('nav.sticky-nav a');
+const sections = document.querySelectorAll('section[id]');
+new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const l = document.querySelector(`nav a[href="#${en.target.id}"]`);
+      if (l) l.classList.add('active');
+    }
+  });
+}, { threshold: 0.35 }).observe && sections.forEach(s =>
+  new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const l = document.querySelector(`nav a[href="#${en.target.id}"]`);
+        if (l) l.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 }).observe(s)
+);
+
+// Scenario tabs
+function showScen(which, btn, color) {
+  document.querySelectorAll('.scen-panel').forEach(p => p.classList.remove('show'));
+  document.getElementById(`scen-${which}`).classList.add('show');
+  document.querySelectorAll('.scen-tab').forEach(t => t.classList.remove('on-plan','on-gen','on-eval'));
+  btn.classList.add(`on-${color}`);
+}
+
+// Scroll reveal
+new IntersectionObserver((entries) => {
+  entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('in'); });
+}, { threshold: 0.1 }).observe && document.querySelectorAll('.reveal').forEach(el =>
+  new IntersectionObserver(entries => {
+    entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('in'); });
+  }, { threshold: 0.1 }).observe(el)
+);
+
+// Role toggle
+function toggleRole(el) {
+  el.dataset.open = el.dataset.open === 'true' ? 'false' : 'true';
+}
+
+// Agent sim
+let simDone = false;
+function runSim() {
+  if (simDone) return;
+  simDone = true;
+  const btn = document.getElementById('simBtn');
+  btn.disabled = true;
+  btn.textContent = '运行中...';
+
+  const data = [
+    ['📡 搜索本周 AI 动态...', '比对热度趋势...', '✓ Claude Workflow / 多 Agent 本周最热'],
+    ['🔭 分析竞品笔记...', '识别空白角度...', '✓ 都在讲工具，没人讲「思维方式变化」'],
+    ['👥 分析目标读者...', '提炼关注点...', '✓ 读者更想知道「对我有什么影响」']
+  ];
+
+  data.forEach(([s1, s2, s3], i) => {
+    const card = document.getElementById(`agent${i + 1}`);
+    const status = document.getElementById(`a${i + 1}s`);
+    card.classList.add('running');
+    status.textContent = s1;
+    setTimeout(() => { status.textContent = s2; }, 900 + i * 100);
+    setTimeout(() => {
+      card.classList.remove('running');
+      card.classList.add('done');
+      status.textContent = s3;
+    }, 2000 + i * 120);
+  });
+
+  setTimeout(() => {
+    document.getElementById('simResult').classList.add('show');
+    btn.textContent = '✓ 协作完成';
+  }, 2600);
+}
+
+// Case toggle
+function showCase(which) {
+  ['before','after'].forEach(id => {
+    document.getElementById(`case-${id}`).classList.remove('show');
+  });
+  document.getElementById(`case-${which}`).classList.add('show');
+  document.getElementById('tab-before').className = 'case-tab' + (which === 'before' ? ' on-bad' : '');
+  document.getElementById('tab-after').className = 'case-tab' + (which === 'after' ? ' on-good' : '');
+}
+</script>
+</body>
+</html>
