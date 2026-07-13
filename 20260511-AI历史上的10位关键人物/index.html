@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI历史上的10位关键人物</title>
+  <style>
+    :root{
+      --bg:#f6f1e8;
+      --paper:#fffaf2;
+      --ink:#201d1a;
+      --muted:#6f665d;
+      --line:#dfd2bf;
+      --gold:#b88746;
+      --sage:#dce5da;
+      --rose:#f4deda;
+      --sky:#dce9f5;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left,#fbefd7 0,transparent 28%),
+        radial-gradient(circle at bottom right,#e9f0fb 0,transparent 26%),
+        var(--bg);
+      line-height:1.7;
+    }
+    .wrap{width:min(1120px,calc(100vw - 40px));margin:0 auto}
+    header{padding:72px 0 40px}
+    .kicker{
+      display:inline-block;
+      padding:8px 14px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.55);
+      color:var(--gold);
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+    h1{
+      margin:18px 0 14px;
+      font-size:clamp(40px,6vw,72px);
+      line-height:1.06;
+      letter-spacing:-.03em;
+    }
+    .lead{
+      max-width:760px;
+      font-size:18px;
+      color:var(--muted);
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:24px;
+      align-items:stretch;
+      margin-top:28px;
+    }
+    .hero-card,.summary-card,.person-card,.milestone{
+      background:rgba(255,250,242,.9);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:0 18px 40px rgba(60,42,20,.08);
+    }
+    .hero-card{padding:28px}
+    .hero-card img{
+      width:100%;
+      aspect-ratio:16/10;
+      object-fit:cover;
+      border-radius:20px;
+      margin-top:18px;
+    }
+    .summary-card{
+      padding:24px;
+      display:grid;
+      gap:14px;
+      align-content:start;
+    }
+    .summary-item{
+      padding:16px 18px;
+      border-radius:18px;
+      background:#fff;
+      border:1px solid var(--line);
+    }
+    .summary-item strong{display:block;font-size:16px;margin-bottom:6px}
+    section{padding:18px 0 34px}
+    h2{
+      margin:0 0 18px;
+      font-size:30px;
+      letter-spacing:-.02em;
+    }
+    .milestones{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+    }
+    .milestone{padding:20px}
+    .milestone:nth-child(1){background:linear-gradient(180deg,#fffaf2,#f8ede0)}
+    .milestone:nth-child(2){background:linear-gradient(180deg,#fffaf2,#eef5eb)}
+    .milestone:nth-child(3){background:linear-gradient(180deg,#fffaf2,#eef3fb)}
+    .milestone:nth-child(4){background:linear-gradient(180deg,#fffaf2,#f8ece9)}
+    .milestone img{
+      width:100%;
+      aspect-ratio:4/3;
+      object-fit:cover;
+      border-radius:16px;
+      margin-top:12px;
+    }
+    .year{
+      color:var(--gold);
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+    .persons{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:18px;
+    }
+    .person-card{overflow:hidden}
+    .person-card img{
+      width:100%;
+      aspect-ratio:4/5;
+      object-fit:cover;
+      display:block;
+    }
+    .person-body{padding:16px 16px 18px}
+    .person-body h3{margin:0 0 6px;font-size:19px}
+    .role{font-size:13px;color:var(--gold);font-weight:700}
+    .person-body p{margin:10px 0 0;color:var(--muted);font-size:14px}
+    footer{
+      padding:10px 0 56px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    @media (max-width:980px){
+      .hero-grid,.milestones,.persons{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:640px){
+      header{padding-top:48px}
+      .hero-grid,.milestones,.persons{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="kicker">AI HISTORY</span>
+      <h1>AI历史上的10位关键人物</h1>
+      <p class="lead">这一页不是人物百科，而是一张帮助你理解 AI 发展脉络的导航图。把十位关键人物按“奠基者、架构定义者、产品推动者、产业放大者”放进同一张图里，很多零散新闻才会真正连起来。</p>
+      <div class="hero-grid">
+        <article class="hero-card">
+          <strong>为什么值得先看“人”</strong>
+          <p>AI 的跃迁不是突然发生的。它是几代研究者把理论打通、几代工程师把架构做稳、几代创业者把产品推向大众，最后再被资本与算力体系共同放大的结果。</p>
+          <img src="images/11_future_city.jpg" alt="AI future city">
+        </article>
+        <aside class="summary-card">
+          <div class="summary-item">
+            <strong>第一层：理论起点</strong>
+            <span>从 Geoffrey Hinton、Yann LeCun 这类深度学习奠基者开始，AI 才真正拥有可规模化的学习范式。</span>
+          </div>
+          <div class="summary-item">
+            <strong>第二层：架构突破</strong>
+            <span>Transformer 把语言模型的上限抬高，也把后来的大模型时代真正打开。</span>
+          </div>
+          <div class="summary-item">
+            <strong>第三层：产品化与商业化</strong>
+            <span>Sam Altman、Dario Amodei、Jensen Huang 这些角色，让 AI 从实验室能力变成现实世界的大产业。</span>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section>
+      <h2>四个关键转折</h2>
+      <div class="milestones">
+        <article class="milestone">
+          <div class="year">2012</div>
+          <h3>深度学习出圈</h3>
+          <p>AlexNet 赢下 ImageNet 后，神经网络不再只是学术尝试，而被视为真正能改写 AI 主路线的方法。</p>
+          <img src="images/01_nobel_medal.jpg" alt="Milestone 2012">
+        </article>
+        <article class="milestone">
+          <div class="year">2014</div>
+          <h3>卷积网络成熟</h3>
+          <p>视觉能力大幅提升，AI 开始在识别、检测、理解图像上接近可商用阶段。</p>
+          <img src="images/02_cnn_diagram.png" alt="CNN diagram">
+        </article>
+        <article class="milestone">
+          <div class="year">2017</div>
+          <h3>Transformer 诞生</h3>
+          <p>大模型时代的核心底座被搭出来，语言、代码、图像和视频后来的很多突破都从这里长出来。</p>
+          <img src="images/04_transformer.png" alt="Transformer">
+        </article>
+        <article class="milestone">
+          <div class="year">2022 以后</div>
+          <h3>产品化爆发</h3>
+          <p>ChatGPT 把模型能力第一次推给亿级用户，AI 从行业话题变成普通人的日常工具。</p>
+          <img src="images/logo_channel.jpg" alt="AI channel">
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>十位关键人物</h2>
+      <div class="persons">
+        <article class="person-card">
+          <img src="images/01_hinton_portrait.jpg" alt="Geoffrey Hinton">
+          <div class="person-body">
+            <div class="role">奠基者</div>
+            <h3>Geoffrey Hinton</h3>
+            <p>把神经网络从边缘路线重新推回主舞台，被广泛视作深度学习之父。</p>
+          </div>
+        </article>
+        <article class="person-card">
+          <img src="images/02_lecun_portrait.jpg" alt="Yann LeCun">
+          <div class="person-body">
+            <div class="role">视觉先驱</div>
+            <h3>Yann LeCun</h3>
+            <p>卷积网络代表人物，让 AI 在图像理解上的工程路径越来越清晰。</p>
+          </div>
+        </article>
+        <article class="person-card">
+          <img src="images/03_li_portrait.jpg" alt="Fei-Fei Li">
+          <div class="person-body">
+            <div class="role">数据组织者</div>
+            <h3>李飞飞</h3>
+            <p>ImageNet 改变了研究者训练和比较模型的方式，推动了视觉 AI 的大跃迁。</p>
+          </div>
+        </article>
+        <article class="person-card">
+          <img src="images/04_vaswani_portrait.jpg" alt="Ashish Vaswani">
+          <div class="person-body">
+            <div class="role">架构定义者</div>
+            <h3>Ashish Vaswani</h3>
+            <p>Transformer 论文核心作者之一，大模型时代真正的结构底座来自这批人。</p>
+          </div>
+        </article>
+        <article class="person-card">
+          <img src="images/05_hassabis_portrait.jpg" alt="Demis Hassabis">
+          <div class="person-body">
+            <div class="role">研究产品化</div>
+            <h3>Demis Hassabis</h3>
+            <p>把顶级研究、商业落地和长期 AGI 叙事放到同一个组织里持续推进。</p>
+          </div>
+        </article>
+        <article class="person-card">
+          <img src="images/06_sutskever_portrait.jpg" alt="Ilya Sutskever">
+          <div class="person-body">
+            <div class="role">技术核心</div>
+            <h3>Ilya Sutskever</h3>
+            <p>是 OpenAI 研究路线中的关键人物，也代表了“相信规模会带来智能”的那一派。</p>
+          </div>
+        </article>
+        <article class="person-card">
+          <img src="images/07_huang_portrait.jpg" alt="Jensen Huang">
+          <div class="person-body">
+            <div class="role">算力放大器</div>
+            <h3>Jensen Huang</h3>
+            <p>没有 GPU 产业链的成熟，就不会有今天这样规模化训练的大模型竞赛。</p>
+          </div>
+        </article>
+        <article class="person-card">
+          <img src="images/08_altman_portrait.jpg" alt="Sam Altman">
+          <div class="person-body">
+            <div class="role">产品推动者</div>
+            <h3>Sam Altman</h3>
+            <p>把实验室模型能力变成全民可感知的产品入口，是 AI 产业化的关键角色。</p>
+          </div>
+        </article>
+        <article class="person-card">
+          <img src="images/09_amodei_portrait.jpg" alt="Dario Amodei">
+          <div class="person-body">
+            <div class="role">安全派创业者</div>
+            <h3>Dario Amodei</h3>
+            <p>代表了另一种大模型路线：一边追求性能，一边把安全与可解释性推到前台。</p>
+          </div>
+        </article>
+        <article class="person-card">
+          <img src="images/10_karpathy_portrait.jpg" alt="Andrej Karpathy">
+          <div class="person-body">
+            <div class="role">教育者与布道者</div>
+            <h3>Andrej Karpathy</h3>
+            <p>把复杂模型机制翻译成大家能理解的语言，是连接研究圈和大众认知的重要桥梁。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer>这份页面是发布版目录入口，适合在浏览器中直接打开阅读。</footer>
+  </div>
+</body>
+</html>

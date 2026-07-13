@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>五层蛋糕：一口气看懂 AI 产业链</title>
+  <style>
+    :root{
+      --bg:#f7f3ed;
+      --ink:#24201b;
+      --muted:#70665b;
+      --line:#e0d6ca;
+      --paper:#fffdf9;
+      --c1:#f3d4c1;
+      --c2:#f7e6b8;
+      --c3:#d8ead8;
+      --c4:#dbe8f7;
+      --c5:#eadcf6;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",sans-serif}
+    .wrap{width:min(1100px,calc(100vw - 40px));margin:0 auto}
+    header{padding:72px 0 28px}
+    .tag{display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:999px;color:#9b6b40;font-size:12px;letter-spacing:.18em;text-transform:uppercase;background:rgba(255,255,255,.7)}
+    h1{margin:18px 0 14px;font-size:clamp(38px,6vw,72px);line-height:1.05;letter-spacing:-.03em}
+    .lead{max-width:760px;color:var(--muted);font-size:18px;line-height:1.75}
+    .cake{padding:20px 0 26px}
+    .layer{
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:24px 26px;
+      margin-top:16px;
+      box-shadow:0 14px 28px rgba(80,58,25,.06);
+    }
+    .layer:nth-child(1){background:linear-gradient(180deg,var(--c1),#fffaf6)}
+    .layer:nth-child(2){background:linear-gradient(180deg,var(--c2),#fffdf6)}
+    .layer:nth-child(3){background:linear-gradient(180deg,var(--c3),#fbfffb)}
+    .layer:nth-child(4){background:linear-gradient(180deg,var(--c4),#fbfdff)}
+    .layer:nth-child(5){background:linear-gradient(180deg,var(--c5),#fffaff)}
+    .layer h2{margin:0 0 8px;font-size:28px}
+    .meta{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9d8264;font-weight:700}
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-top:28px;
+    }
+    .card{
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:22px;
+    }
+    .card h3{margin:0 0 8px;font-size:22px}
+    .card p,.layer p{margin:0;color:var(--muted);line-height:1.8}
+    footer{padding:12px 0 56px;color:var(--muted);font-size:14px}
+    @media (max-width:720px){
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="tag">AI INDUSTRY MAP</span>
+      <h1>五层蛋糕：一口气看懂 AI 产业链</h1>
+      <p class="lead">“五层蛋糕”不是学术模型，而是一种更适合普通人理解 AI 产业的视角。把 AI 从底到上拆成五层之后，你会更容易看懂：谁在卖铲子，谁在修路，谁在做产品，谁又真正占据用户心智。</p>
+    </header>
+
+    <section class="cake">
+      <article class="layer">
+        <div class="meta">Layer 01</div>
+        <h2>算力层</h2>
+        <p>GPU、芯片、服务器、数据中心、云基础设施都在这一层。它解决的是“模型能不能被训练出来”，谁掌握了大规模稳定算力，谁就在上层应用竞争里拥有巨大的先手优势。</p>
+      </article>
+      <article class="layer">
+        <div class="meta">Layer 02</div>
+        <h2>模型层</h2>
+        <p>大语言模型、多模态模型、视频生成模型都在这里。模型层解决的是“智能能力本身”有多强，但它还不是最终产品，它更像一套可被继续封装的通用引擎。</p>
+      </article>
+      <article class="layer">
+        <div class="meta">Layer 03</div>
+        <h2>平台层</h2>
+        <p>API、Agent 工作台、企业 AI 平台、数据管理工具，都属于平台层。它们的价值不是再造一个模型，而是让模型更容易被团队接入、控制、复用和规模化使用。</p>
+      </article>
+      <article class="layer">
+        <div class="meta">Layer 04</div>
+        <h2>应用层</h2>
+        <p>写作、搜索、设计、编程、视频生成、办公协作这些面向具体场景的产品，决定了普通用户能否真正感受到 AI 的价值。应用层拼的是体验、流程和长期留存。</p>
+      </article>
+      <article class="layer">
+        <div class="meta">Layer 05</div>
+        <h2>分发层</h2>
+        <p>真正把产品送到用户面前的入口，包括内容平台、社交平台、企业协作入口和操作系统级入口。很多时候，不是能力最强的产品赢，而是最容易被看见、被采用、被持续使用的产品赢。</p>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h3>为什么这个模型有用</h3>
+        <p>因为它能帮你把“技术突破”和“商业胜负”分开看。很多人看到模型发布就以为产业格局变了，但真正决定行业重构速度的，常常是平台层和分发层。</p>
+      </article>
+      <article class="card">
+        <h3>普通人最该关心哪两层</h3>
+        <p>如果你是创作者、创业者或从业者，最该盯的是应用层和平台层。前者决定你今天能拿 AI 做什么，后者决定你能不能把这些能力稳定装进自己的工作流。</p>
+      </article>
+    </section>
+
+    <footer>发布版目录页，仅保留浏览器直接阅读所需文件。</footer>
+  </div>
+</body>
+</html>

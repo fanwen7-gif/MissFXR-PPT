@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中国AI：从模型到应用的全景速览</title>
+  <style>
+    :root{
+      --bg:#f5f1eb;
+      --paper:#fffdf9;
+      --ink:#1f1d1a;
+      --muted:#6a645d;
+      --line:#e2d8cb;
+      --red:#c85d4f;
+      --gold:#b88b45;
+      --blue:#dfe9f5;
+      --green:#deebe1;
+      --rose:#f5e1de;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",sans-serif}
+    .wrap{width:min(1120px,calc(100vw - 40px));margin:0 auto}
+    header{padding:72px 0 34px}
+    .tag{display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.7);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+    h1{margin:18px 0 14px;font-size:clamp(38px,6vw,72px);line-height:1.06;letter-spacing:-.03em}
+    .lead{max-width:780px;color:var(--muted);font-size:18px;line-height:1.8}
+    section{padding:18px 0 28px}
+    h2{margin:0 0 16px;font-size:30px;letter-spacing:-.02em}
+    .overview,.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:22px;
+      box-shadow:0 16px 36px rgba(70,48,28,.06);
+    }
+    .overview .card:nth-child(1){background:linear-gradient(180deg,#fff9f4,var(--rose))}
+    .overview .card:nth-child(2){background:linear-gradient(180deg,#fffdf9,var(--green))}
+    .overview .card:nth-child(3){background:linear-gradient(180deg,#fffdf9,var(--blue))}
+    .card h3{margin:0 0 8px;font-size:22px}
+    .card p{margin:0;color:var(--muted);line-height:1.8}
+    .timeline{display:grid;gap:14px}
+    .timeline-item{
+      padding:18px 20px;
+      border-radius:22px;
+      background:rgba(255,255,255,.75);
+      border:1px solid var(--line);
+    }
+    .timeline-item strong{display:block;margin-bottom:6px;color:var(--gold)}
+    footer{padding:10px 0 56px;color:var(--muted);font-size:14px}
+    @media (max-width:860px){
+      .overview,.grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="tag">China AI</span>
+      <h1>中国AI：从模型到应用的全景速览</h1>
+      <p class="lead">如果只盯着“谁又发了一个模型”，很难真正看懂中国 AI。更有用的看法，是把它拆成三个层面：模型能力有没有追上、产业协同有没有跑通、真实应用有没有大规模进入用户工作流。</p>
+    </header>
+
+    <section>
+      <h2>先看三个总判断</h2>
+      <div class="overview">
+        <article class="card">
+          <h3>模型差距在缩小</h3>
+          <p>中国团队在语言、多模态、视频生成等方向已经形成了非常快的追赶能力。对普通用户来说，体验差距正在迅速缩小，尤其是在本地化场景与中文理解上。</p>
+        </article>
+        <article class="card">
+          <h3>应用落地更贴近业务</h3>
+          <p>相比只卷通用聊天入口，中国 AI 产品的一个明显特点，是更快进入电商、办公、教育、短视频、企业服务这些明确场景。</p>
+        </article>
+        <article class="card">
+          <h3>生态竞争是系统战</h3>
+          <p>真正决定格局的，不只是模型本身，还包括云、算力、分发入口、内容平台和企业工作流整合能力。</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>看中国AI，最值得盯的三层</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>模型层</h3>
+          <p>这一层看的是“能力上线”。谁能在中文、推理、多模态、视频生成上持续提速，谁就能拿到后续平台和应用的弹药。</p>
+        </article>
+        <article class="card">
+          <h3>平台层</h3>
+          <p>这一层看的是“接入效率”。企业到底是直接用模型，还是通过工作台、Agent 系统、多模态生产链路来用 AI，差别非常大。</p>
+        </article>
+        <article class="card">
+          <h3>应用层</h3>
+          <p>这一层看的是“用户是否愿意反复使用”。真正被留下来的产品，不只是能做演示，而是能进入具体职业流程并稳定省时间。</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>一个更实用的时间线</h2>
+      <div class="timeline">
+        <article class="timeline-item">
+          <strong>第一阶段：跟进通用大模型</strong>
+          <span>核心任务是把基础能力追平，让中文语境和本地业务场景拥有可用入口。</span>
+        </article>
+        <article class="timeline-item">
+          <strong>第二阶段：补平台与工作流</strong>
+          <span>从“能聊天”走向“能交付”，工作台、资产管理、协同入口、企业集成能力开始变得更关键。</span>
+        </article>
+        <article class="timeline-item">
+          <strong>第三阶段：走向产业化分工</strong>
+          <span>未来竞争不会只是一个超级应用吃掉全部，而更像是模型、平台、行业应用、分发入口各自形成强势玩家。</span>
+        </article>
+      </div>
+    </section>
+
+    <footer>发布版目录页，仅保留浏览器直接阅读所需文件。</footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI视频生成是怎么一回事</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Baloo+2:wght@500;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fcf7ee;
+    --paper:#fffefb;
+    --line:#eadcc4;
+    --ink:#3c3127;
+    --soft:#6d5f50;
+    --muted:#a28f78;
+    --navy:#5d84c7;
+    --navy-bg:#ebf3ff;
+    --green:#4d9b78;
+    --green-bg:#e8f6ee;
+    --gold:#e0a13c;
+    --gold-bg:#fdf0d8;
+    --rose:#df7b70;
+    --rose-bg:#fde8df;
+    --lav:#9180c8;
+    --lav-bg:#f1edff;
+    --stone:#9b8d7c;
+    --stone-bg:#f7f1e8;
+    --shadow:0 16px 34px rgba(92, 70, 48, 0.12);
+    --radius:26px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:"Noto Sans SC",sans-serif;
+    background:
+      radial-gradient(circle at 14% 8%, #faefc9 0, transparent 34%),
+      radial-gradient(circle at 86% 6%, #e6f3f6 0, transparent 30%),
+      radial-gradient(circle at 84% 86%, #fbe4ea 0, transparent 30%),
+      radial-gradient(circle at 28% 74%, #fff1d7 0, transparent 24%),
+      var(--cream);
+    line-height:1.8;
+  }
+
+  h1,h2,h3,h4{font-family:"Fraunces","Noto Sans SC",serif;line-height:1.12;margin:0;}
+  p{margin:0 0 1em;}
+  section{padding:72px 0;position:relative;}
+  section + section{border-top:2px dashed var(--line);}
+  .wrap{width:min(1080px, calc(100vw - 40px));margin:0 auto;}
+  .lead{font-size:1.1rem;color:var(--soft);max-width:60ch;}
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:8px 16px;border-radius:999px;border:2px solid var(--ink);
+    background:var(--paper);box-shadow:3px 3px 0 var(--ink);
+    font-family:"Baloo 2",sans-serif;font-weight:800;font-size:.88rem;
+    margin-bottom:22px;
+  }
+  .card{
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:var(--radius);
+    box-shadow:6px 6px 0 rgba(60,49,39,.14);
+  }
+  .sticky-progress{
+    position:fixed;top:0;left:0;height:6px;width:0;
+    background:linear-gradient(90deg,var(--navy),var(--gold),var(--green),var(--rose));
+    z-index:20;
+  }
+
+  .hero{padding-top:82px;}
+  .hero-grid{display:grid;gap:22px;align-items:center;}
+  .hero h1{font-size:clamp(2.5rem, 6vw, 4.6rem);margin-bottom:16px;letter-spacing:-.03em;}
+  .hero .highlight{
+    position:relative;display:inline-block;color:var(--navy);
+  }
+  .hero .highlight::after{
+    content:"";position:absolute;left:-2%;right:-2%;bottom:.12em;height:.24em;
+    background:#f3cf73;border-radius:6px;z-index:-1;transform:rotate(-1deg);
+  }
+  .pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+  .pill{
+    padding:7px 14px;border-radius:999px;border:2px solid var(--ink);
+    background:var(--paper);font-family:"Baloo 2";font-weight:700;font-size:.9rem;
+    box-shadow:3px 3px 0 rgba(60,49,39,.15);
+  }
+  .hero-summary{
+    padding:18px 20px;border-radius:22px;border:2px solid var(--ink);background:linear-gradient(135deg,#fff8ec,#fff1d2 56%,#eef7ff 100%);
+    box-shadow:8px 9px 0 rgba(60,49,39,.14);max-width:760px;
+  }
+  .hero-summary h3{font-size:1.2rem;margin-bottom:8px;color:#7d5a1f;}
+  .hero-summary p{font-size:.96rem;color:var(--soft);margin-bottom:0;}
+  .essence-grid{
+    display:grid;gap:16px;margin-top:28px;
+  }
+  @media(min-width:780px){.essence-grid{grid-template-columns:repeat(2,1fr);}}
+  .essence-card{
+    padding:22px 22px 18px;background:var(--paper);border:2px solid var(--ink);border-radius:24px;
+    box-shadow:7px 8px 0 rgba(60,49,39,.14);position:relative;
+  }
+  .essence-card:nth-child(1){background:linear-gradient(140deg,#fff6df,#ffefd0);}
+  .essence-card:nth-child(2){background:linear-gradient(140deg,#eaf4ff,#f2f7ff);}
+  .essence-card:nth-child(3){background:linear-gradient(140deg,#ecf7ef,#f5fff8);}
+  .essence-card:nth-child(4){background:linear-gradient(140deg,#f8eefb,#fff4f2);}
+  .essence-card h3{font-size:1.26rem;margin-bottom:8px;}
+  .essence-card p{font-size:.94rem;color:var(--soft);margin-bottom:0;}
+  .essence-num{
+    display:inline-grid;place-items:center;width:44px;height:44px;border-radius:14px;
+    margin-bottom:12px;font-family:"Fraunces";font-weight:900;font-size:1.18rem;color:#fff;
+  }
+  .essence-card:nth-child(1) .essence-num{background:var(--gold);}
+  .essence-card:nth-child(2) .essence-num{background:var(--navy);}
+  .essence-card:nth-child(3) .essence-num{background:var(--green);}
+  .essence-card:nth-child(4) .essence-num{background:var(--lav);}
+  .essence-banner{
+    margin-top:24px;padding:22px 24px;border-radius:24px;border:2px solid var(--ink);
+    background:linear-gradient(135deg,#fff9ea,#fdf1d6 45%,#eff7ff 100%);
+    box-shadow:8px 9px 0 rgba(60,49,39,.15);
+  }
+  .essence-banner h3{font-size:1.28rem;margin-bottom:8px;}
+  .essence-banner p{color:var(--soft);margin-bottom:0;}
+
+  .overview{
+    display:grid;gap:18px;margin-top:28px;
+  }
+  @media(min-width:860px){.overview{grid-template-columns:repeat(6, 1fr);}}
+  .map-card{
+    padding:22px 18px;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease;
+    position:relative;overflow:hidden;
+  }
+  .map-card:hover,.map-card.active{transform:translateY(-4px);box-shadow:8px 10px 0 rgba(60,49,39,.18);}
+  .map-card:nth-child(1){transform:rotate(-1.4deg);}
+  .map-card:nth-child(2){transform:rotate(.9deg);}
+  .map-card:nth-child(3){transform:rotate(-.8deg);}
+  .map-card:nth-child(4){transform:rotate(1.2deg);}
+  .map-card:nth-child(5){transform:rotate(-1deg);}
+  .map-card:hover:nth-child(n),.map-card.active:nth-child(n){transform:translateY(-5px) rotate(0deg);}
+  .map-card h3{font-size:1.25rem;margin-bottom:6px;}
+  .map-card small{display:block;font-family:"Baloo 2";font-size:.8rem;margin-bottom:10px;}
+  .map-card p{font-size:.92rem;color:var(--soft);margin-bottom:0;}
+  .map-card[data-map="pain"]{background:linear-gradient(140deg,#faf3e7,#f4ead7);}
+  .map-card[data-map="essence"]{background:linear-gradient(140deg,#fff5df,#eef6ff);}
+  .map-card[data-map="tech"]{background:var(--green-bg);}
+  .map-card[data-map="prompt"]{background:var(--navy-bg);}
+  .map-card[data-map="workflow"]{background:var(--gold-bg);}
+  .map-card[data-map="tips"]{background:var(--lav-bg);}
+  .map-card::after{
+    content:"";position:absolute;right:-14px;top:-12px;width:78px;height:78px;border-radius:50%;
+    background:rgba(255,255,255,.4);border:2px dashed rgba(60,49,39,.12);
+  }
+  .map-panel{
+    margin-top:22px;padding:26px 28px;display:none;
+  }
+  .map-panel.active{display:block;}
+  .chip-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+  .chip{
+    padding:5px 12px;border-radius:999px;border:2px solid var(--ink);
+    background:var(--paper);font-size:.86rem;font-weight:700;
+  }
+
+  .term-grid{display:grid;gap:16px;margin-top:28px;}
+  @media(min-width:760px){.term-grid{grid-template-columns:repeat(2, 1fr);}}
+  @media(min-width:1020px){.term-grid{grid-template-columns:repeat(3, 1fr);}}
+  .term-card{padding:22px 22px 18px;position:relative;overflow:hidden;}
+  .term-card h3{font-size:1.35rem;margin-bottom:10px;}
+  .term-card .tag{
+    display:inline-block;margin-bottom:10px;padding:4px 10px;border-radius:999px;
+    font-size:.8rem;font-family:"Baloo 2";font-weight:700;border:2px solid var(--ink);
+  }
+  .term-card p{font-size:.94rem;color:var(--soft);}
+  .term-card .core{color:var(--ink);font-weight:700;}
+  .term-card.pain{background:linear-gradient(140deg,#faf4ea,#f4ebdc);}
+  .term-card.pain .tag{background:#fffaf2;color:#6f6354;}
+  .term-card.tech{background:var(--green-bg);}
+  .term-card.tech .tag{background:#f2fbf4;color:#296540;}
+  .term-card::after{
+    content:"";position:absolute;right:-18px;bottom:-18px;width:86px;height:86px;border-radius:50%;
+    background:rgba(255,255,255,.34);border:2px solid rgba(60,49,39,.08);
+  }
+
+  .tab-shell{margin-top:26px;}
+  .tab-buttons{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
+  .tab-btn{
+    border:2px solid var(--ink);background:var(--paper);cursor:pointer;
+    border-radius:999px;padding:11px 18px;font-family:"Baloo 2";font-weight:800;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .tab-btn.active{background:var(--navy);color:#fff;}
+  .tab-panel{display:none;padding:26px 28px;}
+  .tab-panel.active{display:block;}
+  .compare{
+    display:grid;gap:16px;margin-top:18px;
+  }
+  @media(min-width:840px){.compare{grid-template-columns:1fr 1fr;}}
+  .compare-card{padding:20px 22px;border-radius:22px;border:2px solid var(--ink);position:relative;overflow:hidden;}
+  .compare-card.old{background:#f3ebe0;}
+  .compare-card.new{background:var(--green-bg);}
+  .compare-card h4{font-size:1.2rem;margin-bottom:8px;}
+  .compare-card::after{
+    content:"";position:absolute;right:-20px;top:-20px;width:70px;height:70px;border-radius:50%;
+    background:rgba(255,255,255,.28);
+  }
+  .product-spotlight{
+    margin-top:20px;padding:22px 22px 18px;border-radius:24px;border:2px solid var(--ink);
+    background:linear-gradient(135deg,#fff5df,#fff0db 45%,#edf6ff 100%);
+    box-shadow:8px 9px 0 rgba(60,49,39,.15);position:relative;
+  }
+  .product-spotlight::before{
+    content:"具体做法";position:absolute;top:-14px;left:18px;padding:5px 12px;border-radius:999px;
+    border:2px solid var(--ink);background:#fff;font-family:"Baloo 2";font-size:.78rem;font-weight:800;
+    box-shadow:3px 3px 0 rgba(60,49,39,.15);
+  }
+  .product-spotlight h4{font-size:1.2rem;margin-bottom:8px;}
+  .feature-grid{display:grid;gap:12px;margin-top:14px;}
+  @media(min-width:840px){.feature-grid{grid-template-columns:repeat(2, 1fr);}}
+  .feature-chip{
+    padding:14px 14px 12px;border:2px solid var(--ink);border-radius:18px;background:rgba(255,255,255,.78);
+    box-shadow:4px 4px 0 rgba(60,49,39,.12);
+  }
+  .feature-chip strong{display:block;margin-bottom:4px;font-size:1rem;}
+  .feature-chip p{font-size:.9rem;color:var(--soft);margin-bottom:0;}
+  .feature-chip.wide{grid-column:1/-1;}
+
+  .accordion{display:grid;gap:14px;margin-top:28px;}
+  .acc-item{overflow:hidden;}
+  .acc-trigger{
+    width:100%;text-align:left;border:none;background:transparent;cursor:pointer;
+    padding:18px 22px;display:flex;justify-content:space-between;align-items:center;
+    font:inherit;color:var(--ink);
+  }
+  .acc-trigger strong{font-size:1.1rem;}
+  .acc-body{
+    display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s ease;
+  }
+  .acc-item.open .acc-body{grid-template-rows:1fr;}
+  .acc-inner{overflow:hidden;padding:0 22px 22px;color:var(--soft);}
+
+  .stepper{
+    display:grid;gap:14px;margin-top:24px;
+  }
+  @media(min-width:900px){.stepper{grid-template-columns:repeat(3, 1fr);}}
+  .step{
+    padding:24px 22px 22px;transition:transform .18s ease;
+  }
+  .step:hover{transform:translateY(-4px);}
+  .step .n{
+    width:48px;height:48px;border-radius:16px;display:grid;place-items:center;
+    font-family:"Fraunces";font-weight:900;font-size:1.3rem;color:#fff;margin-bottom:14px;
+  }
+  .step:nth-child(1){background:var(--gold-bg);}
+  .step:nth-child(1) .n{background:var(--gold);}
+  .step:nth-child(2){background:var(--navy-bg);}
+  .step:nth-child(2) .n{background:var(--navy);}
+  .step:nth-child(3){background:var(--green-bg);}
+  .step:nth-child(3) .n{background:var(--green);}
+  .step ul{padding-left:18px;margin:10px 0 0;}
+  .step li{margin-bottom:8px;color:var(--soft);}
+
+  .tips-grid{display:grid;gap:16px;margin-top:24px;}
+  @media(min-width:760px){.tips-grid{grid-template-columns:repeat(2, 1fr);}}
+  .tip{padding:20px 22px;background:var(--paper);position:relative;overflow:hidden;}
+  .tip h4{font-size:1.18rem;margin-bottom:8px;}
+  .tip p{color:var(--soft);font-size:.95rem;margin-bottom:0;}
+  .tip::after{
+    content:"";position:absolute;left:-18px;bottom:-22px;width:76px;height:76px;border-radius:50%;
+    background:rgba(244,198,81,.16);
+  }
+
+  .script-block{
+    margin-top:30px;padding:24px 26px;background:linear-gradient(145deg,#1f2f47,#374f74);
+    color:#f8f4ec;border-radius:28px;border:2px solid var(--ink);box-shadow:var(--shadow);
+  }
+  .script-block h3{font-size:1.45rem;margin-bottom:8px;}
+  .script-block ul{margin:14px 0 0;padding-left:18px;}
+  .script-block li{margin-bottom:8px;color:#e7dccb;}
+  .footer-note{
+    text-align:center;padding:60px 0 84px;color:var(--muted);font-size:.92rem;
+  }
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  @media(max-width:640px){
+    .wrap{width:min(100vw - 24px, 1080px);}
+    section{padding:60px 0;}
+  }
+</style>
+</head>
+<body>
+<div class="sticky-progress" id="progress"></div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <div class="kicker">AI 视频生成 · 给普通人讲明白</div>
+      <h1><span class="highlight">AI视频生成</span><br>到底是怎么一回事？</h1>
+      <p class="lead">如果你总感觉 AI 视频很厉害，但又说不清它到底难在哪、进步到哪、普通人该怎么用，这一页就是把这件事从总到分讲明白。</p>
+      <div class="pill-row">
+        <span class="pill">它是怎么生成的</span>
+        <span class="pill">五大问题</span>
+        <span class="pill">技术进展</span>
+        <span class="pill">提示词工程</span>
+        <span class="pill">三层工作流</span>
+        <span class="pill">2026 避坑</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kicker">01 · 总览地图</div>
+    <h2>如果把 AI 视频这件事拆开看，大概就是这 6 层</h2>
+    <p class="lead">你可以先粗略理解成：模型连续生成了很多帧“彼此接得上”的图片，当这些图片顺着时间连起来，看上去就动了起来。接下来我们再看，这件事为什么会难、现在进步到哪、普通人又该怎么更稳地用它。</p>
+
+    <div class="overview">
+      <article class="map-card card active" data-map="essence">
+        <small>Step 1</small>
+        <h3>如何生成</h3>
+        <p>先知道视频不是突然“拍出来”的，而是一帧一帧连续长出来的。</p>
+      </article>
+      <article class="map-card card" data-map="pain">
+        <small>Step 2</small>
+        <h3>五大问题</h3>
+        <p>人物一致性、帧间时序、物理真实性、长时序、可控性。</p>
+      </article>
+      <article class="map-card card" data-map="tech">
+        <small>Step 3</small>
+        <h3>技术进展</h3>
+        <p>主体绑定、光流正则、世界模型、长效记忆、首尾帧约束、蒸馏降本。</p>
+      </article>
+      <article class="map-card card" data-map="prompt">
+        <small>Step 4</small>
+        <h3>提示词工程</h3>
+        <p>正向提示词、负向提示词、运镜指令、风格质感关键词。</p>
+      </article>
+      <article class="map-card card" data-map="workflow">
+        <small>Step 5</small>
+        <h3>专业工作流</h3>
+        <p>资产冻结、动态生成、后期整合，三层架构比直接文生更稳。</p>
+      </article>
+      <article class="map-card card" data-map="tips">
+        <small>Step 6</small>
+        <h3>实战避坑</h3>
+        <p>宁短勿长、图生优先、动作保守、镜头拆分、少量抽卡择优。</p>
+      </article>
+    </div>
+
+    <div class="map-panel card active" data-panel="essence">
+      <h3>先建立一个最粗的理解</h3>
+      <p>你可以先把 AI 视频理解成：模型不是一次性拍出整段视频，而是在不断生成“下一帧应该长什么样”，让这些画面尽量连得上、接得顺、看起来像真的在动。</p>
+      <div class="chip-list">
+        <span class="chip">一帧一帧生成</span>
+        <span class="chip">前后画面接得上</span>
+        <span class="chip">角色和场景别乱跳</span>
+        <span class="chip">连起来像真的在动</span>
+      </div>
+    </div>
+    <div class="map-panel card" data-panel="pain">
+      <h3>再看为什么它容易翻车</h3>
+      <p>AI 视频最难的地方，不是偶尔生成一小段惊艳画面，而是让角色、动作、空间和叙事在连续时间里都别崩。后面这 5 个问题，几乎都围绕这件事展开。</p>
+      <div class="chip-list">
+        <span class="chip">人物一致性</span>
+        <span class="chip">时序一致性</span>
+        <span class="chip">物理真实性</span>
+        <span class="chip">长时序生成</span>
+        <span class="chip">可控性</span>
+      </div>
+    </div>
+    <div class="map-panel card" data-panel="tech">
+      <h3>技术进展的正确看法</h3>
+      <p>第二层不是罗列产品名，而是对应第一层问题，一一看行业是怎么补洞的。重点不是“有没有突破”，而是“突破到了几成熟，边界还剩在哪里”。</p>
+      <div class="chip-list">
+        <span class="chip">主体绑定</span>
+        <span class="chip">身份持久性注意力</span>
+        <span class="chip">光流正则化</span>
+        <span class="chip">世界模型</span>
+        <span class="chip">长效记忆</span>
+        <span class="chip">模型蒸馏</span>
+      </div>
+    </div>
+    <div class="map-panel card" data-panel="prompt">
+      <h3>提示词不是“写句子”，而是“写控制结构”</h3>
+      <p>第三层讲的是创作者最直接可用的方法。提示词工程的本质，是把主观创作意图翻译成模型更容易执行的结构化指令。</p>
+      <div class="chip-list">
+        <span class="chip">主体</span>
+        <span class="chip">动作</span>
+        <span class="chip">运镜</span>
+        <span class="chip">光影</span>
+        <span class="chip">质感</span>
+        <span class="chip">氛围</span>
+      </div>
+    </div>
+    <div class="map-panel card" data-panel="workflow">
+      <h3>先静态、再动态、再整合</h3>
+      <p>这是整页最实操的认知之一。很多新手翻车，不是因为不会写提示词，而是因为跳过了资产冻结阶段，直接拿随机生成去赌长视频一致性。</p>
+      <div class="chip-list">
+        <span class="chip">定角色</span>
+        <span class="chip">定场景</span>
+        <span class="chip">定画风</span>
+        <span class="chip">做动态</span>
+        <span class="chip">后期修瑕疵</span>
+      </div>
+    </div>
+    <div class="map-panel card" data-panel="tips">
+      <h3>避坑部分决定成片率</h3>
+      <p>最后一层不是补充，而是把前面的认知翻译成动作习惯。你顺着技术边界拍，出片率就高；你逆着上限硬来，抽卡和翻车就会大增。</p>
+      <div class="chip-list">
+        <span class="chip">短镜头</span>
+        <span class="chip">图生优先</span>
+        <span class="chip">保守运动</span>
+        <span class="chip">静态锚点</span>
+        <span class="chip">剪辑思维</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kicker">02 · AI视频是如何被生成的</div>
+    <h2>先理解这件事的底层能力，再看它为什么会难</h2>
+    <p class="lead">如果只用最简单的话来说，你可以先把 AI 视频理解成：模型连续生成了很多帧彼此接得上的图片，所以它最后看起来像“动了起来”。但真正难的地方，是它不只要生成，还要生成得连续、稳定、像真的一样。</p>
+
+    <div class="essence-grid">
+      <article class="essence-card">
+        <div class="essence-num">1</div>
+        <h3>先理解输入</h3>
+        <p>模型会先吸收你给它的文字、图片、角色参考、场景参考，试着理解“谁在画面里、他们在什么环境里、整体想要什么风格”。</p>
+      </article>
+      <article class="essence-card">
+        <div class="essence-num">2</div>
+        <h3>再预测连续画面</h3>
+        <p>视频不是一张图，而是一连串连续帧。模型要做的，是让后一帧像前一帧自然长出来，而不是每一帧都像重新抽一次卡。</p>
+      </article>
+      <article class="essence-card">
+        <div class="essence-num">3</div>
+        <h3>同时维持一致性</h3>
+        <p>角色不能忽然换脸，空间不能忽然跳变，动作不能无缘无故断掉。你看到的一切“稳定感”，本质上都来自模型在拼命维持这种连续性。</p>
+      </article>
+      <article class="essence-card">
+        <div class="essence-num">4</div>
+        <h3>把镜头语言翻译成运动</h3>
+        <p>推镜、环绕、抬头、转身、风吹、走路，这些都不是单词本身，而是要被翻译成时间里的画面变化。这也是为什么视频生成天然比图像生成难很多。</p>
+      </article>
+    </div>
+
+    <div class="essence-banner">
+      <h3>一句话记住</h3>
+      <p>AI 视频生成的本质，不只是“生成一张好看的图”，而是“让画面在时间里连续、稳定、像真的一样动起来”。后面所有难题，几乎都从这里长出来。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kicker">03 · 五大问题</div>
+    <h2>五个关键词，先把“今天为什么难”讲透</h2>
+    <p class="lead">这里不做百科定义，而是用“问题表现 + 底层根源 + 当前边界”的方式理解每个术语，这样更接近真实创作场景。</p>
+
+    <div class="term-grid">
+      <article class="term-card card pain">
+        <span class="tag">Pain 01</span>
+        <h3>人物一致性</h3>
+        <p><span class="core">你看到的表象：</span>同一个角色跨帧、跨镜头、跨光影之后，脸、发型、服装和体态开始漂。</p>
+        <p><span class="core">真正难点：</span>模型天生更像逐帧生成器，而不是带角色记忆的导演系统。</p>
+      </article>
+      <article class="term-card card pain">
+        <span class="tag">Pain 02</span>
+        <h3>时序一致性</h3>
+        <p><span class="core">你看到的表象：</span>单帧很美，连起来就闪、抖、蠕动，画面像果冻。</p>
+        <p><span class="core">真正难点：</span>扩散生成里的随机性，会把微小像素误差放大成连续运动瑕疵。</p>
+      </article>
+      <article class="term-card card pain">
+        <span class="tag">Pain 03</span>
+        <h3>物理真实性</h3>
+        <p><span class="core">你看到的表象：</span>穿模、漂浮、光影矛盾、液体和布料行为不自然。</p>
+        <p><span class="core">真正难点：</span>传统模型学会的是视觉统计，不是真实世界规则。</p>
+      </article>
+      <article class="term-card card pain">
+        <span class="tag">Pain 04</span>
+        <h3>长时序生成</h3>
+        <p><span class="core">你看到的表象：</span>前几秒通顺，越往后越跳戏，场景、道具和剧情开始崩。</p>
+        <p><span class="core">真正难点：</span>注意力窗口有限，误差会累计，全局状态记不住。</p>
+      </article>
+      <article class="term-card card pain">
+        <span class="tag">Pain 05</span>
+        <h3>生成可控性</h3>
+        <p><span class="core">你看到的表象：</span>同一提示词反复生成，结果差异巨大，创作者只能抽卡。</p>
+        <p><span class="core">真正难点：</span>语言到视频的细粒度映射并不精确，随机噪声还会继续放大差异。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kicker">04 · 技术进展</div>
+    <h2>同一组问题，行业是怎么逐步补洞的</h2>
+    <p class="lead">点不同标签，看技术进展不是“有没有”，而是“缓解到什么程度，边界还剩多少”。</p>
+
+    <div class="tab-shell">
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="character">人物一致性</button>
+        <button class="tab-btn" data-tab="temporal">时序一致性</button>
+        <button class="tab-btn" data-tab="physics">物理真实性</button>
+        <button class="tab-btn" data-tab="long">长时序</button>
+        <button class="tab-btn" data-tab="control">可控性</button>
+      </div>
+
+      <div class="tab-panel card active" data-tab-panel="character">
+        <h3>从“种子帧锚定”走向“主体绑定”</h3>
+        <p>今天更先进的方法，会提取角色五官、体态、穿搭等稳定特征，像给角色绑定一份视觉 DNA，让角色在多镜头里更容易维持身份连续。</p>
+        <div class="compare">
+          <div class="compare-card old">
+            <h4>旧阶段</h4>
+            <p>靠首帧约束，只能勉强稳住一个短镜头，镜头一换就容易漂。</p>
+          </div>
+          <div class="compare-card new">
+            <h4>新阶段</h4>
+            <p>通过身份持久性注意力，把角色特征贯穿生成流程，短剧情已经基本可用。</p>
+          </div>
+        </div>
+        <div class="product-spotlight">
+          <h4>更具体的做法</h4>
+          <p>如果把“人物一致性”翻译成创作动作，核心就是先把角色身份锁稳，再去做镜头变化。很多工作台会把这些能力做成一套连续操作，而不是让你每个镜头重新抽卡。</p>
+          <div class="feature-grid">
+            <div class="feature-chip">
+              <strong>人物三视图</strong>
+              <p>先把角色正、侧、背这些核心身份面固定下来，减少跨角度时的脸型和体态漂移。</p>
+            </div>
+            <div class="feature-chip">
+              <strong>720 度全景图</strong>
+              <p>用更完整的空间视角补足角色和环境关系，避免镜头一绕就换人、换空间感。</p>
+            </div>
+            <div class="feature-chip">
+              <strong>资产库</strong>
+              <p>把角色、服装、道具都沉到同一个资产层里，后面不是每镜头重新抽卡，而是持续调同一套素材。</p>
+            </div>
+            <div class="feature-chip">
+              <strong>3D 导演台</strong>
+              <p>把镜头调度和角色站位拉回导演视角，解决的不是“会不会生成”，而是“能不能保持统一调度”。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel card" data-tab-panel="temporal">
+        <h3>从逐帧随机，走向时空协同</h3>
+        <p>光流正则化、时空融合架构、多阶段分级生成，解决的是“看起来每帧都对，但连起来不对”的老毛病。</p>
+        <div class="compare">
+          <div class="compare-card old">
+            <h4>旧阶段</h4>
+            <p>清晰度和稳定性经常二选一，越想要高清，越容易闪烁。</p>
+          </div>
+          <div class="compare-card new">
+            <h4>新阶段</h4>
+            <p>常规慢速场景已接近专业商用标准，只剩极端高速细节还会轻微波动。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel card" data-tab-panel="physics">
+        <h3>从像素模仿，走向世界模型</h3>
+        <p>新范式不再只是在二维平面拼画面，而是尝试学习三维时空中的重力、遮挡、碰撞和透视关系。</p>
+        <div class="compare">
+          <div class="compare-card old">
+            <h4>旧阶段</h4>
+            <p>会生成“像真的”画面，但缺乏真实世界的行为逻辑。</p>
+          </div>
+          <div class="compare-card new">
+            <h4>新阶段</h4>
+            <p>宏观物理已经可信，真正难的是手指抓握、流体折射和多人精细交互。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel card" data-tab-panel="long">
+        <h3>从几秒碎片，走向可续写叙事</h3>
+        <p>预测性编码、长效记忆和分段续写融合，解决的是长视频最痛的三件事：忘前文、误差累积、超窗崩坏。</p>
+        <div class="compare">
+          <div class="compare-card old">
+            <h4>旧阶段</h4>
+            <p>5 到 10 秒尚可，超过之后剧情、道具、空间关系迅速松掉。</p>
+          </div>
+          <div class="compare-card new">
+            <h4>新阶段</h4>
+            <p>原生 20 到 60 秒已是主流水平，拼接续写后可撑到几分钟，但离电影级长叙事还有距离。</p>
+          </div>
+        </div>
+        <div class="product-spotlight">
+          <h4>更具体的做法</h4>
+          <p>长时序最怕的是素材越做越散、镜头越接越乱。更稳的思路，是让角色、道具、场景都持续待在同一个资产和画布上下文里，而不是每一段各生成各的。</p>
+          <div class="feature-grid">
+            <div class="feature-chip wide">
+              <strong>资产库 + 一次上传 50 个素材</strong>
+              <p>当参考图、角色稿、道具图和场景图都能一口气进入同一个资产系统，长时序生成就不再是每一段都重新开盲盒。</p>
+            </div>
+            <div class="feature-chip wide">
+              <strong>所有生成都在一张画布上</strong>
+              <p>这件事的价值不是界面方便，而是让角色、场景、道具和镜头关系始终在同一上下文里延续，所以越往后也不容易乱。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel card" data-tab-panel="control">
+        <h3>从纯抽卡，走向有限可控</h3>
+        <p>首尾帧双向约束、局部运动控制、多维引导生成，本质都是在减少随机性，让模型别跑出你的意图框架。</p>
+        <div class="compare">
+          <div class="compare-card old">
+            <h4>旧阶段</h4>
+            <p>结果高度随机，相同提示词也像在抽盲盒。</p>
+          </div>
+          <div class="compare-card new">
+            <h4>新阶段</h4>
+            <p>基础动作、基础运镜和氛围已经可控，复杂多人交互和精细节奏仍需试错。</p>
+          </div>
+        </div>
+        <div class="product-spotlight">
+          <h4>更具体的做法</h4>
+          <p>可控性的关键不是一次把所有东西说清，而是出现问题之后能不能精准回修。比起整段重来，定点改局部会更接近真实创作流程。</p>
+          <div class="feature-grid">
+            <div class="feature-chip wide">
+              <strong>片段重拍，框选哪里改哪里</strong>
+              <p>当创作者能直接框选需要重做的局部，而不是整段全部重抽，可控性就从“听天由命”变成“定点修复”。这解决的正是生成可控性的核心焦虑。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kicker">05 · 提示词工程</div>
+    <h2>提示词的本质，是让模型少猜一点</h2>
+    <p class="lead">这里不展开每个术语定义，而是给出最值得记住的组织方式和使用顺序。点开每一项，看它在创作里究竟扮演什么角色。</p>
+
+    <div class="accordion">
+      <article class="acc-item card open">
+        <button class="acc-trigger" type="button">
+          <strong>正向提示词：画面塑形的主骨架</strong>
+          <span>＋</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <p>最稳的方式不是想到什么写什么，而是按六段式组织：主体描述、动作行为、运镜指令、光影色调、材质质感、情绪氛围。它的价值不在“写多”，而在“写清结构”。</p>
+          </div>
+        </div>
+      </article>
+      <article class="acc-item card">
+        <button class="acc-trigger" type="button">
+          <strong>负向提示词：给废片率做兜底</strong>
+          <span>＋</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <p>它不是越长越好，而是集中处理高频翻车项：画质瑕疵、人物瑕疵、时序瑕疵、多余元素。核心原则是精准，不是堆词。</p>
+          </div>
+        </div>
+      </article>
+      <article class="acc-item card">
+        <button class="acc-trigger" type="button">
+          <strong>运镜指令：廉价感和电影感之间的分水岭</strong>
+          <span>＋</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <p>推、拉、平移、升降、环绕、跟随、轻微手持感，这些不是装饰词，而是帮助模型和观众一起理解空间关系与情绪方向。</p>
+          </div>
+        </div>
+      </article>
+      <article class="acc-item card">
+        <button class="acc-trigger" type="button">
+          <strong>风格质感词：统一审美，不让全片串味</strong>
+          <span>＋</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <p>每条提示词固定 2 到 3 个风格词，目的不是增加华丽度，而是避免模型在写实、动漫、胶片、霓虹等调性之间来回乱跳。</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kicker">06 · 专业工作流</div>
+    <h2>真正稳定的创作，不是直接文生，而是三层架构</h2>
+    <p class="lead">这部分最适合拿来讲“为什么专业做法和新手做法完全不同”。顺序不能反：先定资产，再做动态，最后整合成片。</p>
+
+    <div class="stepper">
+      <article class="step card">
+        <div class="n">1</div>
+        <h3>资产冻结层</h3>
+        <p>先把角色、场景、道具、画风和色调定住，目的是从源头减少跨镜头漂移。</p>
+        <ul>
+          <li>锁定角色定妆</li>
+          <li>固定场景构图与美术方向</li>
+          <li>统一视觉参数，别让后续镜头各拍各的</li>
+        </ul>
+      </article>
+      <article class="step card">
+        <div class="n">2</div>
+        <h3>动态生成层</h3>
+        <p>让已经稳定的资产开始动，但动作要拆开、镜头要变短，遵循单镜头单动作原则。</p>
+        <ul>
+          <li>优先图生视频，不赌纯文生</li>
+          <li>单镜头控制在 5 到 10 秒</li>
+          <li>复杂动作分镜头拆开做</li>
+        </ul>
+      </article>
+      <article class="step card">
+        <div class="n">3</div>
+        <h3>后期整合层</h3>
+        <p>把 AI 原生瑕疵和镜头断层修顺，再把碎片化镜头拼成统一成片。</p>
+        <ul>
+          <li>防抖、补帧、统一色调</li>
+          <li>剪辑拼接，补足叙事连续性</li>
+          <li>配音、配乐、字幕完成最终交付</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kicker">07 · 实战避坑</div>
+    <h2>最后这 8 条，决定你是“抽卡”还是“出片”</h2>
+    <p class="lead">这不是琐碎经验，而是把前面整套认知压缩成创作动作。你越顺着技术边界干，越容易得到稳定结果。</p>
+
+    <div class="tips-grid">
+      <article class="tip card">
+        <h4>宁短勿长，分段生成</h4>
+        <p>别强求一镜到底。单镜头 5 到 10 秒稳定性最优，长视频靠分段拼接，不靠单次硬撑。</p>
+      </article>
+      <article class="tip card">
+        <h4>图生优先于文生</h4>
+        <p>先拿优质静态图把资产钉住，再做动态，会比纯文字直接生成稳定很多。</p>
+      </article>
+      <article class="tip card">
+        <h4>动作幅度保守一些</h4>
+        <p>高速奔跑、剧烈打斗、快速转脸，仍然是翻车高发区。先用慢动作和缓动镜头保成片率。</p>
+      </article>
+      <article class="tip card">
+        <h4>规避正脸大动作特写</h4>
+        <p>正脸、近景、大幅动作叠加，是人物崩坏最常见组合。侧脸、中景、背影更稳。</p>
+      </article>
+      <article class="tip card">
+        <h4>给画面增加静态锚点</h4>
+        <p>墙体、路灯、建筑、静物都能帮助模型维持帧间参考，减少闪烁和漂移。</p>
+      </article>
+      <article class="tip card">
+        <h4>复杂动作拆开写</h4>
+        <p>一条提示词别塞太多动作。用“先、然后、随后”拆开，比一口气堆指令更稳。</p>
+      </article>
+      <article class="tip card">
+        <h4>少量抽卡，择优使用</h4>
+        <p>固定提示词出 3 到 5 条再选，通常比不断改词盲目试错更高效。</p>
+      </article>
+      <article class="tip card">
+        <h4>用剪辑思维做叙事</h4>
+        <p>现阶段 AI 更像镜头生成器，不是完整电影导演。叙事连续性交给剪辑系统来完成。</p>
+      </article>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const progress = document.getElementById('progress');
+  const revealEls = document.querySelectorAll('.reveal');
+  const mapCards = document.querySelectorAll('.map-card');
+  const mapPanels = document.querySelectorAll('.map-panel');
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+  const accItems = document.querySelectorAll('.acc-item');
+
+  const setProgress = () => {
+    const scrollTop = window.scrollY;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const width = max > 0 ? (scrollTop / max) * 100 : 0;
+    progress.style.width = width + '%';
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add('in');
+    });
+  }, {threshold: 0.16});
+  revealEls.forEach((el) => io.observe(el));
+
+  mapCards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const target = card.dataset.map;
+      mapCards.forEach((item) => item.classList.toggle('active', item === card));
+      mapPanels.forEach((panel) => panel.classList.toggle('active', panel.dataset.panel === target));
+    });
+  });
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      tabBtns.forEach((item) => item.classList.toggle('active', item === btn));
+      tabPanels.forEach((panel) => panel.classList.toggle('active', panel.dataset.tabPanel === target));
+    });
+  });
+
+  accItems.forEach((item) => {
+    item.querySelector('.acc-trigger').addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
+  });
+
+  setProgress();
+  window.addEventListener('scroll', setProgress, {passive:true});
+</script>
+</body>
+</html>
