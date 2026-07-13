@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>Codex 小白最全教程</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #0f1923;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .deck {
+    position: relative;
+    width: 960px;
+    height: 720px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    background: #EEF2F8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .label {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: #8a96aa;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .main-title {
+    font-size: 68px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.15;
+    margin-bottom: 28px;
+  }
+  .sub-title {
+    font-size: 19px;
+    color: #4a5568;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .caption {
+    font-size: 14px;
+    color: #8a96aa;
+    line-height: 1.7;
+  }
+  .accent-bar {
+    width: 40px; height: 4px;
+    background: #1a3a6b;
+    border-radius: 2px;
+    margin: 0 auto 28px;
+  }
+  .chapter-num {
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    color: #1a3a6b;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .chapter-title {
+    font-size: 62px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .slide.content {
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 48px 80px;
+  }
+  .slide-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: #1a3a6b;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .slide-heading {
+    font-size: 40px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+    margin-bottom: 22px;
+  }
+  .slide-body {
+    font-size: 17px;
+    color: #2d3748;
+    line-height: 1.9;
+  }
+  .hl { color: #1a3a6b; font-weight: 700; }
+  .block {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(26,58,107,0.06);
+    border-radius: 8px;
+    width: 100%;
+  }
+  .block-title {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: #1a3a6b;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .block-body {
+    font-size: 15px;
+    color: #2d3748;
+    line-height: 1.85;
+  }
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: #d4dce8;
+    margin: 16px 0;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 48px;
+    width: 100%;
+  }
+  .col-label {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: #1a3a6b;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .col-body {
+    font-size: 15px;
+    color: #2d3748;
+    line-height: 1.85;
+  }
+  .step-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 11px 16px;
+    background: rgba(26,58,107,0.05);
+    border-radius: 8px;
+  }
+  .step-num {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: #1a3a6b;
+    font-weight: 700;
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 56px;
+  }
+  .step-text {
+    font-size: 15px;
+    color: #2d3748;
+    line-height: 1.7;
+  }
+  .step-text strong { color: #111827; font-weight: 600; }
+  .trick-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 40px;
+    width: 100%;
+  }
+  .trick-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid #e8ecf2;
+  }
+  .trick-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1a3a6b;
+    letter-spacing: 0.1em;
+    min-width: 28px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .trick-name {
+    font-size: 14px;
+    color: #111827;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .trick-desc {
+    font-size: 12px;
+    color: #8a96aa;
+    line-height: 1.5;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    margin-top: 24px;
+  }
+  .flow-step { flex: 1; text-align: center; }
+  .flow-box {
+    background: rgba(26,58,107,0.07);
+    border-radius: 8px;
+    padding: 12px 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a3a6b;
+    line-height: 1.4;
+  }
+  .flow-box.end { background: #1a3a6b; color: #fff; }
+  .flow-arrow { font-size: 18px; color: #b0c4dc; padding: 0 4px; flex-shrink: 0; }
+  .flow-note { font-size: 11px; color: #8a96aa; margin-top: 6px; line-height: 1.5; }
+
+  /* 封面 logo */
+  .cover-logos {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 36px;
+  }
+  .cover-logo {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    object-fit: cover;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    opacity: 0.92;
+  }
+
+  /* 价值卡片 */
+  .value-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .value-card {
+    padding: 22px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #dde3ee;
+  }
+  .value-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a3a6b;
+    margin-bottom: 10px;
+  }
+  .value-body {
+    font-size: 15px;
+    color: #4a5568;
+    line-height: 1.8;
+  }
+
+  /* 拿手好戏网格 */
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .feat-card {
+    background: #fff;
+    border: 1px solid #dde3ee;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .feat-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+  }
+  .feat-desc {
+    font-size: 12px;
+    color: #8a96aa;
+    line-height: 1.6;
+  }
+
+  /* 架构表格 */
+  .arch-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 14px;
+  }
+  .arch-table th {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: #1a3a6b;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 2px solid #1a3a6b;
+    text-align: left;
+  }
+  .arch-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #e8ecf2;
+    color: #2d3748;
+    line-height: 1.5;
+    vertical-align: top;
+  }
+  .arch-table td:first-child { font-weight: 600; color: #111827; width: 150px; }
+  .arch-table td:last-child { color: #8a96aa; font-size: 13px; }
+
+  /* 七层色块图 */
+  .layer-stack { width: 100%; display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .lyr { display: flex; align-items: center; gap: 14px; padding: 10px 16px; border-radius: 8px; }
+  .lyr-tag { min-width: 132px; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+  .lyr-what { flex: 1; font-size: 13.5px; color: #2d3748; }
+  .lyr-eg { font-size: 12px; color: #8a96aa; text-align: right; flex-shrink: 0; }
+
+  /* prompt 对比 */
+  .pc { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 16px; width: 100%; }
+  .pc-panel { border: 1px solid #dbe3ef; border-radius: 12px; background: #fff; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .pc-head { font-size: 11px; letter-spacing: 0.12em; color: #8a96aa; padding: 9px 14px; border-bottom: 1px solid #eef2f8; text-transform: uppercase; font-weight: 700; display:flex; align-items:center; gap:7px; }
+  .pc-head .d { width:8px; height:8px; border-radius:50%; background:#d4dce8; }
+  .pc-head .who { margin-left:auto; text-transform:none; letter-spacing:0; font-weight:500; }
+  .pc-body { padding: 13px 15px; font-size: 13.5px; line-height: 1.9; color: #3a4452; white-space: pre-wrap; }
+  mark { border-radius: 0.4em; padding: 0.08em 0.28em; color: inherit; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+  mark.g { background: rgba(255,134,87,0.32); }
+  mark.c { background: rgba(79,201,170,0.30); }
+  mark.o { background: rgba(77,145,255,0.26); }
+  mark.b { background: rgba(255,193,59,0.36); }
+  .ilabel { display:inline-block; font-size:0.76em; padding:0.06em 0.42em; border-radius:0.42em; background:#fff; border:1px solid rgba(0,0,0,0.08); margin-right:0.24em; color:#5f4f43; }
+  .brk { display:block; margin-top:0.4em; }
+
+  /* 导航 */
+  .nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.7);
+    padding: 9px 22px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+  }
+  .nav button:hover { background: rgba(255,255,255,0.2); }
+  .nav button:disabled { opacity: 0.25; cursor: default; }
+  .counter { color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; min-width: 48px; text-align: center; }
+  .hint { position: fixed; bottom: 28px; right: 36px; color: rgba(255,255,255,0.2); font-size: 11px; }
+
+  /* 标题旁小图标 */
+  .title-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    vertical-align: middle;
+    margin-right: 12px;
+  }
+
+  /* ===== 目录：交互思维导图 ===== */
+  .mm-wrap { position: relative; width: 100%; height: 100%; padding: 36px 40px 24px; }
+  .mm-eyebrow { font-size: 11px; letter-spacing: 0.3em; color: #1a3a6b; font-weight: 600; text-transform: uppercase; }
+  .mm-head { display: flex; align-items: baseline; gap: 14px; margin-top: 2px; }
+  .mm-title { font-size: 30px; font-weight: 700; color: #111827; }
+  .mm-hint { font-size: 12px; color: #8a96aa; }
+  .mm-bar { width: 40px; height: 4px; background: #1a3a6b; border-radius: 2px; margin: 10px 0 0; }
+  .mm-stage { position: relative; width: 100%; height: 540px; margin: 8px auto 0; }
+  .mm-layer { position: absolute; inset: 0; transition: transform .42s cubic-bezier(.4,0,.2,1), opacity .42s ease; }
+  .mm-layer svg { position: absolute; left: 0; top: 0; pointer-events: none; }
+  .mm-grid { display: grid; grid-template-columns: repeat(3, 216px); grid-auto-rows: 138px; justify-content: center; align-content: center; gap: 32px 44px; height: 100%; }
+  .mm-card { border-radius: 12px; background: #fff; border: 2px solid var(--c); box-shadow: 0 5px 16px rgba(0,0,0,0.09); cursor: pointer; padding: 16px 18px; display: flex; flex-direction: column; justify-content: center; transition: transform .15s, box-shadow .15s; }
+  .mm-card:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(0,0,0,0.16); }
+  .mm-card .pn { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; color: var(--c); }
+  .mm-card .pname { font-size: 17px; font-weight: 700; color: #111827; margin: 5px 0 6px; }
+  .mm-card .pcount { font-size: 12px; color: #8a96aa; }
+  .mm-detail { opacity: 0; transform: scale(.45); pointer-events: none; }
+  .mm-detail.on { opacity: 1; transform: scale(1); pointer-events: auto; }
+  .mm-overview.hide { opacity: 0; transform: scale(2.1); pointer-events: none; }
+  .mm-dpart { position: absolute; transform: translate(-50%,-50%); z-index: 3; width: 240px; padding: 20px; border-radius: 14px; background: #fff; border: 3px solid var(--dc); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+  .mm-dpart .pn { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: var(--dc); }
+  .mm-dpart .pname { font-size: 23px; font-weight: 800; color: #111827; margin-top: 6px; line-height: 1.25; }
+  .mm-dleaf { position: absolute; transform: translate(0,-50%); z-index: 3; background: #fff; border: 1px solid #dbe3ef; border-left: 4px solid var(--dc); border-radius: 8px; padding: 8px 14px; font-size: 13.5px; color: #2d3748; box-shadow: 0 3px 10px rgba(0,0,0,0.06); white-space: nowrap; }
+  .mm-dleaf.moved { background: #fff5e6; border-left-color: #e08a1e; font-weight: 600; }
+  .mm-back { position: absolute; left: 0; top: -2px; z-index: 5; font-size: 13px; font-weight: 600; color: #1a3a6b; background: rgba(26,58,107,0.08); padding: 7px 14px; border-radius: 16px; cursor: pointer; border: 1px solid rgba(26,58,107,0.15); }
+  .mm-back:hover { background: rgba(26,58,107,0.15); }
+  .mm-legend { position: absolute; right: 40px; bottom: 12px; font-size: 11px; color: #8a96aa; }
+  .mm-legend b { color: #e08a1e; }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- P1 封面 -->
+  <div class="slide active">
+    <div class="label">Miss 发行人 · 大白话讲 AI</div>
+    <div class="accent-bar"></div>
+    <div class="main-title">Codex<br>小白最全教程</div>
+    <div class="sub-title">安装 · 提示词 · 避坑技巧 · 实战跟练</div>
+    <div class="caption">从零开始，把 AI 变成你的数字员工</div>
+    <div class="cover-logos">
+      <img class="cover-logo" src="logo-codex.png" alt="Codex" onerror="this.style.display='none'">
+      <img class="cover-logo" src="logo-openai.png" alt="OpenAI" onerror="this.style.display='none'">
+      <div style="width:1px;height:40px;background:rgba(26,58,107,0.2);margin:0 10px;"></div>
+      <div style="font-family:'SF Mono','Menlo','Courier New',monospace;font-size:34px;font-weight:700;color:#111827;letter-spacing:0.02em;"><span style="color:#7aa3cc;">&gt;_</span> Codex</div>
+    </div>
+  </div>
+
+  <!-- P2 目录（交互思维导图） -->
+  <div class="slide" style="padding:0;display:block;text-align:left;">
+    <div class="mm-wrap">
+      <div class="mm-eyebrow">CONTENTS · 目录</div>
+      <div class="mm-head">
+        <div class="mm-title">Codex 小白最全教程 · 6 章</div>
+        <div class="mm-hint">点击任意章节放大查看 · 点击「返回总览」或空白处回到全局</div>
+      </div>
+      <div class="mm-bar"></div>
+      <div class="mm-stage" id="mmStage">
+        <div class="mm-layer mm-overview" id="mmOv">
+          <div class="mm-grid">
+            <div class="mm-card" data-i="0" style="--c:#1a3a6b"><div class="pn">PART 01</div><div class="pname">认知与上手</div><div class="pcount">先懂它，再上手 · 9 节 ›</div></div>
+            <div class="mm-card" data-i="1" style="--c:#2f6f8f"><div class="pn">PART 02</div><div class="pname">怎么指导它</div><div class="pcount">基本使用方法 · 6 节 ›</div></div>
+            <div class="mm-card" data-i="2" style="--c:#7a5aa8"><div class="pn">PART 03</div><div class="pname">分层地图与生态</div><div class="pcount">体系 + 扩展 · 6 节 ›</div></div>
+            <div class="mm-card" data-i="3" style="--c:#0f7d84"><div class="pn">PART 04</div><div class="pname">进阶 · 并行与自动化</div><div class="pcount">一个人 = 一个团队 · 4 节 ›</div></div>
+            <div class="mm-card" data-i="4" style="--c:#b5701a"><div class="pn">PART 05</div><div class="pname">实战跟练</div><div class="pcount">三个深度案例 · 4 节 ›</div></div>
+            <div class="mm-card" data-i="5" style="--c:#c0392b"><div class="pn">PART 06</div><div class="pname">收尾 · 带走三件事</div><div class="pcount">行动清单 · 2 节 ›</div></div>
+          </div>
+        </div>
+        <div class="mm-layer mm-detail" id="mmDt">
+          <svg id="mmEdges"></svg>
+          <div class="mm-back" id="mmBack">← 返回总览</div>
+        </div>
+      </div>
+      <div class="mm-legend"><b>橙色</b> = 从原章节挪过来的内容</div>
+    </div>
+  </div>
+
+  <!-- ================= PART 01 认知与上手 ================= -->
+  <div class="slide">
+    <div class="chapter-num">PART  01</div>
+    <div class="chapter-title">认知与上手<br>先懂它，再上手</div>
+    <div class="sub-title">先跑通一次，信心就立住了</div>
+  </div>
+
+  <!-- 1.1 认知纠偏 -->
+  <div class="slide content no-icon">
+    <div class="slide-eyebrow">PART 01 · 1.1</div>
+    <div class="slide-heading">不是聊天机器人<br>而是能干活的数字员工</div>
+    <div class="slide-body">
+      <span class="hl">ChatGPT：</span>一个会聊天的聪明人，你问它答。<br>
+      <span class="hl">Codex：</span>一个真会读文件、改代码、跑命令、持续执行的同事。
+    </div>
+    <div class="divider"></div>
+    <div class="two-col">
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;margin-top:2px;background:#e8eef7;display:flex;align-items:center;justify-content:center;font-size:22px;">💬</div>
+        <div>
+          <div class="col-label">聊天机器人</div>
+          <div class="col-body">你问它答<br>问一个问题，得一个回答</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:14px;">
+        <div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;margin-top:2px;background:#1a3a6b;display:flex;align-items:center;justify-content:center;font-size:22px;">🧑‍💻</div>
+        <div>
+          <div class="col-label">数字员工 Codex</div>
+          <div class="col-body" style="color:#1a3a6b;font-weight:600">你交给它一段工作<br>它自己读、改、跑、验，直到做完</div>
+        </div>
+      </div>
+    </div>
+    <div class="caption" style="text-align:left;margin-top:16px;">核心是角色转换：你不是在问它一个问题，你是在<span class="hl">交给它一段工作</span>。</div>
+  </div>
+
+  <!-- 1.2 拿手好戏 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 01 · 1.2 · 能做什么</div>
+    <div class="slide-heading">Codex 的拿手好戏</div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-title">读文件</div><div class="feat-desc">自己翻遍整个项目，读懂代码和文档</div></div>
+      <div class="feat-card"><div class="feat-title">改代码</div><div class="feat-desc">多文件同步修改，给你一份 diff 对照</div></div>
+      <div class="feat-card"><div class="feat-title">跑命令</div><div class="feat-desc">装依赖、跑测试、执行脚本，一条龙</div></div>
+      <div class="feat-card"><div class="feat-title">修 Bug</div><div class="feat-desc">复现问题、定位原因、改完再自测</div></div>
+      <div class="feat-card"><div class="feat-title">写测试</div><div class="feat-desc">先写考卷再答题，代码质量有保障</div></div>
+      <div class="feat-card"><div class="feat-title">审 PR</div><div class="feat-desc">像资深同事一样帮你 review 改动</div></div>
+      <div class="feat-card"><div class="feat-title">做调研</div><div class="feat-desc">多分身并行查证，汇总成结构化报告</div></div>
+      <div class="feat-card"><div class="feat-title">搭网页</div><div class="feat-desc">从零做出能跑的前端页面，直接打开</div></div>
+      <div class="feat-card"><div class="feat-title">连外部系统</div><div class="feat-desc">接数据库、日历、内部服务，读写真实数据</div></div>
+      <div class="feat-card"><div class="feat-title">定时任务</div><div class="feat-desc">你睡觉它上班，每天自动跑一遍</div></div>
+      <div class="feat-card"><div class="feat-title">安全扫描</div><div class="feat-desc">画信任边界、建威胁模型、找出漏洞</div></div>
+      <div class="feat-card" style="background:#1a3a6b;border-color:#1a3a6b"><div class="feat-title" style="color:#fff">交给它一段活……</div><div class="feat-desc" style="color:rgba(255,255,255,0.6)">你说得清目标，它就能持续执行到完成</div></div>
+    </div>
+  </div>
+
+  <!-- 1.3 价值 · 数据 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 01 · 1.3 · 对你的价值</div>
+    <div class="slide-heading">普通人为什么<br>一定要试试？</div>
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="value-title">省时间</div>
+        <div class="value-body">以前要手动跑一下午的活，交给它一段话，自己去干别的。</div>
+      </div>
+      <div class="value-card">
+        <div class="value-title">省人力</div>
+        <div class="value-body">不用凑一个团队，你一个人带着几个"分身"就能开工。</div>
+      </div>
+      <div class="value-card">
+        <div class="value-title">做出以前做不到的事</div>
+        <div class="value-body">接手陌生项目、批量调研、搭一条只属于你的自动化流水线。</div>
+      </div>
+    </div>
+    <div class="block" style="margin-top:20px">
+      <div class="block-body" style="text-align:center;font-size:16px">
+        Codex 周活开发者 <span class="hl">400 万+</span> · Cisco / Nvidia / Ramp 内部大规模在用
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.4 四种形态 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 01 · 1.4</div>
+    <div class="slide-heading">四种形态<br>一处配置，处处生效</div>
+    <div class="feat-grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="feat-card"><div class="feat-title">App</div><div class="feat-desc">新手最推荐，桌面端开箱即用</div></div>
+      <div class="feat-card"><div class="feat-title">IDE 插件</div><div class="feat-desc">在你熟悉的编辑器里直接用</div></div>
+      <div class="feat-card"><div class="feat-title">CLI</div><div class="feat-desc">终端里跑，能写进脚本和 CI</div></div>
+      <div class="feat-card"><div class="feat-title">Cloud</div><div class="feat-desc">网页 + 手机，随时随地下任务</div></div>
+    </div>
+    <div class="block" style="margin-top:16px">
+      <div class="block-body">四种形态共享同一套 <span class="hl">配置层、AGENTS.md、Skills、MCP</span>——配一次，四处都认。</div>
+    </div>
+    <div class="divider"></div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">运行模式初识</div>
+        <div class="col-body">Local 本机跑 · Worktree 隔离副本<br>Cloud 云端容器（任务在 OpenAI 服务器跑，不碰你本地）</div>
+      </div>
+      <div>
+        <div class="col-label">新手建议</div>
+        <div class="col-body" style="color:#1a3a6b;font-weight:600">从 App 入手<br>（worktree 详解留到第四章）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.5 安装与登录 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 01 · 1.5</div>
+    <div class="slide-heading">安装与登录<br>Plus 账号，直接开跑</div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num">STEP 01</span><div class="step-text"><strong>登录</strong> &nbsp;·&nbsp; ChatGPT Plus 账号直接登录，<span class="hl">不需要 API Key</span></div></div>
+      <div class="step-item"><span class="step-num">STEP 02</span><div class="step-text"><strong>选模型</strong> &nbsp;·&nbsp; 用 <span class="hl">/model</span> 切换模型与思考深度</div></div>
+      <div class="step-item"><span class="step-num">STEP 03</span><div class="step-text"><strong>认界面</strong> &nbsp;·&nbsp; 线程、终端、diff 面板、权限提示，分别是什么先看一眼（下一页细讲）</div></div>
+    </div>
+  </div>
+
+  <!-- 1.6 界面初识：看懂 + 会用 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 01 · 1.6 · 界面初识</div>
+    <div class="slide-heading">打开先认这 4 块<br>看懂它，也顺手学会用</div>
+    <div class="feat-grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="feat-card">
+        <div class="feat-title">🧵 线程 Thread</div>
+        <div class="feat-desc"><b style="color:#1a3a6b">看懂：</b>一个任务一条对话线，来回和改动都记在这。<br><b style="color:#1a3a6b">会用：</b>一任务一线程；<span class="hl">/fork</span> 分叉、<span class="hl">/compact</span> 瘦身。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">⌨️ 终端 Terminal</div>
+        <div class="feat-desc"><b style="color:#1a3a6b">看懂：</b>它跑命令（装依赖、跑测试）的地方，每步可见。<br><b style="color:#1a3a6b">会用：</b>出错别自己啃，把报错整段贴回去让它修。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">🔀 Diff 面板</div>
+        <div class="feat-desc"><b style="color:#1a3a6b">看懂：</b>改动对照表，删红加绿。<br><b style="color:#1a3a6b">会用：</b>接受前必看；配合 git 存档、<span class="hl">/review</span> 复审。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">🔐 权限提示</div>
+        <div class="feat-desc"><b style="color:#1a3a6b">看懂：</b>它动你的东西前先弹窗问你。<br><b style="color:#1a3a6b">会用：</b>三档 read-only / workspace-write / full，<span class="hl">默认收紧</span>。</div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:14px;text-align:left">看懂这 4 块 + 会用它们，后面的操作你基本都能对上号。</div>
+  </div>
+
+  <!-- 1.7 第一次成功闭环 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 01 · 1.7 · 关键节</div>
+    <div class="slide-heading">先赢一次小的<br>跑通第一个完整闭环</div>
+    <div class="slide-body" style="margin-bottom:12px">
+      很多人卡死在第一步——不是不会写代码，而是<span class="hl">第一次没跑通，信心就断了</span>。第一个任务要刻意小：读一个文件 / 改一句文案 / 修一个具体 UI 问题。
+    </div>
+    <div class="flow-row" style="margin-top:8px">
+      <div class="flow-step"><div class="flow-box">打开项目</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">发第一个任务</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">看它读文件改文件</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">看 diff</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">批准一次权限</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box end">完成！</div></div>
+    </div>
+    <div class="caption" style="margin-top:20px;text-align:left">跑通之后，别急着走——第一次最常见的几个坑，我们下面单独排查。</div>
+  </div>
+
+  <!-- 1.8 第一次最常见的坑 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 01 · 1.8 · 差异化</div>
+    <div class="slide-heading">第一次最常见的<br>4 个坑，先躲开</div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num">坑 01</span><div class="step-text"><strong>目标给太大</strong>：一上来"帮我做个 App" → 它绕晕。<span class="hl">第一个任务小到一句话能验收</span>（改一行文案、修一个按钮）。</div></div>
+      <div class="step-item"><span class="step-num">坑 02</span><div class="step-text"><strong>没在项目里开 / 没给上下文</strong>：它找不到文件。<span class="hl">在项目根目录打开</span>，用 @ 把相关文件、报错贴给它。</div></div>
+      <div class="step-item"><span class="step-num">坑 03</span><div class="step-text"><strong>报错自己死磕</strong>：看不懂就卡住。<span class="hl">把报错整段贴回去</span>说"这是什么问题，帮我修"。</div></div>
+      <div class="step-item"><span class="step-num">坑 04</span><div class="step-text"><strong>权限一路全拒 / 全放</strong>：要么啥也干不了，要么裸奔。<span class="hl">该批准的批准</span>，危险操作再想想。</div></div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">第一次没跑通，信心就断了——这 4 条躲开，基本都能一次成功。</div>
+  </div>
+
+  <!-- 1.9 敢放手：权限 · 存档 · 审查 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 01 · 1.9 · 敢放手</div>
+    <div class="slide-heading">敢放手三件套<br>权限 · 存档 · 审查</div>
+    <div class="feat-grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="feat-card">
+        <div class="feat-title">🔐 权限三档</div>
+        <div class="feat-desc">read-only / workspace-write / full access。<span class="hl">默认收紧</span>，只在信任的仓库放宽。弹窗不是麻烦，是安全感。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">💾 Git 存档</div>
+        <div class="feat-desc">大改前先 commit = 游戏存档。AI 一次动十几个文件，改坏了一键回滚。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">🔀 Diff + /review</div>
+        <div class="feat-desc">删红加绿，接受前必看；<span class="hl">/review</span> 像 PR 一样复审。不看 diff 就接受 = 没看合同就签字。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-title">🧵 一线程一任务</div>
+        <div class="feat-desc">一个任务开一条线程；<span class="hl">/fork</span> 分叉、<span class="hl">/compact</span> 瘦身。别一条对话聊到死、越聊越糊涂。</div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">四件事都是"敢把活交给它、又不至于翻车"的护栏——一页记住。</div>
+  </div>
+
+  <!-- ================= PART 02 怎么指导它 ================= -->
+  <div class="slide">
+    <div class="chapter-num">PART  02</div>
+    <div class="chapter-title">怎么指导它</div>
+    <div class="sub-title">基本使用方法：从"下命令"升级到"带新人"</div>
+  </div>
+
+  <!-- 2.1 提示词四要素 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 02 · 2.1</div>
+    <div class="slide-heading">提示词四要素<br>官方公式</div>
+    <table class="arch-table">
+      <tr><th>要素</th><th>要点</th><th>一句话</th></tr>
+      <tr><td>Goal</td><td>要结果，不要步骤</td><td>说清你要什么，别替它规划怎么做</td></tr>
+      <tr><td>Context</td><td>@ 相关文件 / 报错</td><td>把上下文喂给它，别让它猜</td></tr>
+      <tr><td>Constraints</td><td>约束、规范、禁止项</td><td>先立规矩，划出边界</td></tr>
+      <tr><td>Done when</td><td>可验证的完成标准</td><td>什么算做完，你说了算</td></tr>
+    </table>
+    <div class="block" style="margin-top:14px">
+      <div class="block-body" style="text-align:center;font-size:16px">金句：没写 <span class="hl">done when</span>，就是在赌它对"完成"的理解和你一样。</div>
+    </div>
+  </div>
+
+  <!-- 2.2 模糊 vs 四段式 prompt 演示 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 02 · 2.2 · 演示</div>
+    <div class="slide-heading">同一件事，prompt 写法不同<br>结果常常差很多</div>
+    <div class="pc">
+      <div class="pc-panel">
+        <div class="pc-head"><span class="d"></span> 模糊版 <span class="who">你以为说清楚了</span></div>
+        <div class="pc-body">我会给你一段我随手写的修改想法。帮我整理成一条发给设计师的说明，语气友好一点，重点说清楚我想改哪些地方，不用太长。</div>
+      </div>
+      <div class="pc-panel">
+        <div class="pc-head"><span class="d" style="background:#1a3a6b"></span> 四段式版 <span class="who">目标 / 背景 / 输出 / 边界</span></div>
+        <div class="pc-body"><mark class="g"><span class="ilabel">目标</span>我会给你一段零散的修改想法，请整理成一条能直接发给设计师的界面修改说明，让设计师读完就能抓住这轮最重要的修改重点、不用来回确认，也能判断该先做什么</mark><mark class="c brk"><span class="ilabel">背景</span>这次改首页首屏，明天要过内部评审；偏"微调"，不是整版重做</mark><mark class="o brk"><span class="ilabel">输出</span>整理成 4–6 条、按优先级从高到低；每条具体到"改哪里、为什么改"</mark><mark class="b brk"><span class="ilabel">边界</span>语气保持合作感、别像下命令；别把"我在纠结要不要改"写成已拍板；别顺手扩出这轮范围外的新需求</mark></div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">同一个任务，右边多花 20 秒把<span class="hl">目标·背景·输出·边界</span>补齐，返工就少一大半。</div>
+  </div>
+
+  <!-- 2.3 Plan 先行 + grill-me -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 02 · 2.3</div>
+    <div class="slide-heading">Plan 先行<br>先规划，后动手</div>
+    <div class="slide-body" style="margin-bottom:14px">
+      直接让它动手，往往改着改着就走偏了。<span class="hl">/plan（或 Shift+Tab）</span>让它先收集上下文 → 提澄清问题 → 出计划，你确认了再动手。
+    </div>
+    <div class="block">
+      <div class="block-title">亮点技能：grill-me（反向面试）</div>
+      <div class="block-body">它先<span class="hl">采访你、挑战你的假设</span>，把需求问清楚再干——史上安装量最高的 Skill 之一，而且不限于写代码，任何模糊需求都能用它先"面试"一轮。</div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">你看计划花几秒钟，它走弯路可能要你花几十分钟来回修。</div>
+  </div>
+
+  <!-- 2.4 AGENTS.md -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 02 · 2.4</div>
+    <div class="slide-heading">AGENTS.md<br><span style="font-size:28px;font-weight:600;color:#4a5568;">给 AI 看的 README，短而准 &gt; 长而泛</span></div>
+    <div class="slide-body" style="margin-bottom:14px">
+      <span class="hl">/init</span> 一键生成。有效的写法<span class="hl">以命令开头</span>（安装命令、测试命令），不是长篇解释。
+    </div>
+    <div class="block" style="margin-top:0;margin-bottom:14px">
+      <div class="block-body">
+        三层叠加：<span class="hl">全局 ~/.codex</span> &nbsp;→&nbsp; <span class="hl">仓库根目录</span> &nbsp;→&nbsp; <span class="hl">子目录</span>，越近优先级越高
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">写什么进去</div>
+        <div class="col-body">安装 / 测试 / 构建命令<br>代码规范与约定<br>这个项目的已知陷阱</div>
+      </div>
+      <div>
+        <div class="col-label">养成习惯</div>
+        <div class="col-body" style="color:#1a3a6b;font-weight:600">同一个错误犯两次<br>就写进 AGENTS.md</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.5 记忆系统 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 02 · 2.5</div>
+    <div class="slide-heading">记忆系统 Memories<br><span style="font-size:26px;font-weight:600;color:#4a5568;">规矩你写，笔记它记</span></div>
+    <div class="block" style="margin-top:0">
+      <div class="block-body"><span class="hl">AGENTS.md</span> 是你写给它的规矩 &nbsp;·&nbsp; <span class="hl">Memories</span> 是它自己记的笔记：稳定偏好、工作流、技术栈、已知陷阱。</div>
+    </div>
+    <div class="divider"></div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">怎么开 · 怎么看</div>
+        <div class="col-body"><span class="hl">默认关闭</span>：在设置或 config.toml 设 memories = true<br>打开 ~/.codex/memories/memory.md，看它的"日记本"</div>
+      </div>
+      <div>
+        <div class="col-label">讲清边界</div>
+        <div class="col-body">不可手动编辑 · 不跨机器 · 无团队共享<br>空闲后才后台合并 · 敏感信息要自查</div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:14px;text-align:left">开关在<span class="hl">设置 / config.toml</span>；单条线程用不用记忆走 <span class="hl">/memories</span> 命令——它不会因为你对话里说一句就去改配置。</div>
+    <div class="caption" style="margin-top:6px;text-align:left;color:#1a3a6b;font-weight:600">口诀：该进 AGENTS.md 的，别指望记忆。</div>
+  </div>
+
+  <!-- 2.6 TDD -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 02 · 2.6</div>
+    <div class="slide-heading">TDD<br>先出考卷，再让 AI 答题</div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num">STEP 01</span><div class="step-text"><strong>先写测试</strong>，确认全挂——考卷先出好</div></div>
+      <div class="step-item"><span class="step-num">STEP 02</span><div class="step-text"><strong>让它实现</strong>到测试全过</div></div>
+      <div class="step-item"><span class="step-num">STEP 03</span><div class="step-text"><strong>禁止修改测试</strong>——不许改考卷，防它作弊</div></div>
+      <div class="step-item"><span class="step-num">STEP 04</span><div class="step-text"><strong>自己再跑一遍</strong>确认，再接受</div></div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">"不许改测试"这条最关键——"做完了"不再由它自己说了算。</div>
+  </div>
+
+  <!-- ================= PART 03 分层地图与生态 ================= -->
+  <div class="slide">
+    <div class="chapter-num">PART  03</div>
+    <div class="chapter-title">分层地图与生态<br>一张图 + 装什么</div>
+    <div class="sub-title">先看懂"什么放哪一层"，再谈装什么扩展</div>
+  </div>
+
+  <!-- 3.1 七层归位地图（色块图） -->
+  <div class="slide content" style="padding:40px 80px">
+    <div class="slide-eyebrow">PART 03 · 3.1 · 白板王牌卡</div>
+    <div class="slide-heading" style="margin-bottom:12px">七层归位：什么东西放哪一层</div>
+    <div class="layer-stack">
+      <div class="lyr" style="background:rgba(26,58,107,0.09)"><span class="lyr-tag" style="color:#1a3a6b">Prompt</span><span class="lyr-what">一次性要求 —— 定本轮</span><span class="lyr-eg">「把这个按钮改成蓝色」</span></div>
+      <div class="lyr" style="background:rgba(47,111,143,0.10)"><span class="lyr-tag" style="color:#2f6f8f">AGENTS.md</span><span class="lyr-what">重复规则 —— 管长期</span><span class="lyr-eg">「提交前必须跑 lint」</span></div>
+      <div class="lyr" style="background:rgba(15,125,132,0.10)"><span class="lyr-tag" style="color:#0f7d84">config.toml</span><span class="lyr-what">运行偏好 —— 控制面板</span><span class="lyr-eg">默认模型、权限、功能开关</span></div>
+      <div class="lyr" style="background:rgba(46,158,87,0.11)"><span class="lyr-tag" style="color:#2e9e57">Skill</span><span class="lyr-what">重复流程 —— 沉淀方法</span><span class="lyr-eg">「按我的模板出周报」</span></div>
+      <div class="lyr" style="background:rgba(181,112,26,0.11)"><span class="lyr-tag" style="color:#b5701a">MCP</span><span class="lyr-what">外部系统 —— 接活数据</span><span class="lyr-eg">数据库、日历、内部服务</span></div>
+      <div class="lyr" style="background:rgba(122,90,168,0.11)"><span class="lyr-tag" style="color:#7a5aa8">Plugin</span><span class="lyr-what">安装分发 —— 打包单位</span><span class="lyr-eg">一次装好一整套配置</span></div>
+      <div class="lyr" style="background:rgba(192,57,43,0.10)"><span class="lyr-tag" style="color:#c0392b">Automation</span><span class="lyr-what">长期重复任务 —— 定节奏</span><span class="lyr-eg">「每早 9 点总结昨日 commit」</span></div>
+    </div>
+    <div class="caption" style="margin-top:12px;text-align:left;color:#1a3a6b;font-weight:600">收口：Prompt 定本轮，AGENTS.md 管长期，skill 管流程，MCP 接外部，automation 管重复。</div>
+  </div>
+
+  <!-- 3.2 越用越乱 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 03 · 3.2</div>
+    <div class="slide-heading">为什么别人越用越稳<br>你却越用越乱？</div>
+    <div class="block" style="margin-top:0">
+      <div class="block-title">病因诊断</div>
+      <div class="block-body">
+        把<span class="hl">重复规则</span>塞进每次 prompt &nbsp;·&nbsp;
+        把<span class="hl">外部集成</span>当成 skill &nbsp;·&nbsp;
+        把<span class="hl">plugin</span> 当成能力本身
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="slide-body">
+      真正会用的人，拼的不是<span class="hl">一次 prompt 多聪明</span>，而是<span class="hl">长期系统搭得多顺</span>。每样东西各归其位，越用越轻松。
+    </div>
+  </div>
+
+  <!-- 3.3 三分法 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 03 · 3.3</div>
+    <div class="slide-heading">三分法：一句话记住谁管什么</div>
+    <div class="value-grid" style="margin-top:4px">
+      <div class="value-card">
+        <div class="value-title">Skill · 立规矩</div>
+        <div class="value-body">SKILL.md 定义"怎么做事"。启动只读名称描述（约占 2% 上下文），匹配才加载；开放标准，跨工具通用。</div>
+      </div>
+      <div class="value-card">
+        <div class="value-title">MCP · 接外部</div>
+        <div class="value-body">让它接上外部真实系统：数据库、内部 API、第三方服务，读写真实数据。</div>
+      </div>
+      <div class="value-card">
+        <div class="value-title">Plugin · 打包分发</div>
+        <div class="value-body">把 skills + agents + hooks + 配置打包分发。@plugin、/ 或 $skill 调用，也可自然语言隐式触发。</div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:20px;text-align:left;color:#1a3a6b;font-weight:600">Skill 立规矩，MCP 接外部，Plugin 打包分发。</div>
+  </div>
+
+  <!-- 3.4 热门 Skill 榜 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 03 · 3.4 · 按推荐强度</div>
+    <div class="slide-heading">热门 Skill 榜</div>
+    <div class="step-list">
+      <div class="step-item"><span class="step-num" style="min-width:120px">grill-me</span><div class="step-text">反向面试，先采访你再动手（呼应 2.3）</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:120px">skill-creator</span><div class="step-text"><strong>官方内置</strong>：从消费者变创造者，从反复流程里提炼比从零写更稳</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:120px">frontend-design</span><div class="step-text">演示之王，规避"AI 味"；npx skills add …</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:120px">Remotion / HyperFrames</span><div class="step-text">用代码做视频、自动字幕</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:120px">Trail of Bits</span><div class="step-text">21 个安全技能，自动识别 OWASP Top 10 并出修复报告</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:120px">find-skills</span><div class="step-text">彩蛋：一个"找 Skill 的 Skill"</div></div>
+    </div>
+    <div class="caption" style="margin-top:14px;text-align:left;color:#1a3a6b;font-weight:600">口诀：反复用同一段提示词 = 该做成 Skill 了。</div>
+  </div>
+
+  <!-- 3.5 热门 Plugin 清单 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 03 · 3.5 · 分场景</div>
+    <div class="slide-heading">热门 Plugin 清单</div>
+    <div class="feat-grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="feat-card"><div class="feat-title">办公三件套</div><div class="feat-desc">Documents + Spreadsheets + Presentations</div></div>
+      <div class="feat-card"><div class="feat-title">Vibe Coding 三件套</div><div class="feat-desc">GitHub + Vercel + Supabase</div></div>
+      <div class="feat-card"><div class="feat-title">操作神器</div><div class="feat-desc">Computer use + Chrome，替你动鼠标键盘</div></div>
+      <div class="feat-card" style="background:#1a3a6b;border-color:#1a3a6b"><div class="feat-title" style="color:#fff">集成之王 Composio</div><div class="feat-desc" style="color:rgba(255,255,255,0.65)">一个插件接 860+ 工具，免逐个配认证</div></div>
+    </div>
+    <div class="caption" style="margin-top:16px;text-align:left">按你的场景挑一两套先用起来，别一上来全装。</div>
+  </div>
+
+  <!-- 3.6 生态避坑 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 03 · 3.6 · 差异化干货</div>
+    <div class="slide-heading">生态避坑<br>装得准 &gt; 装得多</div>
+    <div class="step-list" style="margin-bottom:14px">
+      <div class="step-item"><span class="step-num" style="min-width:auto;font-size:12px">性能</span><div class="step-text">单条激活插件约占 <span class="hl">24 token</span>；同时挂 15+ 个 → 质量断崖下跌</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:auto;font-size:12px">来源</span><div class="step-text">ToxicSkills 安全危机——只从<span class="hl">官方市场和高口碑仓库</span>安装</div></div>
+    </div>
+    <div class="block">
+      <div class="block-body" style="text-align:center;color:#c0392b;font-weight:600">口诀：装得准 &gt; 装得多，来源要干净。</div>
+    </div>
+  </div>
+
+  <!-- ================= PART 04 进阶 · 并行与自动化 ================= -->
+  <div class="slide">
+    <div class="chapter-num">PART  04</div>
+    <div class="chapter-title">进阶玩法<br>并行与自动化</div>
+    <div class="sub-title">一个人，怎么变成一个 AI 团队</div>
+  </div>
+
+  <!-- 4.1 worktree -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 4.1</div>
+    <div class="slide-heading">并行开发 worktree<br>给每个工人一间独立样板房</div>
+    <div class="slide-body" style="margin-bottom:14px">
+      多任务隔离分支<span class="hl">并行、互不打架</span>，最后统一验收合并。worktree 是"敢放手让它干活"的分水岭（呼应 P01『敢放手』的安全感）。
+    </div>
+    <div class="flow-row" style="margin-top:8px">
+      <div class="flow-step"><div class="flow-box">线程 A</div><div class="flow-note">修 bug</div></div>
+      <div class="flow-arrow">｜</div>
+      <div class="flow-step"><div class="flow-box">线程 B</div><div class="flow-note">写测试</div></div>
+      <div class="flow-arrow">｜</div>
+      <div class="flow-step"><div class="flow-box">线程 C</div><div class="flow-note">做页面</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box end">统一合并</div><div class="flow-note">互不污染</div></div>
+    </div>
+    <div class="caption" style="margin-top:20px;text-align:left">一个窗口三个线程同时开工，像同时盯着三间样板房装修。</div>
+  </div>
+
+  <!-- 4.2 Subagent -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 4.2</div>
+    <div class="slide-heading">Subagent：分身术</div>
+    <div class="slide-body" style="margin-bottom:16px">
+      派出多个分身<span class="hl">并行干读重的活</span>，各查各的，最后汇总给你。
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">适合</div>
+        <div class="col-body" style="color:#1a3a6b;font-weight:600">大规模调研<br>代码库摸底<br>多源信息收集</div>
+      </div>
+      <div>
+        <div class="col-label">不适合</div>
+        <div class="col-body">互相依赖的写操作<br>（会互相打架、越并行越乱）</div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:20px;text-align:left">原则：只做读重、可并行、互不冲突的任务。</div>
+  </div>
+
+  <!-- 4.3 Automations -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 4.3</div>
+    <div class="slide-heading">Automations<br>你睡觉，它上班</div>
+    <div class="block" style="margin-top:0">
+      <div class="block-body"><span class="hl">Skills 定义方法，Automations 定义节奏。</span>把重复任务交给定时器。</div>
+    </div>
+    <div class="step-list" style="margin-top:14px">
+      <div class="step-item"><span class="step-num" style="min-width:auto;font-size:12px">每天</span><div class="step-text">总结昨日 commit，产出一份日报</div></div>
+      <div class="step-item"><span class="step-num" style="min-width:auto;font-size:12px">定期</span><div class="step-text">扫一遍潜在 bug、写发布说明</div></div>
+    </div>
+    <div class="caption" style="margin-top:14px;text-align:left;color:#1a3a6b;font-weight:600">技巧：先手动 dry run 跑通，再交给它无人值守。</div>
+  </div>
+
+  <!-- 4.4 codex exec + Cloud 安全扫描 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 04 · 4.4 · 彩蛋</div>
+    <div class="slide-heading">Codex Cloud 安全扫描<br><span style="font-size:26px;font-weight:600;color:#4a5568;">官方级应用安全 Agent</span></div>
+    <div class="flow-row" style="margin-top:8px">
+      <div class="flow-step"><div class="flow-box">分析仓库</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">画信任边界</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">建威胁模型</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">找漏洞</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box end">沙箱压测</div></div>
+    </div>
+    <div class="block" style="margin-top:18px">
+      <div class="block-body" style="text-align:center">数据锚点：<span class="hl">120 万次提交</span> → 揪出 <span class="hl">792 个严重漏洞</span>、<span class="hl">10,561 个高危</span>。威胁模型一旦建立，每个会话都带着安全上下文。</div>
+    </div>
+    <div class="caption" style="margin-top:14px;text-align:left">另：<span class="hl">codex exec</span> 适合固定输入输出的流水线 / CI 任务，探索型任务不合适——进阶留白，先知道有这么回事。</div>
+  </div>
+
+  <!-- ================= PART 05 实战跟练 ================= -->
+  <div class="slide">
+    <div class="chapter-num">PART  05</div>
+    <div class="chapter-title">实战跟练<br>三个深度案例</div>
+    <div class="sub-title">选一个，跟我一起从头走完全流程</div>
+  </div>
+
+  <!-- 5.1 实战总览 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 05 · 统一方法</div>
+    <div class="slide-heading">三个案例<br>一套流程走到底</div>
+    <div class="flow-row" style="margin-top:8px">
+      <div class="flow-step"><div class="flow-box">诊断任务</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">写 prompt</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">/plan</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">执行</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">出错处理</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box end">review + 回归</div></div>
+    </div>
+    <div class="two-col" style="margin-top:24px">
+      <div>
+        <div class="col-label">选案原则</div>
+        <div class="col-body">不再做"从零做玩具"<br>三个案例全走"深度 + 全流程复用"</div>
+      </div>
+      <div>
+        <div class="col-label">你要收获的</div>
+        <div class="col-body" style="color:#1a3a6b;font-weight:600">把前面各章每个技巧<br>在真实任务里各用一次</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5.2 实战一 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 05 · 实战一</div>
+    <div class="slide-heading">多 Agent 并行<br>深度调研</div>
+    <div class="slide-body" style="margin-bottom:8px">
+      给一个真实课题（如"某赛道竞品分析"），让多个 subagent 分头查证 → 汇总 → 生成结构化报告网页。
+    </div>
+    <div class="flow-row">
+      <div class="flow-step"><div class="flow-box">拆课题</div><div class="flow-note">定 Done when</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">多分身并行</div><div class="flow-note">各查各的</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">汇总查证</div><div class="flow-note">交叉核对</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box end">报告网页</div><div class="flow-note">结构化成品</div></div>
+    </div>
+    <div class="caption" style="margin-top:20px;text-align:left">复用：Subagent（4.2）+ worktree（4.1）+ Done when（2.1）。画面感：多个 agent 同时工作的"作战室"。</div>
+  </div>
+
+  <!-- 5.3 实战二 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 05 · 实战二 · Capstone</div>
+    <div class="slide-heading">接手一个陌生的<br>真实项目</div>
+    <div class="flow-row">
+      <div class="flow-step"><div class="flow-box">/init</div><div class="flow-note">生成 AGENTS.md</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">grill-me</div><div class="flow-note">澄清需求</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">/plan</div><div class="flow-note">先出计划</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">TDD</div><div class="flow-note">修 bug / 加功能</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">diff + /review</div><div class="flow-note">审查改动</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box end">提交 PR</div><div class="flow-note">被合并</div></div>
+    </div>
+    <div class="caption" style="margin-top:20px;text-align:left">这是全书方法论总复习——从"看不懂别人代码"到"PR 被合并"的完整旅程。共鸣点：我也能接手别人的项目。</div>
+  </div>
+
+  <!-- 5.4 实战三 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 05 · 实战三</div>
+    <div class="slide-heading">内容创作者的<br>自动化流水线</div>
+    <div class="flow-row">
+      <div class="flow-step"><div class="flow-box">$skill-creator</div><div class="flow-note">做"选题 Skill"</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">接 MCP</div><div class="flow-note">拉外部热点数据</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box">Automation</div><div class="flow-note">每早自动跑</div></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step"><div class="flow-box end">Memories</div><div class="flow-note">越用越懂你</div></div>
+    </div>
+    <div class="block" style="margin-top:20px">
+      <div class="block-body" style="text-align:center">把 <span class="hl">Skill + MCP + Automation + Memories</span> 四层串成一条真实工作流，正好是第三章分层地图的活案例。</div>
+    </div>
+    <div class="caption" style="margin-top:14px;text-align:left">画面感："早上醒来，选题卡已经躺在那"——非技术观众也能看懂的自动化魔法。</div>
+  </div>
+
+  <!-- ================= PART 06 收尾 · 带走三件事 ================= -->
+  <div class="slide">
+    <div class="chapter-num">PART  06</div>
+    <div class="chapter-title">收尾<br>带走一份行动清单</div>
+    <div class="sub-title">先躲开八大坑，再带走三件事</div>
+  </div>
+
+  <!-- 6.1 八大常犯错误 -->
+  <div class="slide content" style="padding:44px 80px">
+    <div class="slide-eyebrow">PART 06 · 6.1 · 官方避坑合集</div>
+    <div class="slide-heading" style="margin-bottom:16px">新手八大常犯错误</div>
+    <div class="trick-grid">
+      <div class="trick-item"><span class="trick-num">01</span><div><div class="trick-name">规则塞进每次 prompt</div><div class="trick-desc">长期规则该进 AGENTS.md</div></div></div>
+      <div class="trick-item"><span class="trick-num">02</span><div><div class="trick-name">跳过规划</div><div class="trick-desc">不用 /plan 直接开干</div></div></div>
+      <div class="trick-item"><span class="trick-num">03</span><div><div class="trick-name">一上来给全部权限</div><div class="trick-desc">默认就该收紧</div></div></div>
+      <div class="trick-item"><span class="trick-num">04</span><div><div class="trick-name">多线程改同一批文件</div><div class="trick-desc">不用 worktree 会打架</div></div></div>
+      <div class="trick-item"><span class="trick-num">05</span><div><div class="trick-name">盯着它一步步看</div><div class="trick-desc">该并行去干自己的活</div></div></div>
+      <div class="trick-item"><span class="trick-num">06</span><div><div class="trick-name">不写 Done when</div><div class="trick-desc">赌它和你理解一致</div></div></div>
+      <div class="trick-item"><span class="trick-num">07</span><div><div class="trick-name">不看 diff 就接受</div><div class="trick-desc">等于没看合同就签字</div></div></div>
+      <div class="trick-item" style="border:none"><span class="trick-num">08</span><div><div class="trick-name">插件装太多</div><div class="trick-desc">装得准 &gt; 装得多</div></div></div>
+    </div>
+  </div>
+
+  <!-- 6.2 收尾三件事 -->
+  <div class="slide content">
+    <div class="slide-eyebrow">PART 06 · 6.2</div>
+    <div class="slide-heading">带走三件事</div>
+    <div class="value-grid" style="margin-top:4px">
+      <div class="value-card">
+        <div class="value-title">第一个项目</div>
+        <div class="value-body">从实战三个案例里，选一个你最有感觉的，今天就开始。</div>
+      </div>
+      <div class="value-card">
+        <div class="value-title">第一个习惯</div>
+        <div class="value-body">每次下任务，都写清楚 <span class="hl">done when</span>。</div>
+      </div>
+      <div class="value-card">
+        <div class="value-title">第一个长期配置</div>
+        <div class="value-body">建好 <span class="hl">AGENTS.md</span>，并开启记忆。</div>
+      </div>
+    </div>
+    <div class="block" style="margin-top:20px">
+      <div class="block-body" style="text-align:center;font-size:16px">
+        Prompt 定本轮，AGENTS.md 管长期，skill 管流程，MCP 接外部，automation 管重复。<br>
+        <span class="hl">你不是在学一个工具，你是在学一种新的协作方式。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结尾 -->
+  <div class="slide">
+    <div class="label">Miss 发行人 · 大白话讲 AI</div>
+    <div class="accent-bar"></div>
+    <div class="main-title">恭喜你<br>迈出了这一步</div>
+    <div class="sub-title" style="margin-top:4px">会带 AI 干活的人，不会被 AI 替代。</div>
+    <div class="sub-title">你刚刚成为了其中一个。</div>
+    <div class="caption" style="margin-top:20px">
+      接下来不需要学完所有东西——<br>
+      带着一个真实的任务，打开 Codex，交给它去做。<br>
+      做着做着，你就会了。
+    </div>
+    <div class="sub-title" style="margin-top:24px;color:#1a3a6b;font-weight:700;">祝你 Codex 愉快 🎉</div>
+  </div>
+
+</div>
+
+<nav class="nav">
+  <button id="prev" disabled>←</button>
+  <span class="counter" id="counter">1 / 40</span>
+  <button id="next">→</button>
+</nav>
+<div class="hint">← → 键翻页</div>
+
+<script>
+  // 标题旁加小图标（跳过有图的页面 no-icon）
+  document.querySelectorAll('.slide-heading').forEach(heading => {
+    if (heading.closest('.no-icon')) return;
+    const icon = document.createElement('img');
+    icon.src = 'logo-codex.png';
+    icon.className = 'title-icon';
+    icon.onerror = () => icon.remove();
+    heading.style.display = 'flex';
+    heading.style.alignItems = 'center';
+    heading.insertBefore(icon, heading.firstChild);
+  });
+
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let cur = 0;
+  document.getElementById('counter').textContent = '1 / ' + total;
+
+  function go(n) {
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total - 1, n));
+    slides[cur].classList.add('active');
+    document.getElementById('counter').textContent = (cur+1) + ' / ' + total;
+    document.getElementById('prev').disabled = cur === 0;
+    document.getElementById('next').disabled = cur === total - 1;
+  }
+  document.getElementById('prev').addEventListener('click', () => go(cur-1));
+  document.getElementById('next').addEventListener('click', () => go(cur+1));
+  document.addEventListener('keydown', e => {
+    if (e.key==='ArrowRight'||e.key==='ArrowDown') go(cur+1);
+    if (e.key==='ArrowLeft' ||e.key==='ArrowUp')   go(cur-1);
+  });
+
+  /* ===== 目录交互思维导图 ===== */
+  (function(){
+    const COLORS = ['#1a3a6b','#2f6f8f','#7a5aa8','#0f7d84','#b5701a','#c0392b'];
+    const PARTS = [
+      { name:'认知与上手', leaves:[
+          {t:'数字员工，不是聊天机器人'},{t:'能做什么 · 拿手好戏'},{t:'为什么一定要试'},
+          {t:'四形态 · 运行模式'},{t:'安装与登录'},{t:'界面初识：看懂+会用'},
+          {t:'第一次成功闭环'},{t:'第一次最常见的坑'},{t:'敢放手：权限·存档·审查'} ] },
+      { name:'怎么指导它', leaves:[
+          {t:'提示词四要素'},{t:'模糊 vs 四段式 prompt'},{t:'Plan 先行 · grill-me'},
+          {t:'AGENTS.md'},{t:'记忆系统'},{t:'TDD：先出考卷再答题', m:1} ] },
+      { name:'分层地图与生态', leaves:[
+          {t:'七层归位地图'},{t:'为何别人稳、你越用越乱'},{t:'三分法：Skill / MCP / Plugin'},
+          {t:'热门 Skill 榜'},{t:'热门 Plugin 清单'},{t:'生态避坑'} ] },
+      { name:'进阶 · 并行与自动化', leaves:[
+          {t:'worktree 并行'},{t:'Subagent 分身'},{t:'Automations 定时'},{t:'exec · Cloud 安全扫描'} ] },
+      { name:'实战跟练', leaves:[
+          {t:'方法总览'},{t:'实战一 · 并行调研'},{t:'实战二 · 接手项目'},{t:'实战三 · 自动化流水线'} ] },
+      { name:'收尾 · 带走三件事', leaves:[
+          {t:'新手八大常犯错误'},{t:'带走三件事 · 行动清单'} ] },
+    ];
+    const stage = document.getElementById('mmStage');
+    if (!stage) return;
+    const ov = document.getElementById('mmOv'), dt = document.getElementById('mmDt');
+    const edgesSvg = document.getElementById('mmEdges');
+    const W = 880, H = 540;
+    function edge(a,b,col,w){ const dx=Math.max(28,(b.x-a.x)/2); return '<path d="M '+a.x+' '+a.y+' C '+(a.x+dx)+' '+a.y+', '+(b.x-dx)+' '+b.y+', '+b.x+' '+b.y+'" fill="none" stroke="'+col+'" stroke-width="'+w+'" stroke-opacity="0.5"/>'; }
+    function openDetail(i, card){
+      const p = PARTS[i], c = COLORS[i];
+      dt.querySelectorAll('.mm-dpart,.mm-dleaf').forEach(e=>e.remove());
+      const sw = stage.clientWidth || W, sh = stage.clientHeight || H;
+      const px = sw*0.23, py = sh*0.5;
+      const dp = document.createElement('div');
+      dp.className='mm-dpart'; dp.style.setProperty('--dc', c);
+      dp.style.left=px+'px'; dp.style.top=py+'px';
+      dp.innerHTML='<div class="pn">PART 0'+(i+1)+'</div><div class="pname">'+p.name+'</div>';
+      dt.appendChild(dp);
+      const n = p.leaves.length, lx = sw*0.58, gap = Math.min(60,(sh-50)/n), startY = py-(n-1)*gap/2;
+      const pts=[];
+      p.leaves.forEach((lf,k)=>{ const ly=startY+k*gap; pts.push({x:lx,y:ly});
+        const el=document.createElement('div'); el.className='mm-dleaf'+(lf.m?' moved':'');
+        el.style.setProperty('--dc',c); el.style.left=lx+'px'; el.style.top=ly+'px'; el.textContent=lf.t; dt.appendChild(el); });
+      edgesSvg.setAttribute('width',sw); edgesSvg.setAttribute('height',sh);
+      let path=''; pts.forEach(pt=>{ path+=edge({x:px+118,y:py},{x:lx-4,y:pt.y},c,1.7); }); edgesSvg.innerHTML=path;
+      const cr=card.getBoundingClientRect(), sr=stage.getBoundingClientRect();
+      const origin=(cr.left+cr.width/2-sr.left)+'px '+(cr.top+cr.height/2-sr.top)+'px';
+      ov.style.transformOrigin=origin; dt.style.transformOrigin=origin;
+      requestAnimationFrame(()=>{ ov.classList.add('hide'); dt.classList.add('on'); });
+    }
+    function closeDetail(){ ov.classList.remove('hide'); dt.classList.remove('on'); }
+    document.querySelectorAll('.mm-card').forEach(function(card){
+      card.addEventListener('click', function(e){ e.stopPropagation(); openDetail(+card.dataset.i, card); });
+    });
+    document.getElementById('mmBack').addEventListener('click', function(e){ e.stopPropagation(); closeDetail(); });
+    dt.addEventListener('click', closeDetail);
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeDetail(); });
+  })();
+</script>
+</body>
+</html>
