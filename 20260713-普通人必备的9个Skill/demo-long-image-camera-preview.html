@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>长图 Demo</title>
+<style>
+  :root{
+    --paper:#fff7ef;
+    --ink:#2f2218;
+    --soft:#6f5d4d;
+    --line:#e6d4bf;
+    --orange:#eb7b2a;
+    --red:#e15f52;
+    --mint:#75aa97;
+    --gold:#efb44f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 5%, rgba(239,180,79,.22), transparent 24%),
+      radial-gradient(circle at 90% 10%, rgba(117,170,151,.18), transparent 24%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  .poster{max-width:760px;margin:0 auto;padding:28px 24px 70px;}
+  .hero{
+    padding:28px 26px 24px;
+    border:2px solid var(--ink);
+    border-radius:28px;
+    background:linear-gradient(145deg,#fff9f1,#fffdfb);
+    box-shadow:10px 10px 0 rgba(47,34,24,.1);
+  }
+  .tag{
+    display:inline-flex;padding:7px 12px;border-radius:999px;border:2px solid var(--ink);
+    background:#fff;font-size:.82rem;font-weight:800;margin-bottom:14px;
+  }
+  h1{margin:0;font-size:3rem;line-height:1.02;}
+  .accent{color:var(--orange);}
+  .sub{margin-top:14px;color:var(--soft);font-size:1.05rem;line-height:1.8;}
+  .panel{
+    margin-top:18px;
+    border:2px solid var(--ink);
+    border-radius:24px;
+    background:#fff;
+    overflow:hidden;
+    box-shadow:8px 8px 0 rgba(47,34,24,.08);
+  }
+  .panel-head{
+    padding:14px 16px;
+    background:#f9efe2;
+    border-bottom:2px solid var(--ink);
+    font-weight:800;
+  }
+  .panel-body{padding:18px 18px 20px;}
+  .hook{
+    font-size:2rem;
+    font-weight:900;
+    line-height:1.15;
+    margin-bottom:14px;
+  }
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(3,1fr);}
+  .card{
+    border:2px solid var(--ink);
+    border-radius:18px;
+    padding:14px;
+    background:#fffdf9;
+  }
+  .pill{
+    display:inline-flex;padding:4px 8px;border-radius:999px;border:2px solid var(--ink);font-size:.72rem;font-weight:800;margin-bottom:8px;
+  }
+  .c1{background:#ffe2d9;}
+  .c2{background:#dff1eb;}
+  .c3{background:#ffeabc;}
+  .bars{display:grid;gap:8px;margin-top:10px;}
+  .bars span{display:block;height:10px;border-radius:999px;background:#eadbca;}
+  .bars span:nth-child(1){width:86%;}
+  .bars span:nth-child(2){width:72%;}
+  .bars span:nth-child(3){width:90%;}
+  .cta{
+    margin-top:18px;
+    padding:16px 18px;
+    border:2px dashed var(--orange);
+    border-radius:18px;
+    background:#fff6e9;
+    font-weight:700;
+  }
+  @media(max-width:720px){
+    h1{font-size:2.35rem;}
+    .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+  <div class="poster">
+    <section class="hero">
+      <div class="tag">做海报 / 长图 · 新 demo</div>
+      <h1>3 款新手微单怎么选<br><span class="accent">别再被参数骗了</span></h1>
+      <p class="sub">这张长图不是把原文压缩上去，而是先把“用户会点开的钩子”和“第一眼看懂的结论”排出来。</p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">第一屏：先给结论，不先讲理论</div>
+      <div class="panel-body">
+        <div class="hook">预算选 Canon，视频选 Sony，直出选 Fuji。</div>
+        <div class="grid">
+          <div class="card">
+            <div class="pill c1">预算优先</div>
+            <strong>Canon EOS R50</strong>
+            <div class="bars"><span></span><span></span><span></span></div>
+          </div>
+          <div class="card">
+            <div class="pill c2">视频优先</div>
+            <strong>Sony ZV-E10 II</strong>
+            <div class="bars"><span></span><span></span><span></span></div>
+          </div>
+          <div class="card">
+            <div class="pill c3">直出优先</div>
+            <strong>Fuji X-M5</strong>
+            <div class="bars"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+        <div class="cta">真正值钱的不是“做了一张图”，而是把长文重排成了更愿意被点开、保存和转发的视觉结构。</div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

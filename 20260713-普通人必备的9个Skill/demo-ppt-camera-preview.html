@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPT 预览 Demo</title>
+<style>
+  :root{
+    --bg:#f5efe6;
+    --paper:#fffdf8;
+    --ink:#2f241b;
+    --soft:#6d6258;
+    --line:#dfcfba;
+    --sun:#efb34f;
+    --mint:#79b7a8;
+    --coral:#df765f;
+    --sky:#8ca8c5;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(239,179,79,.22), transparent 26%),
+      radial-gradient(circle at 100% 10%, rgba(140,168,197,.18), transparent 24%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:28px 24px 50px;}
+  .top{
+    margin-bottom:24px;
+    padding:20px 22px;
+    border:2px solid var(--ink);
+    border-radius:24px;
+    background:linear-gradient(145deg,#fff8ec,#fffdf9);
+    box-shadow:8px 8px 0 rgba(47,36,27,.1);
+  }
+  .eyebrow{
+    display:inline-flex;
+    padding:6px 12px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:#fff;
+    font-size:.82rem;
+    font-weight:800;
+    margin-bottom:12px;
+  }
+  h1{
+    margin:0 0 8px;
+    font-size:2.1rem;
+    line-height:1.15;
+  }
+  p{margin:0;color:var(--soft);line-height:1.75;}
+  .slides{display:grid;gap:18px;}
+  .slide{
+    border:2px solid var(--ink);
+    border-radius:24px;
+    overflow:hidden;
+    background:var(--paper);
+    box-shadow:7px 7px 0 rgba(47,36,27,.1);
+  }
+  .slide-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 16px;
+    background:#f4ebdf;
+    border-bottom:2px solid var(--ink);
+    font-weight:800;
+  }
+  .slide-no{
+    width:34px;height:34px;border-radius:10px;
+    display:grid;place-items:center;
+    color:#fff;background:var(--sun);
+  }
+  .slide-body{padding:20px;}
+  .hero{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:18px;
+    align-items:center;
+  }
+  .hero h2{margin:0 0 12px;font-size:2rem;line-height:1.05;}
+  .hero .mark{color:#de6d2f;}
+  .bars{display:grid;gap:10px;}
+  .bars span{display:block;height:12px;border-radius:999px;background:#e6dbcc;}
+  .bars span:nth-child(1){width:82%;}
+  .bars span:nth-child(2){width:94%;}
+  .bars span:nth-child(3){width:76%;}
+  .bars span:nth-child(4){width:68%;}
+  .score{
+    border:2px solid var(--ink);
+    border-radius:18px;
+    padding:16px;
+    background:#fff6e9;
+  }
+  .score strong{font-size:2.2rem;display:block;margin-bottom:6px;}
+  .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .mini{
+    border:2px solid var(--ink);
+    border-radius:16px;
+    padding:14px;
+    background:#fff;
+  }
+  .mini h3{margin:0 0 8px;font-size:1rem;}
+  .chip{
+    display:inline-flex;
+    padding:4px 8px;
+    border-radius:999px;
+    border:2px solid var(--ink);
+    font-size:.72rem;
+    font-weight:800;
+    margin-bottom:8px;
+  }
+  .canon{background:#ffe2db;}
+  .sony{background:#dff3ed;}
+  .fuji{background:#ffe9bf;}
+  .table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:.9rem;
+  }
+  .table th,.table td{
+    border:1px solid var(--line);
+    padding:8px 10px;
+    text-align:left;
+  }
+  .table th{background:#fbf6ee;}
+  @media(max-width:760px){
+    .hero,.cols{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="eyebrow">一句话做 PPT · 预览</div>
+      <h1>“下周开会讲清楚该买哪台相机”<br>会被排成什么样的页面结构</h1>
+      <p>这不是完整 PPT 文件本体，而是把它“会长成什么样”先直接摊开。真正的 `pptx` 可以回主页面继续打开。</p>
+    </div>
+
+    <div class="slides">
+      <section class="slide">
+        <div class="slide-head"><span class="slide-no">1</span><span>封面页</span></div>
+        <div class="slide-body hero">
+          <div>
+            <h2>3 款新手微单相机<br><span class="mark">怎么选</span></h2>
+            <div class="bars"><span></span><span></span><span></span></div>
+          </div>
+          <div class="score">
+            <strong>6 页</strong>
+            <p>不是资料堆砌，而是按“决策汇报”的节奏排页。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><span class="slide-no" style="background:var(--mint);">2</span><span>结论先行页</span></div>
+        <div class="slide-body cols">
+          <div class="mini">
+            <div class="chip canon">预算优先</div>
+            <h3>Canon EOS R50</h3>
+            <p>最适合第一次买微单、想低风险入门的人。</p>
+          </div>
+          <div class="mini">
+            <div class="chip sony">视频优先</div>
+            <h3>Sony ZV-E10 II</h3>
+            <p>对焦、视频规格最强，但预算更高。</p>
+          </div>
+          <div class="mini">
+            <div class="chip fuji">颜值优先</div>
+            <h3>Fujifilm X-M5</h3>
+            <p>直出风格最强，适合偏生活方式内容。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><span class="slide-no" style="background:var(--coral);">3</span><span>对比维度页</span></div>
+        <div class="slide-body">
+          <table class="table">
+            <tr><th>维度</th><th>R50</th><th>ZV-E10 II</th><th>X-M5</th></tr>
+            <tr><td>预算</td><td>低</td><td>中</td><td>中</td></tr>
+            <tr><td>视频</td><td>够用</td><td>最强</td><td>强</td></tr>
+            <tr><td>取景器</td><td>有</td><td>无</td><td>无</td></tr>
+            <tr><td>直出风格</td><td>普通</td><td>普通</td><td>最强</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head"><span class="slide-no" style="background:var(--sky);">4</span><span>推荐方案页</span></div>
+        <div class="slide-body">
+          <div class="mini" style="background:#fff9ef;">
+            <h3>建议怎么讲给老板听</h3>
+            <p>如果目标是内部团队拍短视频，优先推 `Sony`；如果目标是低成本让新人快速上手，优先推 `Canon`；如果内容偏生活方式和美感表达，推 `Fuji`。</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

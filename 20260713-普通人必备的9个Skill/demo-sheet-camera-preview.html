@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>表格结果预览 Demo</title>
+<style>
+  :root{
+    --bg:#eef4ee;
+    --paper:#ffffff;
+    --ink:#253128;
+    --soft:#647267;
+    --line:#d4e0d4;
+    --green:#4e8f67;
+    --mint:#dff1e5;
+    --warn:#f6ead7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,#edf5ee,#f8fbf8);
+    color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:26px 22px 40px;}
+  .top{
+    margin-bottom:18px;
+    padding:18px 20px;
+    border:2px solid var(--ink);
+    border-radius:22px;
+    background:#fbfffb;
+    box-shadow:8px 8px 0 rgba(37,49,40,.08);
+  }
+  .eyebrow{
+    display:inline-flex;padding:6px 12px;border-radius:999px;border:2px solid var(--ink);
+    background:#fff;font-size:.8rem;font-weight:800;margin-bottom:10px;
+  }
+  h1{margin:0 0 8px;font-size:2rem;line-height:1.15;}
+  p{margin:0;color:var(--soft);line-height:1.75;}
+  .sheet{
+    border:2px solid var(--ink);
+    border-radius:22px;
+    overflow:hidden;
+    background:var(--paper);
+    box-shadow:8px 8px 0 rgba(37,49,40,.08);
+  }
+  .toolbar{
+    display:flex;align-items:center;gap:10px;
+    padding:12px 16px;
+    background:#f2f7f2;
+    border-bottom:2px solid var(--ink);
+  }
+  .dots span{
+    display:inline-block;width:10px;height:10px;border-radius:50%;background:#bfcdbf;margin-right:6px;
+  }
+  .fx{
+    padding:8px 12px;border:2px solid var(--line);border-radius:12px;background:#fff;flex:1;font-size:.88rem;color:var(--soft);
+  }
+  table{width:100%;border-collapse:collapse;font-size:.93rem;}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top;}
+  th{background:#f7fbf7;font-weight:800;}
+  .good{background:#eef9f1;}
+  .warn{background:#fff9ef;}
+  .note{
+    margin-top:14px;
+    padding:14px 16px;
+    border:2px dashed var(--green);
+    border-radius:16px;
+    background:var(--mint);
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="eyebrow">文档处理 · 结果表预览</div>
+      <h1>20 份乱格式文件，被整理成什么样的结果表</h1>
+      <p>这里直接模拟“交付结果长什么样”。重点不是摘要，而是一张能继续筛选、排序、比较的表。</p>
+    </div>
+    <div class="sheet">
+      <div class="toolbar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="fx">=UNIFY(价格, 型号, 交期, 保修, 关键参数)</div>
+      </div>
+      <table>
+        <tr>
+          <th>供应商</th><th>型号</th><th>含税价</th><th>交期</th><th>保修</th><th>视频</th><th>重量</th><th>备注</th>
+        </tr>
+        <tr class="good">
+          <td>A</td><td>Canon EOS R50</td><td>¥5,399</td><td>现货</td><td>2 年</td><td>4K30</td><td>375g</td><td>字段完整，可直接比价</td>
+        </tr>
+        <tr>
+          <td>B</td><td>Sony ZV-E10 II</td><td>¥7,299</td><td>7 天</td><td>1 年</td><td>4K60</td><td>377g</td><td>原文件写“到手价”，已统一为含税价</td>
+        </tr>
+        <tr class="warn">
+          <td>C</td><td>Fuji X-M5</td><td>¥6,699</td><td>预售</td><td>1 年</td><td>6.2K</td><td>355g</td><td>原文件缺交期，已标记待补</td>
+        </tr>
+      </table>
+    </div>
+    <div class="note">这类能力的重点是：从不同格式里抽同一组字段，再统一叫法和口径。最后交付的是可操作表，不是读后感。</div>
+  </div>
+</body>
+</html>

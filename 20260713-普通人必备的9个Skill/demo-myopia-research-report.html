@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深度研究 Demo · 孩子近视干预方案</title>
+<style>
+  :root{
+    --paper:#fffdf8;
+    --bg:#f3f6f1;
+    --ink:#263126;
+    --soft:#647064;
+    --line:#dbe3d8;
+    --green:#4f8d6a;
+    --blue:#5f85b8;
+    --orange:#e08a3f;
+    --red:#d9695f;
+    --cream:#fff7e9;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,#eef5ef,#fbfaf6);
+    color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.75;
+  }
+  .page{
+    max-width:860px;
+    margin:28px auto;
+    padding:34px 36px 42px;
+    border:2px solid var(--ink);
+    border-radius:24px;
+    background:var(--paper);
+    box-shadow:10px 10px 0 rgba(38,49,38,.1);
+  }
+  .badge{
+    display:inline-flex;
+    padding:6px 12px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:#fff;
+    font-size:.82rem;
+    font-weight:800;
+    margin-bottom:14px;
+  }
+  h1{margin:0 0 10px;font-size:2rem;line-height:1.2;}
+  h2{margin:26px 0 12px;font-size:1.25rem;}
+  p{margin:0 0 12px;color:var(--soft);}
+  strong{color:var(--ink);}
+  .conclusion{
+    margin-top:18px;
+    padding:18px 18px;
+    border:2px solid var(--ink);
+    border-radius:18px;
+    background:var(--cream);
+  }
+  .conclusion b{color:#a6531d;}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:12px;
+  }
+  .card{
+    border:2px solid var(--ink);
+    border-radius:16px;
+    background:#fff;
+    padding:14px;
+  }
+  .card .tag{
+    display:inline-flex;
+    padding:4px 8px;
+    border-radius:999px;
+    border:2px solid var(--ink);
+    font-size:.72rem;
+    font-weight:800;
+    margin-bottom:8px;
+  }
+  .green{background:#e4f2e9;}
+  .blue{background:#e4edf8;}
+  .orange{background:#fff0d9;}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:.92rem;
+    margin-top:10px;
+  }
+  th,td{
+    border:1px solid var(--line);
+    padding:10px 11px;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{background:#f6faf5;color:var(--ink);}
+  .risk{color:#b94d45;font-weight:800;}
+  .ok{color:#3f805d;font-weight:800;}
+  .process{
+    display:grid;
+    gap:10px;
+    margin-top:10px;
+  }
+  .step{
+    border-left:5px solid var(--green);
+    background:#f7fbf8;
+    border-radius:12px;
+    padding:12px 14px;
+  }
+  .step:nth-child(2){border-left-color:var(--blue);}
+  .step:nth-child(3){border-left-color:var(--orange);}
+  .step:nth-child(4){border-left-color:var(--red);}
+  .sources{
+    font-size:.86rem;
+    color:var(--soft);
+  }
+  @media(max-width:720px){
+    .page{margin:0;border-radius:0;padding:26px 20px;}
+    .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+    <span class="badge">深度研究 · 样例报告</span>
+    <h1>孩子近视涨得快，应该选哪种干预方案？</h1>
+    <p>这是一个典型的家庭决策题：信息多、口径乱、营销强，家长很容易只听到某一种方案的好处，却看不清适用条件和风险。</p>
+
+    <section class="conclusion">
+      <strong>先给结论：</strong>
+      <p>如果孩子已经出现持续进展，不能只靠“少看屏幕”解决。更稳的决策方式是先确认年龄、近视增长速度、角膜条件、用眼习惯和复查能力，再在 OK 镜、离焦镜、低浓度阿托品和行为干预之间组合选择。</p>
+      <p><b>这不是医疗建议。</b>它展示的是深度研究如何把一个模糊家庭问题，拆成可以带去问医生的判断框架。</p>
+    </section>
+
+    <h2>它会先拆成哪些问题</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="tag green">疗效</span>
+        <strong>哪类方案有较稳定证据？</strong>
+        <p>比较不同方案对近视进展控制的证据强度，而不是只看广告描述。</p>
+      </div>
+      <div class="card">
+        <span class="tag blue">适用</span>
+        <strong>什么孩子更适合？</strong>
+        <p>年龄、度数、散光、角膜条件、生活习惯都会影响选择。</p>
+      </div>
+      <div class="card">
+        <span class="tag orange">执行</span>
+        <strong>家里能不能坚持？</strong>
+        <p>OK 镜护理、滴药依从性、户外时间和复查频率都要算进去。</p>
+      </div>
+    </div>
+
+    <h2>方案对比表</h2>
+    <table>
+      <tr><th>方案</th><th>适合重点</th><th>主要风险/限制</th><th>研究结论会怎么写</th></tr>
+      <tr>
+        <td>OK 镜</td>
+        <td>进展较快、能严格护理、愿意定期复查</td>
+        <td><span class="risk">护理要求高</span>，角膜条件不合适则不应勉强</td>
+        <td>不是“最好”，而是适合执行力强、复查稳定的家庭</td>
+      </tr>
+      <tr>
+        <td>离焦镜</td>
+        <td>希望低维护、日常佩戴更简单</td>
+        <td>依赖佩戴时长，部分孩子适应期较明显</td>
+        <td>更像低门槛长期方案，适合先稳住执行</td>
+      </tr>
+      <tr>
+        <td>低浓度阿托品</td>
+        <td>需要医生评估后配合使用</td>
+        <td><span class="risk">必须由医生判断</span>，注意副作用和停药反弹讨论</td>
+        <td>不能自行购买乱用，应作为医生方案的一部分</td>
+      </tr>
+      <tr>
+        <td>行为干预</td>
+        <td>所有孩子都该做的底层措施</td>
+        <td>单独使用通常不够应对快速进展</td>
+        <td><span class="ok">必须做</span>，但不要把它当成唯一方案</td>
+      </tr>
+    </table>
+
+    <h2>深度研究真正做了什么</h2>
+    <div class="process">
+      <div class="step"><strong>1. 先拆问题：</strong>把“选哪个”拆成疗效、风险、适用条件、执行成本、复查要求。</div>
+      <div class="step"><strong>2. 再分层找源：</strong>优先看眼科指南、医院科普、系统综述，再看产品说明和家长经验。</div>
+      <div class="step"><strong>3. 交叉验证：</strong>遇到“某方案最有效”“零风险”这类说法，会回到医学来源核对，不直接采信营销口径。</div>
+      <div class="step"><strong>4. 最后变成行动：</strong>输出一张带去问医生的提问清单，而不是替医生下诊断。</div>
+    </div>
+
+    <h2>带去问医生的 5 个问题</h2>
+    <table>
+      <tr><th>问题</th><th>为什么要问</th></tr>
+      <tr><td>孩子过去一年近视增长速度是多少？</td><td>决定是否需要更积极的控制方案。</td></tr>
+      <tr><td>角膜条件是否适合 OK 镜？</td><td>不适合时不能为了效果硬上。</td></tr>
+      <tr><td>如果用阿托品，浓度、复查和副作用怎么管理？</td><td>避免把药物当成普通护眼产品。</td></tr>
+      <tr><td>离焦镜每天需要戴多久才有意义？</td><td>把“买了”变成“真正执行”。</td></tr>
+      <tr><td>多久复查一次，什么情况要调整方案？</td><td>近视控制是跟踪问题，不是一次性购买问题。</td></tr>
+    </table>
+
+    <p class="sources">示例来源类型：眼科指南、三甲医院科普、系统综述、产品说明书、真实执行成本信息。正式研究时会附来源链接、发布日期和可信度标记。</p>
+  </main>
+</body>
+</html>

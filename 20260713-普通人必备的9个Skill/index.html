@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>普通人必备的 9 个 Skill · 最终稿</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Baloo+2:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#faf4e9;
+    --cream-2:#f3ead8;
+    --paper:#fffdf8;
+    --ink:#3f3428;
+    --ink-soft:#6b5f50;
+    --ink-faint:#998875;
+    --line:#e5d6bf;
+    --sun:#f0b54f;
+    --mint:#73b7a5;
+    --coral:#df6f74;
+    --sky:#7ea6c9;
+    --plum:#7d659c;
+    --sun-bg:#fde8bf;
+    --mint-bg:#dff1eb;
+    --coral-bg:#f8dde0;
+    --sky-bg:#ddeaf5;
+    --plum-bg:#ece4f5;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:"Noto Sans SC","Baloo 2",sans-serif;
+    line-height:1.82;
+    background:
+      radial-gradient(circle at 10% 8%, #fdeccc 0, transparent 34%),
+      radial-gradient(circle at 90% 7%, #dfeff1 0, transparent 32%),
+      radial-gradient(circle at 82% 88%, #f8dfe3 0, transparent 28%),
+      var(--cream);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    margin:0;
+    font-family:"Fraunces","Noto Sans SC",serif;
+    line-height:1.12;
+    letter-spacing:-.02em;
+  }
+  p{margin:0 0 1em;}
+  strong{color:#b15d1b;}
+
+  #progress{
+    position:fixed;
+    inset:0 auto auto 0;
+    width:0;
+    height:6px;
+    z-index:999;
+    background:linear-gradient(90deg,var(--sun),var(--mint),var(--coral),var(--plum));
+    border-bottom-right-radius:8px;
+  }
+
+  .layout{
+    display:grid;
+    grid-template-columns:280px minmax(0,1fr);
+    gap:0;
+    min-height:100vh;
+  }
+
+  .side{
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow:auto;
+    padding:26px 20px 30px;
+    background:var(--cream-2);
+    border-right:2px dashed var(--line);
+  }
+  .brand{
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:18px;
+    padding:16px 16px 14px;
+    box-shadow:4px 4px 0 var(--sun);
+  }
+  .brand h1{
+    font-size:1.2rem;
+    font-weight:900;
+    line-height:1.25;
+  }
+  .brand p{
+    margin:10px 0 0;
+    color:var(--ink-soft);
+    font-size:.88rem;
+  }
+  .nav-group{
+    margin-top:18px;
+  }
+  .nav-label{
+    margin:14px 0 8px 12px;
+    font-size:.74rem;
+    letter-spacing:.1em;
+    color:var(--ink-faint);
+    font-weight:800;
+  }
+  .side a{
+    display:block;
+    text-decoration:none;
+    color:var(--ink-soft);
+    font-weight:700;
+    padding:9px 12px;
+    border-radius:999px;
+    margin-bottom:6px;
+    border:2px solid transparent;
+    transition:transform .14s ease,background .14s ease,box-shadow .14s ease;
+  }
+  .side a:hover{
+    background:var(--paper);
+    color:var(--ink);
+    border-color:var(--ink);
+    box-shadow:3px 3px 0 var(--ink);
+    transform:translate(-1px,-1px);
+  }
+  .side a.active{
+    background:var(--sun-bg);
+    color:var(--ink);
+    border-color:var(--ink);
+    box-shadow:3px 3px 0 var(--sun);
+  }
+
+  .main{
+    min-width:0;
+    padding:0 clamp(22px,4vw,56px) 70px;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+  }
+
+  .hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding:40px 0;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 14px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:var(--paper);
+    box-shadow:3px 3px 0 var(--ink);
+    font-size:.84rem;
+    font-weight:800;
+    margin-bottom:18px;
+  }
+  .hero h2{
+    font-size:clamp(2.2rem,5vw,4rem);
+    max-width:12ch;
+    margin-bottom:16px;
+  }
+  .hero.hero-cover h2{
+    max-width:none;
+    font-size:clamp(2.8rem,6vw,5.1rem);
+    margin-bottom:0;
+  }
+  .hero-title{
+    display:inline-block;
+    position:relative;
+    color:var(--ink);
+  }
+  .hero-title .mark{
+    position:relative;
+    display:inline-block;
+    z-index:0;
+  }
+  .hero-title .mark::after{
+    content:"";
+    position:absolute;
+    left:-2%;
+    right:-2%;
+    bottom:.05em;
+    height:.17em;
+    background:linear-gradient(90deg,rgba(255,211,106,.0) 0%, rgba(255,211,106,.9) 8%, rgba(240,181,79,.95) 50%, rgba(255,159,67,.84) 92%, rgba(255,159,67,0) 100%);
+    border-radius:999px;
+    transform:rotate(-1.6deg);
+    z-index:-1;
+  }
+  .hero-title .accent{
+    position:relative;
+    color:#ea7b1f;
+    white-space:nowrap;
+    text-shadow:0 2px 0 rgba(255,255,255,.42);
+  }
+  .hero-title .accent::after{
+    content:"";
+    position:absolute;
+    left:-2%;
+    right:-2%;
+    bottom:.08em;
+    height:.24em;
+    background:linear-gradient(90deg,#ffd36a,#f0b54f,#ff9f43);
+    border-radius:6px;
+    z-index:-1;
+    transform:rotate(-1.2deg);
+  }
+  .hero-cover-card{
+    position:relative;
+    display:inline-block;
+    padding:26px 30px 22px;
+    border:2px solid var(--ink);
+    border-radius:30px;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(240,181,79,.22) 0, transparent 28%),
+      radial-gradient(circle at 88% 20%, rgba(126,166,201,.18) 0, transparent 24%),
+      linear-gradient(145deg,#fff8ec,#fffdf9);
+    box-shadow:8px 8px 0 rgba(63,52,40,.12);
+  }
+  .hero-cover-card::before{
+    content:"";
+    position:absolute;
+    width:88px;
+    height:88px;
+    right:-18px;
+    top:-16px;
+    border:2px dashed var(--plum);
+    border-radius:24px;
+    background:rgba(236,228,245,.5);
+    transform:rotate(10deg);
+    z-index:-1;
+  }
+  .hero-cover-card::after{
+    content:"";
+    position:absolute;
+    width:120px;
+    height:14px;
+    left:28px;
+    bottom:-12px;
+    background:rgba(63,52,40,.1);
+    filter:blur(10px);
+    border-radius:999px;
+  }
+
+  section.skill{
+    padding:34px 0 42px;
+    border-top:2px dashed var(--line);
+  }
+  .skill-head{
+    border:2px solid var(--ink);
+    border-radius:28px;
+    background:
+      radial-gradient(circle at 10% 14%, rgba(240,181,79,.2) 0, transparent 26%),
+      radial-gradient(circle at 90% 18%, rgba(115,183,165,.18) 0, transparent 24%),
+      linear-gradient(145deg,#fff8ec,#fffdf9);
+    padding:22px 22px;
+    box-shadow:7px 7px 0 rgba(63,52,40,.12);
+    margin-bottom:18px;
+  }
+  .skill-no{
+    display:inline-flex;
+    padding:6px 12px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:var(--paper);
+    box-shadow:3px 3px 0 var(--ink);
+    font-size:.8rem;
+    font-weight:800;
+    margin-bottom:14px;
+  }
+  .skill-head h2{
+    font-size:clamp(1.9rem,4vw,3rem);
+    margin-bottom:10px;
+  }
+  .skill-head p{
+    max-width:62ch;
+    color:var(--ink-soft);
+    font-size:1.04rem;
+  }
+
+  .step{
+    margin-top:16px;
+  }
+  .step-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  .step-badge{
+    width:44px;
+    height:44px;
+    display:grid;
+    place-items:center;
+    border-radius:14px;
+    color:#fff;
+    font-size:1.15rem;
+    font-weight:900;
+    box-shadow:4px 4px 0 rgba(63,52,40,.18);
+    transform:rotate(-6deg);
+  }
+  section.skill > .step:nth-of-type(3) .step-badge{background:var(--sun);}
+  section.skill > .step:nth-of-type(4) .step-badge{background:var(--mint);}
+  section.skill > .step:nth-of-type(5) .step-badge{background:var(--coral);}
+  .step-title h3{
+    font-size:1.45rem;
+  }
+
+  .card{
+    border:2px solid var(--ink);
+    border-radius:22px;
+    background:var(--paper);
+    padding:16px 16px 14px;
+    box-shadow:5px 5px 0 rgba(63,52,40,.12);
+  }
+
+  .what-grid,
+  .tips-grid{
+    display:grid;
+    gap:12px;
+  }
+  @media(min-width:760px){
+    .what-grid{grid-template-columns:1.2fr .8fr;}
+    .tips-grid{grid-template-columns:repeat(3,1fr);}
+  }
+
+  .pill-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    padding:7px 11px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:var(--paper);
+    box-shadow:3px 3px 0 rgba(63,52,40,.12);
+    font-size:.9rem;
+    font-weight:700;
+  }
+
+  .compare{
+    display:grid;
+    gap:12px;
+    margin-top:12px;
+  }
+  @media(min-width:760px){.compare{grid-template-columns:repeat(2,1fr);}}
+  .compare-col{
+    border:2px solid var(--ink);
+    border-radius:20px;
+    padding:16px;
+    background:var(--paper);
+    box-shadow:5px 5px 0 rgba(63,52,40,.1);
+  }
+  .compare-col.bad{background:linear-gradient(180deg,#fff7f7,#fffdfb);}
+  .compare-col.good{background:linear-gradient(180deg,#f3fbf8,#fffdfb);}
+  .compare-card.bad{background:linear-gradient(180deg,#fff7f7,#fffdfb);}
+  .compare-card.good{background:linear-gradient(180deg,#f3fbf8,#fffdfb);}
+  .compare-tag{
+    display:inline-flex;
+    margin-bottom:12px;
+    padding:6px 11px;
+    border-radius:999px;
+    border:2px solid var(--ink);
+    font-size:.8rem;
+    font-weight:800;
+  }
+  .compare-col ul,
+  .tips-grid ul{
+    margin:0;
+    padding-left:1.1em;
+  }
+
+  .case-box{
+    margin-top:12px;
+    padding:14px 16px;
+    border:2px dashed var(--line);
+    border-radius:18px;
+    background:#fffefb;
+  }
+  .mock{
+    margin-top:14px;
+    border:2px dashed var(--line);
+    border-radius:18px;
+    padding:14px;
+    background:#fffefb;
+  }
+  .mock.plain .bar{
+    height:12px;
+    border-radius:999px;
+    background:#ddd2c2;
+    margin-bottom:10px;
+  }
+  .mock.plain .bar:nth-child(1){width:72%;}
+  .mock.plain .bar:nth-child(2){width:95%;}
+  .mock.plain .bar:nth-child(3){width:90%;}
+  .mock.plain .bar:nth-child(4){width:88%;}
+  .mock.plain .bar:nth-child(5){width:70%;}
+  .mock.rich{
+    background:
+      radial-gradient(circle at 10% 12%, rgba(240,181,79,.16) 0, transparent 24%),
+      linear-gradient(145deg,#fff8ec,#fffdf9);
+  }
+  .mock-window{
+    border:2px solid var(--ink);
+    border-radius:16px;
+    overflow:hidden;
+    background:#fff;
+  }
+  .mock-top{
+    padding:8px 12px;
+    background:#f4ece0;
+    border-bottom:2px solid var(--ink);
+  }
+  .mock-top span{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#d8c5af;
+    margin-right:6px;
+  }
+  .mock-body{padding:14px;}
+  .mock-hero{
+    border:2px solid var(--ink);
+    border-radius:14px;
+    padding:14px;
+    background:linear-gradient(145deg,#fff5df,#fffdf9);
+    margin-bottom:12px;
+  }
+  .mock-chip{
+    display:inline-block;
+    padding:4px 10px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:#fff;
+    font-size:.78rem;
+    font-weight:800;
+    margin-bottom:8px;
+  }
+  .mock-lines{
+    display:grid;
+    gap:8px;
+    margin-top:10px;
+  }
+  .mock-lines div{
+    height:10px;
+    border-radius:999px;
+    background:#e7ddcf;
+  }
+  .mock-lines div:nth-child(1){width:58%;}
+  .mock-lines div:nth-child(2){width:88%;}
+  .mock-lines div:nth-child(3){width:72%;}
+  .mock-panels{
+    display:grid;
+    gap:10px;
+  }
+  @media(min-width:560px){.mock-panels{grid-template-columns:1fr 1fr;}}
+  .mini-panel{
+    border:2px solid var(--ink);
+    border-radius:14px;
+    padding:12px;
+    background:#fffdf8;
+  }
+  .mini-panel strong{
+    display:block;
+    margin-bottom:6px;
+    color:#b15d1b;
+  }
+  .prompt-box{
+    margin:14px 0 18px;
+    padding:14px 16px;
+    border:2px solid var(--ink);
+    border-radius:18px;
+    background:linear-gradient(145deg,#f8f1e7,#fffdf9);
+    box-shadow:4px 4px 0 rgba(63,52,40,.1);
+  }
+  .prompt-label{
+    display:inline-flex;
+    padding:5px 10px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:var(--paper);
+    font-size:.78rem;
+    font-weight:800;
+    margin-bottom:10px;
+  }
+  .prompt-text{
+    margin:0;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:.95rem;
+    line-height:1.75;
+    color:var(--ink);
+    white-space:pre-wrap;
+  }
+  .prompt-meta{
+    margin-top:10px;
+    color:var(--ink-soft);
+    font-size:.92rem;
+  }
+  .quote{
+    position:relative;
+    margin-top:12px;
+    padding:16px 18px 14px 22px;
+    border:2px solid var(--ink);
+    border-radius:18px;
+    background:#fff8ec;
+    box-shadow:5px 5px 0 var(--sun);
+    font-family:"Fraunces","Noto Sans SC",serif;
+    font-style:italic;
+  }
+  .quote::before{
+    content:"“";
+    position:absolute;
+    top:-15px;
+    left:12px;
+    background:var(--paper);
+    color:var(--sun);
+    font-size:2.6rem;
+    line-height:1;
+    padding:0 4px;
+  }
+  .artifact-grid{
+    display:grid;
+    gap:16px;
+    margin-top:12px;
+  }
+  .artifact-card{
+    position:relative;
+    border:2px solid var(--ink);
+    border-radius:24px;
+    background:linear-gradient(145deg,#fff8ec,#fffdf9);
+    box-shadow:8px 8px 0 rgba(63,52,40,.12);
+    overflow:hidden;
+    cursor:pointer;
+  }
+  .artifact-card:hover{
+    transform:translate(-2px,-2px);
+  }
+  .artifact-card.report::after,
+  .artifact-card.deck::after,
+  .artifact-card.sheet::after,
+  .artifact-card.poster::after{
+    content:"";
+    position:absolute;
+    right:0;
+    top:0;
+    width:66px;
+    height:66px;
+    background:linear-gradient(135deg,rgba(255,255,255,0) 50%, rgba(255,233,191,.95) 50%);
+    border-left:2px solid var(--ink);
+    border-bottom:2px solid var(--ink);
+    border-bottom-left-radius:18px;
+  }
+  .artifact-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:14px 18px 10px;
+  }
+  .artifact-meta{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .artifact-badge{
+    display:inline-flex;
+    padding:6px 10px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:#fff;
+    font-size:.74rem;
+    font-weight:800;
+  }
+  .artifact-clip{
+    font-size:1.25rem;
+    transform:rotate(10deg);
+  }
+  .artifact-open{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 12px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:#fff;
+    font-size:.8rem;
+    font-weight:900;
+  }
+  .artifact-body{
+    padding:0 18px 18px;
+  }
+  .artifact-title{
+    margin:0 0 12px;
+    font-family:"Fraunces","Noto Sans SC",serif;
+    font-size:1.3rem;
+    line-height:1.25;
+  }
+  .artifact-sub{
+    margin:0 0 14px;
+    color:var(--ink-soft);
+    line-height:1.75;
+  }
+  .artifact-frame{
+    border:2px solid var(--ink);
+    border-radius:18px;
+    overflow:hidden;
+    background:#fff;
+    box-shadow:4px 4px 0 rgba(63,52,40,.08);
+  }
+  .artifact-thumb{
+    width:100%;
+    height:250px;
+    border:0;
+    display:block;
+    pointer-events:none;
+    background:#fff;
+  }
+  .report .artifact-thumb{height:270px;}
+  .poster .artifact-thumb{height:340px;}
+  .artifact-foot{
+    padding:10px 14px;
+    border-top:2px solid var(--ink);
+    background:#f8efe2;
+    font-size:.85rem;
+    color:var(--ink-soft);
+  }
+  .modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    z-index:9999;
+    background:rgba(35,27,21,.42);
+    padding:24px;
+  }
+  .modal.open{display:block;}
+  .modal-panel{
+    max-width:1100px;
+    height:min(88vh,900px);
+    margin:0 auto;
+    border:2px solid var(--ink);
+    border-radius:26px;
+    overflow:hidden;
+    background:#fffdf8;
+    box-shadow:12px 12px 0 rgba(63,52,40,.18);
+    display:grid;
+    grid-template-rows:auto 1fr;
+  }
+  .modal-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:14px 18px;
+    background:#f5ede0;
+    border-bottom:2px solid var(--ink);
+  }
+  .modal-title{
+    font-weight:900;
+    color:var(--ink);
+  }
+  .modal-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .modal-link,
+  .modal-close{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:9px 12px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:#fff;
+    color:var(--ink);
+    text-decoration:none;
+    font-size:.84rem;
+    font-weight:900;
+  }
+  .modal-frame{
+    width:100%;
+    height:100%;
+    border:0;
+    background:#fff;
+  }
+  @media(max-width:720px){
+    .artifact-thumb{height:200px;}
+    .poster .artifact-thumb{height:260px;}
+    .modal{padding:12px;}
+    .modal-panel{height:92vh;}
+  }
+
+  .tip-card{
+    border:2px solid var(--ink);
+    border-radius:20px;
+    padding:14px 14px;
+    background:var(--paper);
+    box-shadow:4px 4px 0 rgba(63,52,40,.1);
+  }
+  .tip-card h4{
+    margin:0 0 8px;
+    font-size:1.08rem;
+    font-family:"Baloo 2","Noto Sans SC",sans-serif;
+  }
+  .step-do .step-badge{background:var(--mint) !important;}
+  .step-tips .step-badge{background:var(--coral) !important;}
+
+  .reveal{
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity .6s ease,transform .6s ease;
+  }
+  .reveal.in{
+    opacity:1;
+    transform:none;
+  }
+
+  footer{
+    padding:24px 0 40px;
+    color:var(--ink-faint);
+    text-align:center;
+    border-top:2px dashed var(--line);
+  }
+
+  @media(max-width:960px){
+    .layout{grid-template-columns:1fr;}
+    .side{
+      position:static;
+      height:auto;
+      border-right:0;
+      border-bottom:2px dashed var(--line);
+    }
+    .main{padding:0 20px 54px;}
+    .nav-group{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:8px;
+    }
+    .nav-label{grid-column:1/-1;margin-left:0;}
+    .side a{margin-bottom:0;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="layout">
+  <aside class="side">
+    <div class="brand">
+      <h1>普通人必备的<br>9 个 Skill</h1>
+      <p>Skill 像一套可直接调用的工作流，把经验、步骤和标准提前装好。</p>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">开场</div>
+      <a href="#intro">封面</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">九个 Skill</div>
+      <a href="#s1">1 · 深度研究</a>
+      <a href="#s2">2 · find skills</a>
+      <a href="#s3">3 · skill creator</a>
+      <a href="#s4">4 · 一句话做 PPT</a>
+      <a href="#s5">5 · 文档处理</a>
+      <a href="#s6">6 · frontend design</a>
+      <a href="#s7">7 · 模糊的问题变清晰</a>
+      <a href="#s8">8 · 电脑操控</a>
+      <a href="#s9">9 · 做海报 / 长图</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="wrap">
+      <header class="hero hero-cover reveal" id="intro">
+        <div class="hero-cover-card">
+          <div class="eyebrow">🧰 Skill 手册</div>
+          <h2 class="hero-title"><span class="mark">普通人</span>必备的 <span class="accent">9 个 Skill</span></h2>
+        </div>
+        <div class="prompt-box" style="max-width:700px;">
+          <div class="prompt-label">为什么 Skill 能让你更快用上 AI</div>
+          <p class="prompt-text">普通聊天像临时问人帮忙，
+Skill 更像调用一套已经整理好的工作流。
+
+它把任务拆解、操作步骤、判断标准和交付格式提前封装好。
+你不用每次从零解释背景，也不用靠临场提示词碰运气。
+
+对普通人来说，Skill 的价值不是“多一个功能”，
+而是把复杂能力变成一个更容易启动、更稳定复用的入口。</p>
+        </div>
+      </header>
+
+      <section class="skill reveal" id="s1">
+        <div class="skill-head">
+          <div class="skill-no">SKILL 01</div>
+          <h2>深度研究</h2>
+          <p>它不是“帮你搜一下”，而是把一个模糊问题变成一套研究任务，然后像研究员一样分解、查证、对比、去伪存真，最后交付一个带判断逻辑的结论。</p>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label">怎么唤起这个 Skill</div>
+          <p class="prompt-text">常用说法：深度研究 / 帮我研究 / 帮我调研</p>
+          <p class="prompt-meta">最核心的一句：<strong>“像研究员一样，帮我深度研究孩子近视干预方案怎么选，最后给我分场景结论。”</strong></p>
+        </div>
+
+        <div class="step">
+          <div class="step-title"><div class="step-badge">①</div><h3>是什么</h3></div>
+          <div class="card">
+            <p>深度研究最厉害的地方，不是“会查资料”，而是会先替你跑一遍研究流程。它会把模糊题目拆成子问题，为不同问题找不同来源，再把冲突信息、旧口径和口号式结论先处理一遍，最后再把资料收束成可判断的结论。</p>
+            <div class="pill-list">
+              <span class="pill">会拆题</span>
+              <span class="pill">会分层找源</span>
+              <span class="pill">会交叉验证</span>
+              <span class="pill">会揪出冲突点</span>
+              <span class="pill">会收束成判断</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step step-do">
+          <div class="step-title"><div class="step-badge">②</div><h3>能做什么</h3></div>
+          <div class="artifact-grid">
+            <button class="artifact-card report" data-modal-title="深度研究 · 孩子近视干预方案报告" data-modal-src="demo-myopia-research-report.html" data-open-src="demo-myopia-research-report.html">
+              <div class="artifact-top">
+                <div class="artifact-meta">
+                  <span class="artifact-badge">最能打的案例</span>
+                  <span class="artifact-clip">📎</span>
+                </div>
+                <span class="artifact-open">点开看报告</span>
+              </div>
+              <div class="artifact-body">
+                <h3 class="artifact-title">孩子近视一年涨得很快，家长要在 OK 镜、离焦镜、低浓度阿托品和行为干预之间做决定。</h3>
+                <p class="artifact-sub">这里应该直接看到一份像研究报告一样的东西。点开后可以往下划，感受它如何拆问题、分层找源、交叉验证，再收束成判断框架。</p>
+                <div class="artifact-frame">
+                  <iframe class="artifact-thumb" src="demo-myopia-research-report.html" title="深度研究预览"></iframe>
+                  <div class="artifact-foot">统一成孩子近视主题：从家庭决策问题，拆成可带去问医生的研究框架。</div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div class="compare">
+            <div class="compare-col bad">
+              <span class="compare-tag" style="background:var(--coral-bg);">普通 AI / 内置能力</span>
+              <ul>
+                <li>你要不断补问题、追矛盾、换口径、改结构。</li>
+                <li>它更像在响应你的指令，而不是主动完成研究流程。</li>
+                <li>最后还是你自己把资料堆整理成判断。</li>
+              </ul>
+            </div>
+            <div class="compare-col good">
+              <span class="compare-tag" style="background:var(--mint-bg);">专门 Skill</span>
+              <ul>
+                <li>主动拆题，主动找源，主动纠错。</li>
+                <li>把疗效、风险、适用年龄、执行难度和证据强弱一起拉到一张判断桌上。</li>
+                <li>最后交付的是“什么情况选 A，什么情况选 B”的结论框架。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="case-box">它也不只适合医疗决策。理财里判断闲钱该储蓄、提前还贷还是留作应急金，工作里评估不同会议转录方案，都是同一种研究能力在发挥作用。</div>
+        </div>
+
+        <div class="step step-tips">
+          <div class="step-title"><div class="step-badge">③</div><h3>实用技巧</h3></div>
+          <div class="tips-grid">
+            <div class="tip-card"><h4>先给决策对象</h4><p>提问题时别只问“哪个好”，要把对象、预算、时间、场景一起说清楚。</p></div>
+            <div class="tip-card"><h4>先要研究框架</h4><p>先让它列研究计划和信源框架，再让它跑，会比直接开始更稳。</p></div>
+            <div class="tip-card"><h4>强制它标冲突点</h4><p>明确要求它标出“冲突点、过时点、待核点”，不要只给结论。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="skill reveal" id="s2">
+        <div class="skill-head">
+          <div class="skill-no">SKILL 02</div>
+          <h2>find skills</h2>
+          <p>它更像一个入口导航器。你不用先背会所有 skill，只要先找到这件事最适合从哪里开始。</p>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label">怎么唤起这个 Skill</div>
+          <p class="prompt-text">常用说法：find skills / 帮我找 skill / 我该用哪个 skill</p>
+          <p class="prompt-meta">最核心的一句：<strong>“我想完成这件事，但不知道该从哪个 skill 开始，先帮我找入口。”</strong></p>
+        </div>
+        <div class="step step-do">
+          <div class="step-title"><div class="step-badge">②</div><h3>能做什么</h3></div>
+          <div class="quote"><strong>最能打的案例：</strong>“我想把一堆会议纪要整理成周报，但我根本不知道该从哪个 skill 开始。”</div>
+          <div class="card">
+            <p>这时最值钱的不是它马上开做，而是它先告诉你：这件事应该从哪个能力入口起步，为什么是这个入口，以及第一步最小动作应该是什么。</p>
+          </div>
+        </div>
+        <div class="step step-tips">
+          <div class="step-title"><div class="step-badge">③</div><h3>实用技巧</h3></div>
+          <div class="tips-grid">
+            <div class="tip-card"><h4>用任务来问</h4><p>别只问“有什么 skill”，直接说你现在要完成什么任务。</p></div>
+            <div class="tip-card"><h4>让它解释原因</h4><p>顺手问一句：为什么是这个入口，不是那个。</p></div>
+            <div class="tip-card"><h4>要一个起步动作</h4><p>不要停在推荐层，继续要它给你最小可执行的第一步。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="skill reveal" id="s3">
+        <div class="skill-head">
+          <div class="skill-no">SKILL 03</div>
+          <h2>skill creator</h2>
+          <p>它不是帮你存 prompt，而是帮你把一套已经被证明有效的协作方法，固化成一个以后能反复调用的能力模板。</p>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label">怎么唤起这个 Skill</div>
+          <p class="prompt-text">常用说法：skill creator / 帮我做一个 skill / 把这个流程做成 skill</p>
+          <p class="prompt-meta">最核心的一句：<strong>“把这套已经跑通的方法整理成一个以后能重复调用的 skill。”</strong></p>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">①</div><h3>是什么</h3></div>
+          <div class="card">
+            <p>`skill creator` 的价值，不在保存一段话，而在把高频重复任务中的稳定规则、步骤和标准提前写死。它会让“偶然一次做得好”，慢慢变成“以后更容易持续做对”。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">②</div><h3>能做什么</h3></div>
+          <div class="quote"><strong>最能打的案例：</strong>把固定风格的小红书标题和封面文案流程封装起来，后面每次只补本轮素材。</div>
+          <div class="compare">
+            <div class="compare-col bad">
+              <span class="compare-tag" style="background:var(--coral-bg);">普通 AI / 内置能力</span>
+              <ul>
+                <li>每次都重新交代平台、调性、长度和禁忌词。</li>
+                <li>稳定性依赖你每次讲得够不够完整。</li>
+              </ul>
+            </div>
+            <div class="compare-col good">
+              <span class="compare-tag" style="background:var(--mint-bg);">专门 Skill</span>
+              <ul>
+                <li>常用规则被提前写进 skill。</li>
+                <li>后续只要补本轮素材和目标。</li>
+                <li>输出风格、结构和检查项更稳定。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">③</div><h3>实用技巧</h3></div>
+          <div class="tips-grid">
+            <div class="tip-card"><h4>先手工跑通几次</h4><p>至少先手工跑通 3 次以上，再考虑封装。</p></div>
+            <div class="tip-card"><h4>先做窄 Skill</h4><p>不要一上来追求万能，先把一个固定场景做稳。</p></div>
+            <div class="tip-card"><h4>做完一定回测</h4><p>拿不同样本回测，检查是不是只对一个例子有效。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="skill reveal" id="s4">
+        <div class="skill-head">
+          <div class="skill-no">SKILL 04</div>
+          <h2>一句话做 PPT</h2>
+          <p>它不是单纯帮你写一段讲稿，而是把内容按演示逻辑切成页面、排出结构、直接落成可编辑 PPT。</p>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label">怎么唤起这个 Skill</div>
+          <p class="prompt-text">常用说法：做 PPT / 帮我出 PPT / 生成可编辑 PPT</p>
+          <p class="prompt-meta">最核心的一句：<strong>“把这份内容做成一份可编辑 PPT，先保证页面结构清楚。”</strong></p>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">①</div><h3>是什么</h3></div>
+          <div class="card">
+            <p>这个 skill 最值钱的地方，是它帮你跨过“知道内容，但不会变成演示稿”的断层。它会把一坨信息重组为页级结构，让你直接得到可以继续修改的 PPT 初稿。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">②</div><h3>能做什么</h3></div>
+          <div class="artifact-grid">
+            <button class="artifact-card deck" data-modal-title="一句话做 PPT · 页面结构预览" data-modal-src="demo-ppt-camera-preview.html" data-open-src="demo-ppt-camera-preview.html">
+              <div class="artifact-top">
+                <div class="artifact-meta">
+                  <span class="artifact-badge">最能打的案例</span>
+                  <span class="artifact-clip">📎</span>
+                </div>
+                <span class="artifact-open">点开看 PPT</span>
+              </div>
+              <div class="artifact-body">
+                <h3 class="artifact-title">老板只丢给你一句“下周开会讲清楚该买哪台相机”，你需要在一小时内做出一份能直接过会的 6 页 PPT。</h3>
+                <p class="artifact-sub">页面上先让人看到一个“像 PPT 的东西”，而不是一句话。点开后看排页逻辑，真的要拿文件再继续打开原始 `pptx`。</p>
+                <div class="artifact-frame">
+                  <iframe class="artifact-thumb" src="demo-ppt-camera-preview.html" title="PPT 预览"></iframe>
+                  <div class="artifact-foot">先看它会怎么排封面页、结论页、比较页和推荐页，再决定要不要打开原件。</div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div class="compare">
+            <div class="compare-col bad">
+              <span class="compare-tag" style="background:var(--coral-bg);">普通 AI / 内置能力</span>
+              <ul>
+                <li>通常给你提纲和要点。</li>
+                <li>页面怎么分、先讲什么后讲什么，还是你自己做。</li>
+              </ul>
+            </div>
+            <div class="compare-col good">
+              <span class="compare-tag" style="background:var(--mint-bg);">专门 Skill</span>
+              <ul>
+                <li>直接按演示逻辑排出页结构。</li>
+                <li>把内容装进适合展示的页面节奏里。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">③</div><h3>实用技巧</h3></div>
+          <div class="tips-grid">
+            <div class="tip-card"><h4>先讲清受众</h4><p>给老板过会，和给朋友科普，页面结构会完全不同。</p></div>
+            <div class="tip-card"><h4>先做结构稿</h4><p>先要页面大纲版，再做美化，比一步到位更稳。</p></div>
+            <div class="tip-card"><h4>页数越清楚越稳</h4><p>限制页数，反而更容易让它给出有节奏的初稿。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="skill reveal" id="s5">
+        <div class="skill-head">
+          <div class="skill-no">SKILL 05</div>
+          <h2>文档处理</h2>
+          <p>它的核心不是“读文件”，而是围绕文件做提取、归一化、整理、改写和计算，让文档真的变成可处理对象。</p>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label">怎么唤起这个 Skill</div>
+          <p class="prompt-text">常用说法：处理文档 / 提取文件内容 / 整理成表</p>
+          <p class="prompt-meta">最核心的一句：<strong>“把这些文件里的关键信息提取出来，整理成一个我能继续处理的结果。”</strong></p>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">①</div><h3>是什么</h3></div>
+          <div class="card">
+            <p>文档处理的价值，不是“它能看懂文件”，而是它能直接围绕文件动手：读多种格式、抽字段、统一口径、生成可比结果。你不需要再一份份复制粘贴，才能开始分析。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">②</div><h3>能做什么</h3></div>
+          <div class="artifact-grid">
+            <button class="artifact-card sheet" data-modal-title="文档处理 · 结果表预览" data-modal-src="demo-sheet-camera-preview.html" data-open-src="demo-sheet-camera-preview.html">
+              <div class="artifact-top">
+                <div class="artifact-meta">
+                  <span class="artifact-badge">最能打的案例</span>
+                  <span class="artifact-clip">📎</span>
+                </div>
+                <span class="artifact-open">点开看结果表</span>
+              </div>
+              <div class="artifact-body">
+                <h3 class="artifact-title">供应商发来 20 份乱七八糟的报价单、PDF 参数表和截图，你要把它们整理成一张能横向比较的表。</h3>
+                <p class="artifact-sub">这里最该直接看到的是“结果表长什么样”，不是一段抽象定义。点开后就是表格预览，再决定要不要打开真实 `xlsx`。</p>
+                <div class="artifact-frame">
+                  <iframe class="artifact-thumb" src="demo-sheet-camera-preview.html" title="表格预览"></iframe>
+                  <div class="artifact-foot">把乱格式统一成同一张可筛选、可排序、可继续计算的结果表。</div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div class="compare">
+            <div class="compare-col bad">
+              <span class="compare-tag" style="background:var(--coral-bg);">普通 AI / 内置能力</span>
+              <ul>
+                <li>会告诉你怎么整理。</li>
+                <li>真正抽字段、对表头、归一化，往往还得你手工做。</li>
+              </ul>
+            </div>
+            <div class="compare-col good">
+              <span class="compare-tag" style="background:var(--mint-bg);">专门 Skill</span>
+              <ul>
+                <li>直接围绕文件内容动手。</li>
+                <li>抽字段、对口径、汇总成可继续计算的结果。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">③</div><h3>实用技巧</h3></div>
+          <div class="tips-grid">
+            <div class="tip-card"><h4>先定义字段</h4><p>先说清楚你到底要抽哪些字段，不然很容易提得太散。</p></div>
+            <div class="tip-card"><h4>先看样例</h4><p>先给 3 行结果看看，再决定是否全量处理。</p></div>
+            <div class="tip-card"><h4>关键数据要可追溯</h4><p>金额、日期、型号最好保留原文追溯位。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="skill reveal" id="s6">
+        <div class="skill-head">
+          <div class="skill-no">SKILL 06</div>
+          <h2>frontend design</h2>
+          <p>它的核心不是单纯做视觉，而是把一份内容重新组织成更容易被理解、操作和传播的界面表达。</p>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label">怎么唤起这个 Skill</div>
+          <p class="prompt-text">常用说法：frontend design / 做交互页 / 做成 HTML 页面</p>
+          <p class="prompt-meta">最核心的一句：<strong>“把这份内容做成一个单页交互 HTML，不要只排成长文。”</strong></p>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">②</div><h3>能做什么</h3></div>
+          <div class="quote"><strong>最能打的案例：</strong>把一份 Skill 手册文稿做成交互讲解页，让读者不是在读一篇长文，而是在一路被结构带着看懂。</div>
+          <div class="compare">
+            <div class="compare-col compare-card bad">
+              <span class="compare-tag" style="background:var(--coral-bg);">不用 skill</span>
+              <h4>你有一篇内容，但它看起来还是一篇内容</h4>
+              <p>结构是线性的，重点全靠读者自己找。读得完的人能懂，读不完的人就直接滑走了。</p>
+              <div class="mock plain" aria-label="plain document mockup">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+              </div>
+            </div>
+            <div class="compare-col compare-card good">
+              <span class="compare-tag" style="background:var(--mint-bg);">用 skill</span>
+              <h4>同一份内容，被重新组织成“可体验”的解释页</h4>
+              <p>重点先跳出来，结构帮用户带路，交互帮用户理解。不是更好看一点，而是更容易看懂和看完。</p>
+              <div class="mock rich">
+                <div class="mock-window">
+                  <div class="mock-top"><span></span><span></span><span></span></div>
+                  <div class="mock-body">
+                    <div class="mock-hero">
+                      <div class="mock-chip">交互讲解页</div>
+                      <div class="mock-lines">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </div>
+                    <div class="mock-panels">
+                      <div class="mini-panel">
+                        <strong>对比卡</strong>
+                        <div class="mock-lines">
+                          <div></div>
+                          <div></div>
+                        </div>
+                      </div>
+                      <div class="mini-panel">
+                        <strong>展开块</strong>
+                        <div class="mock-lines">
+                          <div></div>
+                          <div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">③</div><h3>实用技巧</h3></div>
+          <div class="tips-grid">
+            <div class="tip-card"><h4>先定理解目标</h4><p>先讲清这是给谁看、最想让对方看懂什么，不要一上来只说风格。</p></div>
+            <div class="tip-card"><h4>优先解释型交互</h4><p>点击、展开、对比都应该服务理解，而不是只做视觉热闹。</p></div>
+            <div class="tip-card"><h4>内容重构比美化更重要</h4><p>真正值钱的是重排表达方式，不是给原文换个皮。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="skill reveal" id="s7">
+        <div class="skill-head">
+          <div class="skill-no">SKILL 07</div>
+          <h2>模糊的问题变清晰</h2>
+          <p>它不是陪你聊，而是把一个模糊问题逼成一个清晰问题，让后续所有判断和执行终于有了正确起点。</p>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label">怎么唤起这个 Skill</div>
+          <p class="prompt-text">常用说法：把问题问清楚 / 帮我理清问题 / 模糊的问题变清晰</p>
+          <p class="prompt-meta">最核心的一句：<strong>“先别给答案，先帮我把这个模糊问题问清楚。”</strong></p>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">①</div><h3>是什么</h3></div>
+          <div class="card">
+            <p>这个 skill 的价值非常高，因为它不是“顺着你聊”，而是识别你问题里的空词、模糊词和没说出来的约束条件，再通过连续追问，把泛泛目标收窄成明确任务。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">②</div><h3>能做什么</h3></div>
+          <div class="quote"><strong>最能打的案例：</strong>“我想做个人 IP，但不知道到底做什么内容、给谁看、怎么开始。”</div>
+          <div class="compare">
+            <div class="compare-col bad">
+              <span class="compare-tag" style="background:var(--coral-bg);">普通 AI / 内置能力</span>
+              <ul>
+                <li>很容易给你一堆看起来都对的建议。</li>
+                <li>看完仍然不知道下一步该干什么。</li>
+              </ul>
+            </div>
+            <div class="compare-col good">
+              <span class="compare-tag" style="background:var(--mint-bg);">专门 Skill</span>
+              <ul>
+                <li>先逼出真正约束条件。</li>
+                <li>把“想法”重写成“我现在真正要解决的问题”。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">③</div><h3>实用技巧</h3></div>
+          <div class="tips-grid">
+            <div class="tip-card"><h4>先别让它回答</h4><p>开头就说：先别给答案，先把我的问题问清楚。</p></div>
+            <div class="tip-card"><h4>强制它追问约束</h4><p>目标、资源、时间、限制不问清楚，后面答案都容易飘。</p></div>
+            <div class="tip-card"><h4>最后让它重写问题</h4><p>让它输出一句“你真正要解决的问题是什么”。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="skill reveal" id="s8">
+        <div class="skill-head">
+          <div class="skill-no">SKILL 08</div>
+          <h2>电脑操控</h2>
+          <p>它的价值不是“懂软件”，而是能接手一串重复、机械、基于界面的操作，让你从亲手点每一步，变成只盯关键节点。</p>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label">怎么唤起这个 Skill</div>
+          <p class="prompt-text">常用说法：电脑操控 / 帮我操作 / 替我点一下</p>
+          <p class="prompt-meta">最核心的一句：<strong>“请按这个流程替我完成这些界面操作，高风险动作先停下来问我。”</strong></p>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">①</div><h3>是什么</h3></div>
+          <div class="card">
+            <p>电脑操控这类 skill 真正厉害的地方，不是会解释步骤，而是会把目标翻译成界面操作，然后替你做掉那串机械流程。它的价值更像一个助理，而不是一个老师。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">②</div><h3>能做什么</h3></div>
+          <div class="quote"><strong>最能打的案例：</strong>把 30 个商品页的信息录进同一张表，让你只盯关键确认点。</div>
+          <div class="compare">
+            <div class="compare-col bad">
+              <span class="compare-tag" style="background:var(--coral-bg);">普通 AI / 内置能力</span>
+              <ul>
+                <li>它会教你怎么录。</li>
+                <li>但真正点 30 次、复制 30 次的人还是你。</li>
+              </ul>
+            </div>
+            <div class="compare-col good">
+              <span class="compare-tag" style="background:var(--mint-bg);">专门 Skill</span>
+              <ul>
+                <li>它按目标流程逐项执行。</li>
+                <li>你只需要盯关键节点，不用亲手做每一步。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">③</div><h3>实用技巧</h3></div>
+          <div class="tips-grid">
+            <div class="tip-card"><h4>从低风险任务开始</h4><p>先让它接手可回退、可验证的重复流程。</p></div>
+            <div class="tip-card"><h4>分清只读和可写</h4><p>一开始就说清楚它是在读信息，还是可以改东西。</p></div>
+            <div class="tip-card"><h4>高风险动作单独确认</h4><p>付款、删除、发布这类动作必须另设确认点。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="skill reveal" id="s9">
+        <div class="skill-head">
+          <div class="skill-no">SKILL 09</div>
+          <h2>做海报 / 长图</h2>
+          <p>它不是简单出一张图，而是把内容卖点、视觉风格和平台传播需求打包成一个能直接拿去发的视觉成品。</p>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label">怎么唤起这个 Skill</div>
+          <p class="prompt-text">常用说法：做海报 / 做长图 / 做封面</p>
+          <p class="prompt-meta">最核心的一句：<strong>“把这份内容做成一张可以直接发的平台封面或长图。”</strong></p>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">①</div><h3>是什么</h3></div>
+          <div class="card">
+            <p>做海报 / 长图这类 skill 最值钱的地方，是它会先提炼卖点、再组织视觉层级、再按平台和尺寸输出结果。也就是：它不是在给你一张图，而是在把内容推进成传播物料。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">②</div><h3>能做什么</h3></div>
+          <div class="artifact-grid">
+            <button class="artifact-card poster" data-modal-title="做海报 / 长图 · 新 demo 预览" data-modal-src="demo-long-image-camera-preview.html" data-open-src="demo-long-image-camera-preview.html">
+              <div class="artifact-top">
+                <div class="artifact-meta">
+                  <span class="artifact-badge">最能打的案例</span>
+                  <span class="artifact-clip">📎</span>
+                </div>
+                <span class="artifact-open">点开看长图</span>
+              </div>
+              <div class="artifact-body">
+                <h3 class="artifact-title">你已经有一份“相机怎么买”的内容，但要把它做成一张用户一眼愿意点开、愿意保存的小红书长图。</h3>
+                <p class="artifact-sub">这次不用你旧的封面了。我直接新造了一张更适合挂在这里的 demo，重点是让人一眼就感受到“这就是成品”。</p>
+                <div class="artifact-frame">
+                  <iframe class="artifact-thumb" src="demo-long-image-camera-preview.html" title="长图预览"></iframe>
+                  <div class="artifact-foot">先看到传播钩子、第一屏结论和视觉层级，而不是先听解释。</div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div class="compare">
+            <div class="compare-col bad">
+              <span class="compare-tag" style="background:var(--coral-bg);">普通 AI / 内置能力</span>
+              <ul>
+                <li>能帮你写标题和文案。</li>
+                <li>但从文案到视觉稿，中间还隔着很大一段执行落差。</li>
+              </ul>
+            </div>
+            <div class="compare-col good">
+              <span class="compare-tag" style="background:var(--mint-bg);">专门 Skill</span>
+              <ul>
+                <li>把内容核心直接视觉化。</li>
+                <li>更快从“可说”变成“可发”。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-title"><div class="step-badge">③</div><h3>实用技巧</h3></div>
+          <div class="tips-grid">
+            <div class="tip-card"><h4>先定平台</h4><p>尺寸、平台和受众一开始就说清楚，结果会差很多。</p></div>
+            <div class="tip-card"><h4>先定主卖点</h4><p>不要一上来把所有信息都塞上去，先抓一个最值得点开的钩子。</p></div>
+            <div class="tip-card"><h4>先出几个方向</h4><p>先让它给 2 到 3 个风格方向，再选一个深挖。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <p>普通人必备的 9 个 Skill · 交互手册 v3</p>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<div class="modal" id="artifactModal" aria-hidden="true">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <div class="modal-title" id="artifactModalTitle">预览</div>
+      <div class="modal-actions">
+        <a class="modal-link" id="artifactModalOpen" href="#" target="_blank" rel="noreferrer">打开原件</a>
+        <button class="modal-close" id="artifactModalClose" type="button">关闭</button>
+      </div>
+    </div>
+    <iframe class="modal-frame" id="artifactModalFrame" src="about:blank" title="artifact preview"></iframe>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var progress=document.getElementById("progress");
+  function updateProgress(){
+    var h=document.documentElement;
+    var total=h.scrollHeight-h.clientHeight;
+    var ratio=total>0?h.scrollTop/total:0;
+    progress.style.width=(ratio*100)+"%";
+  }
+  window.addEventListener("scroll",updateProgress,{passive:true});
+  updateProgress();
+
+  var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add("in");
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:.12});
+  document.querySelectorAll(".reveal").forEach(function(el){observer.observe(el);});
+
+  var navLinks=Array.prototype.slice.call(document.querySelectorAll(".side a[href^='#']"));
+  var sections=navLinks.map(function(link){
+    return document.querySelector(link.getAttribute("href"));
+  }).filter(Boolean);
+
+  function setActiveNav(){
+    var fromTop=window.scrollY+140;
+    var current=sections[0];
+    sections.forEach(function(section){
+      if(section.offsetTop<=fromTop){ current=section; }
+    });
+    navLinks.forEach(function(link){
+      link.classList.toggle("active",link.getAttribute("href")==="#"+current.id);
+    });
+  }
+  window.addEventListener("scroll",setActiveNav,{passive:true});
+  window.addEventListener("resize",setActiveNav);
+  setActiveNav();
+
+  var modal=document.getElementById("artifactModal");
+  var modalTitle=document.getElementById("artifactModalTitle");
+  var modalFrame=document.getElementById("artifactModalFrame");
+  var modalOpen=document.getElementById("artifactModalOpen");
+  var modalClose=document.getElementById("artifactModalClose");
+  var cards=Array.prototype.slice.call(document.querySelectorAll(".artifact-card"));
+
+  function openModal(card){
+    modalTitle.textContent=card.getAttribute("data-modal-title") || "预览";
+    modalFrame.src=card.getAttribute("data-modal-src") || "about:blank";
+    modalOpen.href=card.getAttribute("data-open-src") || card.getAttribute("data-modal-src") || "#";
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+  }
+
+  function closeModal(){
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden","true");
+    modalFrame.src="about:blank";
+    document.body.style.overflow="";
+  }
+
+  cards.forEach(function(card){
+    card.addEventListener("click",function(){ openModal(card); });
+  });
+  modalClose.addEventListener("click",closeModal);
+  modal.addEventListener("click",function(event){
+    if(event.target===modal){ closeModal(); }
+  });
+  window.addEventListener("keydown",function(event){
+    if(event.key==="Escape" && modal.classList.contains("open")){ closeModal(); }
+  });
+})();
+</script>
+</body>
+</html>
