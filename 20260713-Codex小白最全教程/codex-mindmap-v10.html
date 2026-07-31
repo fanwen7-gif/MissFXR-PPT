@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codex 小白教程｜结构思维导图</title>
+  <style>
+    :root {
+      --ink: #172536;
+      --navy: #1a3a6b;
+      --paper: #eef2f8;
+      --paper-deep: #e1e8f1;
+      --line: #aebdcd;
+      --muted: #5c6c7e;
+      --dark: #0f1923;
+      --shadow: rgba(7, 17, 28, 0.24);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background: var(--dark);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(1540px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 42px 0 56px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 32px;
+      align-items: end;
+      color: #e8eef5;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: #9db4cc;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 3px;
+      background: #7aa3cc;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: clamp(34px, 4vw, 66px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.045em;
+    }
+
+    .subtitle {
+      max-width: 900px;
+      margin: 14px 0 0;
+      color: #c3cfda;
+      font-size: 15px;
+      line-height: 1.78;
+    }
+
+    .subtitle strong {
+      color: #eef4fa;
+      font-weight: 800;
+    }
+
+    .stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      max-width: 360px;
+    }
+
+    .stat {
+      min-width: 96px;
+      padding: 12px 14px;
+      border: 1px solid #31475d;
+      background: #142333;
+    }
+
+    .stat strong {
+      display: block;
+      color: #eef4fa;
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 6px;
+      color: #91a5b9;
+      font-size: 12px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #9fb0c1;
+      font-size: 13px;
+    }
+
+    .legend-mark {
+      width: 14px;
+      height: 14px;
+      border: 2px solid #7aa3cc;
+      transform: rotate(45deg);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      min-height: 38px;
+      padding: 0 16px;
+      color: #dbe6f0;
+      border: 1px solid #40566c;
+      background: #172737;
+      cursor: pointer;
+      transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .action-btn:hover {
+      color: #f3f7fb;
+      border-color: #7aa3cc;
+      background: #20364a;
+    }
+
+    .action-btn:focus-visible,
+    .branch-toggle:focus-visible {
+      outline: 3px solid #88b7e5;
+      outline-offset: 3px;
+    }
+
+    .map-stage {
+      position: relative;
+      overflow: hidden;
+      padding: 52px clamp(24px, 4vw, 68px) 64px;
+      border: 1px solid #596b7c;
+      background-color: var(--paper);
+      box-shadow: 0 30px 90px var(--shadow);
+      isolation: isolate;
+    }
+
+    .map-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      opacity: 0.38;
+      background-size: 32px 32px;
+      background-image:
+        linear-gradient(#c7d2df 1px, transparent 1px),
+        linear-gradient(90deg, #c7d2df 1px, transparent 1px);
+    }
+
+    .map-stage::after {
+      content: "课程地图 · 2026";
+      position: absolute;
+      top: 22px;
+      right: 26px;
+      z-index: -1;
+      color: #bdc9d5;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+    }
+
+    #connectionLayer {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .root-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 42px;
+    }
+
+    .root-node {
+      position: relative;
+      width: min(520px, 90%);
+      padding: 26px 34px;
+      color: #edf3f9;
+      background: var(--navy);
+      border: 2px solid #0f2b55;
+      text-align: center;
+      box-shadow: 10px 10px 0 #b6c5d5;
+    }
+
+    .root-node::before,
+    .root-node::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--paper);
+      transform: translateY(-50%);
+    }
+
+    .root-node::before {
+      left: -13px;
+    }
+
+    .root-node::after {
+      right: -13px;
+    }
+
+    .root-kicker {
+      color: #9cb9d6;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+    }
+
+    .root-title {
+      margin-top: 8px;
+      font-family: "Songti SC", "STSong", serif;
+      font-size: clamp(26px, 3vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+    }
+
+    .root-desc {
+      margin-top: 8px;
+      color: #b9cce0;
+      font-size: 13px;
+    }
+
+    .depth-ruler {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.65fr);
+      gap: 28px;
+      align-items: center;
+      margin-bottom: 54px;
+      padding: 13px 0;
+      border-top: 1px solid #b7c4d1;
+      border-bottom: 1px solid #b7c4d1;
+      background: var(--paper);
+    }
+
+    .depth-ruler-title {
+      color: #526476;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .depth-ruler-title strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--navy);
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 17px;
+      letter-spacing: 0;
+    }
+
+    .depth-steps {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .depth-step {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 7px;
+      min-height: 30px;
+      padding: 6px 9px 5px;
+      color: #445668;
+      border: 1px solid #b6c3d0;
+      background: rgba(247, 249, 252, 0.78);
+      font-size: 10px;
+      line-height: 1.3;
+    }
+
+    .depth-step b {
+      color: var(--navy);
+      font-size: 11px;
+    }
+
+    .depth-step[data-tone="choose"] b {
+      color: #0f7d84;
+    }
+
+    .depth-step[data-tone="later"] b {
+      color: #59658b;
+    }
+
+    .depth-step[data-tone="apply"] b {
+      color: #b5701a;
+    }
+
+    .branches {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 34px 30px;
+      align-items: start;
+    }
+
+    .branch-card {
+      position: relative;
+      transform: translateY(var(--shift, 0));
+    }
+
+    .branch-card[data-part="03"],
+    .branch-card[data-part="04"] {
+      grid-column: 1 / -1;
+    }
+
+    .branch-toggle {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      width: 100%;
+      min-height: 84px;
+      padding: 15px 16px;
+      color: var(--ink);
+      border: 2px solid var(--branch);
+      border-top-width: 7px;
+      background: #f7f9fc;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 6px 6px 0 color-mix(in srgb, var(--branch) 20%, #d9e1ea);
+      transition: transform 180ms ease-out, box-shadow 180ms ease-out;
+    }
+
+    .branch-toggle:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 8px 8px 0 color-mix(in srgb, var(--branch) 24%, #d9e1ea);
+    }
+
+    .part-index {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      color: #f2f6fa;
+      background: var(--branch);
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .part-copy {
+      min-width: 0;
+    }
+
+    .part-label {
+      color: var(--branch);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+    }
+
+    .part-title {
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .part-title-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 3px;
+      flex-wrap: wrap;
+    }
+
+    .part-depth {
+      display: inline-flex;
+      align-items: center;
+      min-height: 20px;
+      padding: 2px 7px 1px;
+      color: var(--branch);
+      border: 1px solid color-mix(in srgb, var(--branch) 45%, #cad4de);
+      background: color-mix(in srgb, var(--branch) 8%, #f7f9fc);
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+    }
+
+    .part-summary {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toggle-mark {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      color: var(--branch);
+      border: 1px solid color-mix(in srgb, var(--branch) 45%, #ccd5df);
+      font-size: 20px;
+      line-height: 1;
+      transition: transform 220ms ease-out;
+    }
+
+    .branch-toggle[aria-expanded="false"] .toggle-mark {
+      transform: rotate(-90deg);
+    }
+
+    .children-wrap {
+      display: grid;
+      grid-template-rows: 1fr;
+      transition: grid-template-rows 260ms cubic-bezier(0.2, 0.75, 0.2, 1);
+    }
+
+    .branch-card[data-open="false"] .children-wrap {
+      grid-template-rows: 0fr;
+    }
+
+    .children-inner {
+      overflow: hidden;
+    }
+
+    .children {
+      position: relative;
+      display: grid;
+      gap: 7px;
+      margin: 18px 0 0 22px;
+      padding: 0 0 0 22px;
+      list-style: none;
+    }
+
+    .children::before {
+      content: "";
+      position: absolute;
+      top: -18px;
+      bottom: 14px;
+      left: 0;
+      width: 2px;
+      background: color-mix(in srgb, var(--branch) 64%, #b7c3cf);
+    }
+
+    .child-node {
+      position: relative;
+      min-height: 48px;
+      padding: 9px 10px 9px 12px;
+      border-left: 3px solid var(--branch);
+      background: rgba(247, 249, 252, 0.92);
+    }
+
+    .child-node::before {
+      content: "";
+      position: absolute;
+      top: 22px;
+      left: -24px;
+      width: 21px;
+      height: 2px;
+      background: color-mix(in srgb, var(--branch) 64%, #b7c3cf);
+    }
+
+    .child-code {
+      color: var(--branch);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    .child-title {
+      margin-left: 5px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .child-note {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .children.grouped {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px 18px;
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .children.grouped::before,
+    .branch-card[data-part="04"] .children::before,
+    .branch-card[data-part="04"] .child-node::before {
+      display: none;
+    }
+
+    .branch-card[data-part="04"] .children {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .subgroup {
+      min-width: 0;
+      list-style: none;
+    }
+
+    .subgroup-head {
+      min-height: 66px;
+      padding: 12px 13px;
+      color: var(--ink);
+      border-top: 4px solid var(--group, var(--branch));
+      background: color-mix(in srgb, var(--group, var(--branch)) 11%, #f7f9fc);
+    }
+
+    .subgroup-code {
+      color: var(--group, var(--branch));
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+    }
+
+    .subgroup-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .subgroup-depth {
+      padding: 2px 6px 1px;
+      color: var(--group, var(--branch));
+      border: 1px solid color-mix(in srgb, var(--group, var(--branch)) 44%, #c9d3dd);
+      background: rgba(247, 249, 252, 0.7);
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+    }
+
+    .subgroup-title {
+      display: block;
+      margin-top: 4px;
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .subgroup-summary {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .subgroup-items {
+      display: grid;
+      gap: 7px;
+      margin: 8px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .subgroup-items .child-node::before {
+      display: none;
+    }
+
+    .subgroup-items .child-node {
+      border-left-color: var(--group, var(--branch));
+    }
+
+    .subgroup-items .child-code {
+      color: var(--group, var(--branch));
+    }
+
+    .child-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 18px;
+      margin-left: 7px;
+      padding: 1px 6px 0;
+      color: var(--branch);
+      border: 1px solid color-mix(in srgb, var(--branch) 48%, #c8d2dd);
+      background: color-mix(in srgb, var(--branch) 8%, #f7f9fc);
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      vertical-align: 1px;
+    }
+
+    .subgroup .child-tag {
+      color: var(--group, var(--branch));
+      border-color: color-mix(in srgb, var(--group, var(--branch)) 48%, #c8d2dd);
+      background: color-mix(in srgb, var(--group, var(--branch)) 8%, #f7f9fc);
+    }
+
+    .map-footer {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      margin-top: 46px;
+      padding-top: 22px;
+      border-top: 1px solid #bec9d5;
+    }
+
+    .formula {
+      margin: 0;
+      font-family: "Songti SC", "STSong", serif;
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 700;
+      line-height: 1.55;
+    }
+
+    .formula strong {
+      color: var(--navy);
+    }
+
+    .page-count {
+      color: #68798b;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .page-count b {
+      display: block;
+      color: var(--navy);
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 28px;
+    }
+
+    @media (max-width: 1120px) {
+      .branches {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .children.grouped {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        justify-content: flex-start;
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 22px, 1540px);
+        padding-top: 24px;
+      }
+
+      .topbar {
+        gap: 20px;
+      }
+
+      .toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .actions {
+        width: 100%;
+      }
+
+      .action-btn {
+        flex: 1;
+      }
+
+      .map-stage {
+        padding: 42px 16px 40px;
+      }
+
+      #connectionLayer {
+        display: none;
+      }
+
+      .root-wrap {
+        margin-bottom: 28px;
+      }
+
+      .root-node {
+        width: 100%;
+        padding: 22px 24px;
+        box-shadow: 7px 7px 0 #b6c5d5;
+      }
+
+      .branches {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .depth-ruler {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 36px;
+      }
+
+      .depth-steps {
+        justify-content: flex-start;
+      }
+
+      .branch-card {
+        transform: none;
+      }
+
+      .branch-card[data-part="03"],
+      .branch-card[data-part="04"] {
+        grid-column: auto;
+      }
+
+      .branch-card[data-part="04"] .children {
+        grid-template-columns: 1fr;
+        margin-left: 22px;
+        padding-left: 22px;
+      }
+
+      .branch-card[data-part="04"] .children::before {
+        display: block;
+      }
+
+      .branch-card[data-part="04"] .child-node::before {
+        display: block;
+      }
+
+      .branch-card::before {
+        content: "";
+        position: absolute;
+        top: -26px;
+        left: 23px;
+        width: 2px;
+        height: 26px;
+        background: var(--branch);
+      }
+
+      .branch-toggle {
+        min-height: 78px;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        padding: 13px;
+      }
+
+      .part-index {
+        width: 42px;
+        height: 42px;
+      }
+
+      .part-title {
+        font-size: 18px;
+      }
+
+      .map-footer {
+        grid-template-columns: 1fr;
+      }
+
+      .page-count {
+        text-align: left;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media print {
+      body {
+        background: var(--paper);
+      }
+
+      .shell {
+        width: 100%;
+        padding: 0;
+      }
+
+      .topbar {
+        color: var(--ink);
+      }
+
+      .subtitle,
+      .legend {
+        color: var(--muted);
+      }
+
+      .toolbar,
+      #connectionLayer {
+        display: none;
+      }
+
+      .map-stage {
+        border: 0;
+        box-shadow: none;
+      }
+
+      .branches {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .branch-card {
+        transform: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Miss 发行人 · 大白话讲 AI</div>
+        <h1>Codex 小白教程<br>结构思维导图</h1>
+        <p class="subtitle"><strong>Codex 是我推荐给所有想一步到位的小白的最强工具。</strong>这是一期完整的 Codex 零基础教程。我们将从安装、模型配置和权限设置开始，逐步讲解提示词、计划模式、技能、图片、浏览器、MCP、插件、远程控制与自动化。最后，我们把这些能力组合成一个适合自己使用的个人工作台。</p>
+      </div>
+      <div class="stats" aria-label="课程规模">
+        <div class="stat"><strong>3</strong><span>学习大组</span></div>
+        <div class="stat"><strong>4</strong><span>核心小组</span></div>
+        <div class="stat"><strong>32</strong><span>课程页</span></div>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <div class="legend"><span class="legend-mark" aria-hidden="true"></span>点击任一部分，可展开或收起对应内容</div>
+      <div class="actions">
+        <button class="action-btn" id="expandAll" type="button">全部展开</button>
+        <button class="action-btn" id="collapseAll" type="button">全部收起</button>
+      </div>
+    </div>
+
+    <section class="map-stage" id="mapStage" aria-label="Codex 教程思维导图">
+      <svg id="connectionLayer" aria-hidden="true"></svg>
+
+      <div class="root-wrap">
+        <div class="root-node" id="rootNode">
+          <div class="root-kicker">课程起点 · 从这里开始</div>
+          <div class="root-title">Codex 小白教程</div>
+          <div class="root-desc">理解产品 → 上手使用 → 把事情做得更好</div>
+        </div>
+      </div>
+
+      <div class="depth-ruler" aria-label="课程学习深度">
+        <div class="depth-ruler-title">
+          <strong>不是每一项都要学得一样深</strong>
+          先建立框架，再在真正需要时展开细节
+        </div>
+        <div class="depth-steps">
+          <span class="depth-step"><b>必须掌握</b>01 · 02 · 3A</span>
+          <span class="depth-step" data-tone="choose"><b>理解并会选择</b>3B · 3C</span>
+          <span class="depth-step" data-tone="later"><b>知道何时用</b>3D</span>
+        </div>
+      </div>
+
+      <div class="branches" id="branches"></div>
+
+      <footer class="map-footer">
+        <p class="formula">
+          先理解它怎样工作，再学会<strong>做好任务</strong>、沉淀方法，并在需要时<strong>扩展能力与规模</strong>。
+        </p>
+        <div class="page-count"><b>3 · 4 · 32</b>三个学习大组，四个核心小组，最后完成一个个人工作台</div>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    const courseParts = [
+      {
+        number: "01",
+        phase: "第一层",
+        level: "理解",
+        depth: "必须理解",
+        title: "理解这个产品",
+        summary: "先看结果，再理解 Agent 怎样工作",
+        color: "#1a3a6b",
+        shift: "-6px",
+        items: [
+          ["1.1", "先看它能完成什么", "创建与修改、研究与分析、内容与视觉生产、操作软件与自动化流程", "先看结果"],
+          ["1.2", "Codex 是会行动的智能体", "模型负责思考，上下文提供环境，工具提供眼睛和手；观察 → 行动 → 检查 → 继续"],
+          ["1.3", "你怎样和它交互", "说清结果与背景 → 它进入环境执行 → 你根据证据验收和调整"],
+          ["1.4", "四种形态共享一种工作方式", "桌面应用、命令行、编辑器与云端的入口、能力和运行环境并不完全相同"]
+        ]
+      },
+      {
+        number: "02",
+        phase: "第二层",
+        level: "会做",
+        depth: "必须会",
+        title: "上手使用",
+        summary: "安装、模型、权限与结果验收",
+        color: "#1a3a6b",
+        shift: "10px",
+        items: [
+          ["2.1", "安装、登录并打开正确项目", "根据工作位置选择桌面应用、命令行、编辑器或云端，再进入文件与依赖都正确的项目"],
+          ["2.2", "模型配置与运行偏好", "知道怎样选择模型、推理强度和运行方式，不需要背具体型号与参数"],
+          ["2.3", "权限设置与沙箱", "读写文件、运行命令、访问网络和外部操作分别允许到什么程度"],
+          ["2.4", "根据证据验收结果", "检查修改是否正确、结果能否运行，以及是否满足最初的完成标准"]
+        ]
+      },
+      {
+        number: "03",
+        phase: "第三层",
+        level: "核心",
+        depth: "分层学习",
+        title: "把事情做得更好",
+        summary: "做好一件事、沉淀方法、获得能力、扩大规模",
+        color: "#0f7d84",
+        shift: "0px",
+        groups: [
+          {
+            code: "3A",
+            title: "把当前任务做好",
+            summary: "完成单次任务所需的方法与技巧",
+            depth: "重点掌握",
+            color: "#0f7d84",
+            items: [
+              ["3A.1", "写好提示词", "说清目标、背景、限制，以及做到什么程度才算完成"],
+              ["3A.2", "对比提示词写法", "用同一个设计修改任务，对比模糊要求和清晰要求带来的执行差异", "对比演示"],
+              ["3A.3", "使用计划模式", "小任务直接做；复杂或不清楚的任务，先规划步骤和验证方式"]
+            ]
+          },
+          {
+            code: "3B",
+            title: "沉淀长期方法",
+            summary: "让一次成功变成长期稳定系统",
+            depth: "理解关系",
+            color: "#3f765d",
+            items: [
+              ["3B.1", "项目规则与技能各管什么", "当前任务指令只管这一轮；AGENTS.md 管项目规则；技能（Skill）管可复用的做事方法"],
+              ["3B.2", "什么时候写进项目规则，什么时候做成技能", "只用一次：留在当前任务；每次都要遵守：写进 AGENTS.md；一套步骤反复做：做成技能"],
+              ["3B.3", "记忆、项目规则与技能的边界", "个人偏好交给记忆；项目约束写进 AGENTS.md；可复用流程做成技能"],
+              ["3B.4", "热门技能怎么选", "从图片、前端、表格、演示文稿到技能创建，按照当前任务寻找和使用"]
+            ]
+          },
+          {
+            code: "3C",
+            title: "获得新的眼睛和手",
+            summary: "工具让 Codex 能看、能创造、能操作、能连接",
+            depth: "理解并会选择",
+            color: "#a86125",
+            items: [
+              ["3C.1", "看懂视觉信息", "图片输入与应用截图（Appshots）是让它看；给图时仍要说明看哪里、想得到什么"],
+              ["3C.2", "生成和编辑图片", "生成网页主视觉 → 放进项目 → 打开检查 → 继续修改具体元素", "重点演示"],
+              ["3C.3", "操作网页与电脑", "搜索测试用内置浏览器；沿用登录状态用 Chrome；必须操作桌面界面才用电脑操作（Computer Use）", "重点演示"],
+              ["3C.4", "技能、MCP 与插件的关系", "技能教方法，MCP 给能力，插件负责安装整套能力"],
+              ["3C.5", "热门插件怎么选", "只安装当前任务真正需要的插件，并检查账号、数据与工作区权限"]
+            ]
+          },
+          {
+            code: "3D",
+            title: "扩大执行规模",
+            summary: "远程继续指挥，流程成熟后自动运行",
+            depth: "知道何时用",
+            color: "#59658b",
+            items: [
+              ["3D.1", "远程控制", "从手机看进度、回答问题、审批和调整方向；它不是电脑操作，也不是远程 SSH", "重点"],
+              ["3D.2", "自动运行", "流程先跑通，再用定时任务或 codex exec 命令完成重复执行与持续集成"]
+            ]
+          }
+        ]
+      }
+    ];
+
+    const branchContainer = document.getElementById("branches");
+    const mapStage = document.getElementById("mapStage");
+    const rootNode = document.getElementById("rootNode");
+    const connectionLayer = document.getElementById("connectionLayer");
+    const expandAllButton = document.getElementById("expandAll");
+    const collapseAllButton = document.getElementById("collapseAll");
+
+    function createBranch(part) {
+      const article = document.createElement("article");
+      article.className = "branch-card";
+      article.dataset.open = "true";
+      article.dataset.part = part.number;
+      article.style.setProperty("--branch", part.color);
+      article.style.setProperty("--shift", part.shift);
+
+      const renderItems = (items) => items.map(([code, title, note, tag]) => `
+        <li class="child-node">
+          <span class="child-code">${code}</span>
+          <span class="child-title">${title}</span>
+          ${tag ? `<span class="child-tag">${tag}</span>` : ""}
+          <span class="child-note">${note}</span>
+        </li>
+      `).join("");
+
+      const hasGroups = Array.isArray(part.groups);
+      const itemCount = hasGroups
+        ? part.groups.reduce((total, group) => total + group.items.length, 0)
+        : part.items.length;
+      const itemMarkup = hasGroups
+        ? part.groups.map((group) => `
+          <li class="subgroup" style="--group: ${group.color || part.color}">
+            <div class="subgroup-head">
+              <div class="subgroup-meta">
+                <span class="subgroup-code">${group.code}</span>
+                <span class="subgroup-depth">${group.depth}</span>
+              </div>
+              <span class="subgroup-title">${group.title}</span>
+              <span class="subgroup-summary">${group.summary}</span>
+            </div>
+            <ol class="subgroup-items">${renderItems(group.items)}</ol>
+          </li>
+        `).join("")
+        : renderItems(part.items);
+
+      article.innerHTML = `
+        <button class="branch-toggle" type="button" aria-expanded="true">
+          <span class="part-index">${part.number}</span>
+          <span class="part-copy">
+            <span class="part-label">${part.phase} · 第 ${part.number} 部分 · ${part.level} · ${itemCount} 个节点</span>
+            <span class="part-title-row">
+              <span class="part-title">${part.title}</span>
+              <span class="part-depth">${part.depth}</span>
+            </span>
+            <span class="part-summary">${part.summary}</span>
+          </span>
+          <span class="toggle-mark" aria-hidden="true">⌄</span>
+        </button>
+        <div class="children-wrap">
+          <div class="children-inner">
+            <ol class="children${hasGroups ? " grouped" : ""}">${itemMarkup}</ol>
+          </div>
+        </div>
+      `;
+
+      const toggle = article.querySelector(".branch-toggle");
+      toggle.addEventListener("click", () => {
+        const nextOpen = article.dataset.open !== "true";
+        setBranchState(article, nextOpen);
+      });
+
+      return article;
+    }
+
+    function setBranchState(article, open) {
+      article.dataset.open = String(open);
+      article.querySelector(".branch-toggle").setAttribute("aria-expanded", String(open));
+      scheduleConnections();
+    }
+
+    function setAllBranches(open) {
+      document.querySelectorAll(".branch-card").forEach((article) => setBranchState(article, open));
+    }
+
+    function drawConnections() {
+      if (window.matchMedia("(max-width: 720px)").matches) {
+        connectionLayer.replaceChildren();
+        return;
+      }
+
+      const stageRect = mapStage.getBoundingClientRect();
+      const rootRect = rootNode.getBoundingClientRect();
+      const width = mapStage.clientWidth;
+      const height = mapStage.clientHeight;
+      const rootX = rootRect.left - stageRect.left + rootRect.width / 2;
+      const rootY = rootRect.bottom - stageRect.top;
+
+      connectionLayer.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      connectionLayer.replaceChildren();
+
+      document.querySelectorAll(".branch-card").forEach((article) => {
+        const target = article.querySelector(".branch-toggle");
+        const targetRect = target.getBoundingClientRect();
+        const targetX = targetRect.left - stageRect.left + targetRect.width / 2;
+        const targetY = targetRect.top - stageRect.top;
+        const elbowY = rootY + Math.max(28, (targetY - rootY) * 0.42);
+
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", `M ${rootX} ${rootY} C ${rootX} ${elbowY}, ${targetX} ${elbowY}, ${targetX} ${targetY}`);
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", getComputedStyle(article).getPropertyValue("--branch").trim());
+        path.setAttribute("stroke-width", "2");
+        path.setAttribute("opacity", "0.68");
+        connectionLayer.appendChild(path);
+
+        const diamond = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        diamond.setAttribute("x", String(targetX - 4));
+        diamond.setAttribute("y", String(targetY - 4));
+        diamond.setAttribute("width", "8");
+        diamond.setAttribute("height", "8");
+        diamond.setAttribute("transform", `rotate(45 ${targetX} ${targetY})`);
+        diamond.setAttribute("fill", getComputedStyle(article).getPropertyValue("--branch").trim());
+        connectionLayer.appendChild(diamond);
+      });
+    }
+
+    let connectionTimer;
+    function scheduleConnections() {
+      cancelAnimationFrame(connectionTimer);
+      connectionTimer = requestAnimationFrame(drawConnections);
+      window.setTimeout(drawConnections, 290);
+    }
+
+    courseParts.forEach((part) => branchContainer.appendChild(createBranch(part)));
+    expandAllButton.addEventListener("click", () => setAllBranches(true));
+    collapseAllButton.addEventListener("click", () => setAllBranches(false));
+    window.addEventListener("resize", scheduleConnections, { passive: true });
+    window.addEventListener("load", scheduleConnections);
+    scheduleConnections();
+  </script>
+</body>
+</html>
