@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>从 0 到 9 万粉 · 分享大纲</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,600&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf4e9; --paper:#fffdf8; --ink:#3b3228; --muted:#8a7d6f; --faint:#b9a88f;
+    --coral:#e0567a; --coral-bg:#fce0e6;
+    --teal:#2f9e8f;  --teal-bg:#ddefe9;  --teal-dark:#1f7a6d;
+    --blue:#6a9bcc;  --blue-bg:#e3edf8;  --blue-dark:#4a7aab;
+    --butter:#f4c651;--butter-bg:#fdeecb;--butter-dark:#c99a2e;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Noto Sans SC','PingFang SC','Hiragino Sans GB',sans-serif;
+    padding:clamp(14px,2.5vw,32px);
+  }
+  .wrap{max-width:1200px;margin:0 auto}
+
+  /* ── 头部 ── */
+  header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 24px;margin-bottom:16px}
+  .kicker{display:inline-block;background:var(--ink);color:var(--paper);font-size:13px;letter-spacing:1px;padding:5px 14px;border-radius:999px;margin-bottom:10px}
+  h1{margin:0;font-size:clamp(24px,4.2vw,40px);font-weight:900;line-height:1.2}
+  h1 .big{font-family:'Fraunces',Georgia,serif;font-weight:900;color:var(--coral);font-size:1.35em;line-height:1}
+  .sub{color:var(--muted);font-size:clamp(14px,1.6vw,17px);margin-top:6px}
+  .flow{text-align:right;color:var(--muted);font-size:clamp(13px,1.5vw,16px);line-height:1.7}
+  .flow b{color:var(--coral);font-size:.92em}
+
+  /* ── 序章 / 尾声 ── */
+  .band{
+    background:var(--paper);border:2px solid var(--ink);border-radius:16px;
+    box-shadow:4px 4px 0 var(--ink);
+    padding:10px 18px;font-size:clamp(14px,1.6vw,17px);margin:14px 0;
+  }
+  .band b{margin-right:4px}
+  .band span{color:var(--muted)}
+
+  /* ── 四宫格 ── */
+  .blocks{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+  @media (max-width:840px){.blocks{grid-template-columns:1fr}}
+  .block{border:2.5px solid var(--ink);border-radius:18px;box-shadow:6px 6px 0 var(--ink);padding:14px 16px 16px}
+  .b1{background:var(--coral-bg)} .b2{background:var(--teal-bg)}
+  .b3{background:var(--blue-bg)}  .b4{background:var(--butter-bg)}
+  .bhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 2px 4px}
+  .chip{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:13px;letter-spacing:1px;color:#fff;padding:4px 12px;border-radius:8px}
+  .b1 .chip{background:var(--coral)} .b2 .chip{background:var(--teal)}
+  .b3 .chip{background:var(--blue)}  .b4 .chip{background:var(--butter);color:var(--ink)}
+  .bhead h2{margin:0;font-size:clamp(20px,2.2vw,24px);font-weight:900}
+  .range{margin-left:auto;font-size:13.5px;font-weight:700}
+  .b1 .range{color:var(--coral)} .b2 .range{color:var(--teal)}
+  .b3 .range{color:var(--blue-dark)} .b4 .range{color:var(--butter-dark)}
+
+  /* ── 每讲 ── */
+  .chap{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--paper);border:2px solid var(--ink);border-radius:12px;
+    box-shadow:3px 3px 0 var(--ink);
+    padding:11px 14px;margin-top:11px;
+  }
+  .num{
+    flex:none;width:36px;height:36px;border-radius:10px;margin-top:2px;
+    display:grid;place-items:center;
+    font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:15px;color:#fff;
+  }
+  .b1 .num{background:var(--coral)} .b2 .num{background:var(--teal)}
+  .b3 .num{background:var(--blue)}  .b4 .num{background:var(--butter);color:var(--ink)}
+  .chap h3{margin:0;font-size:clamp(17px,1.9vw,20px);font-weight:700;line-height:1.35}
+  .chap p{margin:3px 0 0;font-size:clamp(14px,1.6vw,16px);color:var(--muted);line-height:1.55}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+  .tag{font-size:13px;font-weight:500;padding:3px 11px;border-radius:999px;border:1.5px solid}
+  .b1 .tag{background:var(--coral-bg);border-color:var(--coral);color:#b8375c}
+  .b2 .tag{background:var(--teal-bg);border-color:var(--teal);color:var(--teal-dark)}
+  .b3 .tag{background:var(--blue-bg);border-color:var(--blue);color:var(--blue-dark)}
+  .b4 .tag{background:var(--butter-bg);border-color:var(--butter-dark);color:var(--butter-dark)}
+
+  footer{text-align:center;color:var(--faint);font-size:13px;letter-spacing:2px;margin:26px 0 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <span class="kicker">自媒体成长分享 · 结构地图</span>
+      <h1>从 <span class="big">0</span> 到 <span class="big">10</span> 万粉：我的完整路线图</h1>
+      <div class="sub">一个上班族的自媒体复盘 · 四个板块 · 十二讲</div>
+    </div>
+    <div class="flow">开始前准备 → 初期 → 做爆款 → 长期增长<br><b>顺着讲是完整分享，单独听哪块都成立</b></div>
+  </header>
+
+  <div class="band"><b>序章</b><span>｜我的 0→10 万粉真实时间线——数据、关键节点、这场分享的地图</span></div>
+
+  <div class="blocks">
+
+    <!-- 板块一 开始前准备 -->
+    <section class="block b1">
+      <div class="bhead"><span class="chip">PART 1</span><h2>开始前准备</h2><span class="range">第 1–3 讲</span></div>
+      <div class="chap"><span class="num">01</span><div>
+        <h3>理解流量</h3>
+        <p>平台不看你是谁，只看观众留不留得住——推荐机制的大白话版本</p>
+      </div></div>
+      <div class="chap"><span class="num">02</span><div>
+        <h3>账号定位</h3>
+        <p>你是谁、讲给谁听、别人凭什么关注你</p>
+        <div class="tags"><span class="tag">发掘自己独特的优势</span><span class="tag">你喜欢看谁，你就成为谁</span></div>
+      </div></div>
+      <div class="chap"><span class="num">03</span><div>
+        <h3>主业与自媒体的平衡</h3>
+        <p>要不要做、时间从哪来——开始前就要想清楚的决策</p>
+      </div></div>
+    </section>
+
+    <!-- 板块二 初期 -->
+    <section class="block b2">
+      <div class="bhead"><span class="chip">PART 2</span><h2>初期</h2><span class="range">第 4–6 讲</span></div>
+      <div class="chap"><span class="num">04</span><div>
+        <h3>基本功</h3>
+        <p>逐项给模板和练法</p>
+        <div class="tags"><span class="tag">封面</span><span class="tag">开头</span><span class="tag">脚本</span><span class="tag">口播流利</span><span class="tag">工具</span><span class="tag">蹭热点与官方活动</span></div>
+      </div></div>
+      <div class="chap"><span class="num">05</span><div>
+        <h3>选题方法</h3>
+        <p>从模仿到有自己的选题库——一条内容的生死，发布前就定了一半</p>
+      </div></div>
+      <div class="chap"><span class="num">06</span><div>
+        <h3>AI 使用方案</h3>
+        <p>哪些环节交给 AI、哪些必须自己来——帮我省一半时间的工作流</p>
+      </div></div>
+    </section>
+
+    <!-- 板块三 做爆款 -->
+    <section class="block b3">
+      <div class="bhead"><span class="chip">PART 3</span><h2>做爆款</h2><span class="range">第 7–9 讲</span></div>
+      <div class="chap"><span class="num">07</span><div>
+        <h3>节奏与阶段策略</h3>
+        <p>每个阶段只死磕一件事</p>
+        <div class="tags"><span class="tag">0→1000 立住</span><span class="tag">1000→1万 跑通</span><span class="tag">1万→10万 放大</span></div>
+      </div></div>
+      <div class="chap"><span class="num">08</span><div>
+        <h3>爆款拆解</h3>
+        <p>拆我自己的爆款——哪些能复制、哪些是运气</p>
+      </div></div>
+      <div class="chap"><span class="num">09</span><div>
+        <h3>限流</h3>
+        <p>数据差 ≠ 限流——怎么判断真限流，以及怎么自救</p>
+      </div></div>
+    </section>
+
+    <!-- 板块四 长期增长 -->
+    <section class="block b4">
+      <div class="bhead"><span class="chip">PART 4</span><h2>长期增长</h2><span class="range">第 10–12 讲</span></div>
+      <div class="chap"><span class="num">10</span><div>
+        <h3>数据与复盘</h3>
+        <p>不用盯一堆指标——我每周只看这几个数，从数据里找下一条怎么做</p>
+        <div class="tags"><span class="tag">最有用同时也是最痛苦的，就是迭代</span></div>
+      </div></div>
+      <div class="chap"><span class="num">11</span><div>
+        <h3>避坑弯路</h3>
+        <p>我踩过的坑一次讲完，帮你省半年时间</p>
+      </div></div>
+      <div class="chap"><span class="num">12</span><div>
+        <h3>心态</h3>
+        <p>数据焦虑、想断更的时刻，我是怎么熬过去的</p>
+      </div></div>
+    </section>
+
+  </div>
+
+  <div class="band"><b>尾声</b><span>｜如果重来一次，我会怎么做＋答疑</span></div>
+
+  <footer>Miss发行人 · 自媒体成长分享 · 2026</footer>
+</div>
+</body>
+</html>
