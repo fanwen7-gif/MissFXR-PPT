@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>和 AI 协作的工作习惯</title>
+
+<!-- 字体：Fraunces（拉丁衬线大标题）+ Noto Serif SC（中文衬线大标题）
+     + IBM Plex Sans（拉丁小标/正文）+ Noto Sans SC（中文正文） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;600&display=swap">
+
+<style>
+/* ===========================================
+   1. 设计变量（主题）
+   改这里就能改整体观感
+   =========================================== */
+:root {
+    /* 颜色：暖米白纸面 + 墨色文字 + 赤陶橙唯一强调色 */
+    --paper:        #F4F1EA;   /* 主底色，暖米白 */
+    --panel:        #FAF7F0;   /* 更浅的米色分区块（引用块 / 例子块） */
+    --ink:          #1F1E1B;   /* 墨色正文 */
+    --ink-soft:     #4A4741;   /* 次级文字 */
+    --warm-gray:    #8A857C;   /* 暖灰，仅少量使用 */
+    --clay:         #D97757;   /* 赤陶橙，唯一强调色 */
+    --clay-tint:    rgba(217, 119, 87, 0.13);
+    --rule:         rgba(31, 30, 27, 0.12);
+    --hairline:     rgba(31, 30, 27, 0.07);
+
+    /* viewport-base.css 会读这两个变量 */
+    --stage-bg:     #E8E3D8;   /* 舞台外的留边（信箱区） */
+    --slide-bg:     #F4F1EA;
+
+    /* 字体族 */
+    --serif:  'Fraunces', 'Noto Serif SC', Georgia, serif;
+    --sans:   'IBM Plex Sans', 'Noto Sans SC', sans-serif;
+
+    /* 字号：全部按 1920×1080 画布尺寸书写 */
+    --title-size:   138px;
+    --h2-size:       64px;
+    --body-size:     32px;
+
+    /* 动效：只做一次编排好的入场渐显 */
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur: 0.72s;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   2. viewport-base.css（全文内联，不可删改）
+   固定 1920×1080 舞台，整体等比缩放
+   =========================================== */
+
+/* 1. Lock the browser viewport */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 2. Full-window deck viewport */
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 3. Fixed 16:9 design canvas.
+   JavaScript sets transform: translate(...) scale(...). */
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+
+/* 4. Slides stack inside the fixed stage.
+   Content must be laid out at 1920×1080, not reflowed per device. */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* 5. Keep media inside authored slide bounds */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 6. Presentation chrome stays outside the slide design system */
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/* 7. Print one fixed-size slide per page */
+@media print {
+    html,
+    body {
+        width: 1920px;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-viewport {
+        position: static;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-stage {
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none !important;
+        background: none;
+    }
+
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .deck-controls {
+        display: none !important;
+    }
+}
+
+/* 8. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+/* ===========================================
+   3. 页面底纹：极淡的暖色光晕，制造纸张厚度
+   =========================================== */
+.slide {
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+}
+.slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(1250px 720px at 90% 4%,  rgba(217, 119, 87, 0.055), transparent 62%),
+        radial-gradient(980px 640px at 2% 98%,   rgba(138, 133, 124, 0.07), transparent 60%);
+}
+
+/* 内容框：所有幻灯片共用同一套页边距 */
+.pad {
+    position: absolute;
+    inset: 78px 112px 74px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===========================================
+   4. 装饰：Claude 式的 12 芒星（纯 CSS 画）
+   =========================================== */
+.spark {
+    position: relative;
+    width: var(--sp, 34px);
+    height: var(--sp, 34px);
+    flex: 0 0 auto;
+}
+.spark i {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 2.5px;
+    height: 100%;
+    margin-left: -1.25px;
+    background: var(--clay);
+    border-radius: 3px;
+    transform-origin: 50% 50%;
+}
+.spark i:nth-child(2) { transform: rotate(30deg); }
+.spark i:nth-child(3) { transform: rotate(60deg); }
+.spark i:nth-child(4) { transform: rotate(90deg); }
+.spark i:nth-child(5) { transform: rotate(120deg); }
+.spark i:nth-child(6) { transform: rotate(150deg); }
+
+/* ===========================================
+   5. 封面
+   =========================================== */
+.cover .pad { justify-content: center; }
+
+.cover-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: var(--title-size);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    margin-top: 46px;
+}
+.cover-sub {
+    margin-top: 34px;
+    font-size: 40px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    letter-spacing: 0.01em;
+}
+.cover-line {
+    width: 148px;
+    height: 3px;
+    background: var(--clay);
+    margin-top: 58px;
+}
+.cover-foot {
+    margin-top: auto;
+    display: flex;
+    align-items: baseline;
+    gap: 26px;
+}
+.cover-by {
+    font-family: var(--serif);
+    font-size: 40px;
+    font-weight: 500;
+}
+.cover-role {
+    font-size: 25px;
+    color: var(--warm-gray);
+    letter-spacing: 0.02em;
+}
+
+/* ===========================================
+   6. 内页页眉：编号 + 习惯一句话大标题
+   =========================================== */
+.s-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    flex: 0 0 auto;
+}
+/* 页眉分隔线左端的赤陶橙短线 */
+.s-head::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 138px;
+    height: 3px;
+    background: var(--clay);
+}
+.s-num {
+    font-family: var(--serif);
+    font-size: 96px;
+    font-weight: 400;
+    line-height: 0.84;
+    letter-spacing: -0.03em;
+    color: var(--clay);
+    flex: 0 0 138px;
+    width: 138px;
+}
+.s-head-c { flex: 1 1 auto; min-width: 0; }
+.s-kicker {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--clay);
+    margin-bottom: 14px;
+}
+.s-title {
+    font-family: var(--serif);
+    font-size: var(--h2-size);
+    font-weight: 500;
+    line-height: 1.14;
+    letter-spacing: -0.01em;
+}
+.s-lede {
+    margin-top: 16px;
+    font-size: 30px;
+    font-weight: 300;
+    color: var(--warm-gray);
+    line-height: 1.5;
+}
+
+/* 页眉的简版（总览页 / 带走页，没有编号） */
+.s-head--plain { gap: 0; }
+.s-head--plain .s-title { font-size: 76px; }
+
+/* 正文区：在页眉和页脚之间做光学垂直居中，避免下半页空掉 */
+.s-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* 下留白略大于上留白，让正文块比几何中心略微偏上，页眉不至于孤立 */
+    padding: 18px 0 78px;
+}
+/* 内容特别少的页面：整体放大一档，保持「字大留白足」而不是半页空白 */
+.s-body--airy .said     { font-size: 36px; line-height: 1.8; }
+.s-body--airy .item-t   { font-size: 36px; margin-bottom: 14px; }
+.s-body--airy .said--sm { font-size: 33px; line-height: 1.8; }
+.s-body--airy .aside-line { font-size: 31px; }
+.s-body--airy .badge {
+    width: 54px; height: 54px; flex-basis: 54px;
+    font-size: 27px; margin-top: 8px;
+}
+.s-body--airy .item { gap: 30px; }
+
+/* ===========================================
+   7. 正文排版元件
+   =========================================== */
+.stack { display: flex; flex-direction: column; }
+.g24 { gap: 24px; } .g30 { gap: 30px; } .g38 { gap: 38px; } .g48 { gap: 48px; }
+
+.cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 76px;
+    align-content: start;
+}
+.cols--wide-l { grid-template-columns: 1.16fr 0.84fr; }
+.cols--wide-r { grid-template-columns: 0.86fr 1.14fr; }
+.narrow { max-width: 1320px; }
+
+/* .said = 她的采访原话，正文主体 */
+.said {
+    font-size: var(--body-size);
+    line-height: 1.82;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: 0.005em;
+}
+.said--lg { font-size: 38px; line-height: 1.76; }
+.said--sm { font-size: 29px; line-height: 1.78; }
+
+/* .hero = 拎出来的主体金句，用衬线放大 */
+.hero {
+    font-family: var(--serif);
+    font-size: 54px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+}
+.hero--sm { font-size: 44px; }
+.hero--xl { font-size: 66px; line-height: 1.44; }
+
+/* .aside-line = 沉淀稿里的补充说明（非原话） */
+.aside-line {
+    font-size: 27px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    font-weight: 300;
+}
+
+/* 小标题（拆条时的分句标题） */
+.sub-h {
+    font-family: var(--serif);
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.35;
+    margin-bottom: 22px;
+}
+
+/* a / b / c / d 子做法 */
+.item { display: flex; gap: 26px; align-items: flex-start; }
+.badge {
+    width: 46px; height: 46px;
+    flex: 0 0 46px;
+    border: 1.5px solid var(--clay);
+    border-radius: 50%;
+    color: var(--clay);
+    font-family: var(--serif);
+    font-size: 23px;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 6px;
+}
+.item-c { flex: 1 1 auto; min-width: 0; }
+.item-t {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.45;
+    margin-bottom: 10px;
+    letter-spacing: 0.005em;
+}
+
+/* 例子块：更浅的米色分区，赤陶橙小标签 */
+.eg {
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    padding: 26px 32px 28px;
+}
+.eg-label {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--clay);
+    margin-bottom: 14px;
+}
+.eg-text {
+    font-size: 26px;
+    line-height: 1.76;
+    color: var(--ink-soft);
+}
+
+/* 引用块：更浅的米色分区 + 左侧赤陶橙竖条 */
+.quote {
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-left: 4px solid var(--clay);
+    border-radius: 0 3px 3px 0;
+    padding: 26px 34px 24px;
+}
+.q-en {
+    font-family: var(--sans);
+    font-style: italic;
+    font-size: 21px;
+    line-height: 1.62;
+    color: var(--warm-gray);
+    margin-bottom: 14px;
+}
+.q-zh {
+    font-size: 26px;
+    line-height: 1.74;
+    color: var(--ink);
+}
+.q-by {
+    margin-top: 14px;
+    font-size: 21px;
+    font-weight: 500;
+    color: var(--clay);
+    letter-spacing: 0.02em;
+}
+
+/* ===========================================
+   8. 总览页 / 带走页的 11 条列表
+   =========================================== */
+.ov {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 104px;
+    align-content: start;
+}
+.ov-item {
+    display: flex;
+    align-items: baseline;
+    gap: 28px;
+    padding: 21px 0;
+    border-bottom: 1px solid var(--rule);
+}
+.ov-n {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--clay);
+    flex: 0 0 56px;
+    width: 56px;
+    letter-spacing: -0.01em;
+}
+.ov-t {
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.005em;
+}
+/* 带走页：字更大、去掉分隔线、加浅色块 */
+.ov--takeaway .ov-item {
+    border-bottom: none;
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    padding: 20px 26px;
+    margin-bottom: 14px;
+}
+.ov--takeaway .ov-n { flex: 0 0 50px; width: 50px; }
+
+.take-foot {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    color: var(--warm-gray);
+    font-size: 24px;
+}
+
+/* ===========================================
+   9. 舞台内的右下角页码
+   =========================================== */
+.stage-pn {
+    position: absolute;
+    right: 112px;
+    bottom: 62px;
+    z-index: 5;
+    font-family: var(--serif);
+    font-size: 24px;
+    letter-spacing: 0.06em;
+    color: var(--warm-gray);
+    transition: opacity 0.35s ease;
+}
+.stage-pn.hide { opacity: 0; }
+.stage-pn b { color: var(--clay); font-weight: 500; }
+.stage-pn span { margin: 0 8px; opacity: 0.55; }
+
+/* ===========================================
+   10. 入场动效：一次编排好的渐显，不做多余花样
+   =========================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+    transition-delay: var(--d, 0s);
+}
+.slide.visible .reveal {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===========================================
+   11. 演讲备注面板（N 键）—— 舞台之外的 chrome，可用 clamp()
+   =========================================== */
+.note-panel {
+    position: fixed;
+    left: 50%;
+    bottom: clamp(16px, 2.4vh, 34px);
+    transform: translate(-50%, 18px);
+    width: clamp(560px, 62vw, 1080px);
+    max-height: 46vh;
+    overflow-y: auto;
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-top: 4px solid var(--clay);
+    border-radius: 4px;
+    box-shadow: 0 18px 48px rgba(31, 30, 27, 0.16);
+    padding: clamp(16px, 1.7vh, 24px) clamp(20px, 2vw, 32px) clamp(18px, 2vh, 28px);
+    z-index: 1200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease, transform 0.28s var(--ease);
+}
+.note-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+}
+.note-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: clamp(8px, 1.1vh, 14px);
+}
+.note-tag {
+    font-family: var(--sans);
+    font-size: clamp(12px, 1.05vh, 15px);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--clay);
+}
+.note-hint {
+    font-family: var(--sans);
+    font-size: clamp(11px, 1vh, 14px);
+    color: var(--warm-gray);
+}
+.note-body {
+    font-family: var(--sans);
+    font-size: clamp(15px, 1.65vh, 22px);
+    line-height: 1.8;
+    color: var(--ink);
+}
+
+/* 备注原文容器：不在页面上显示，只给 N 键面板取用 */
+.speaker-note { display: none; }
+
+/* ===========================================
+   12. 就地改字（默认隐藏，鼠标移到左上角或按 E 唤出）
+   =========================================== */
+.edit-hotzone {
+    position: fixed; top: 0; left: 0;
+    width: 80px; height: 80px;
+    z-index: 10000;
+    cursor: pointer;
+}
+.edit-toggle {
+    position: fixed; top: 16px; left: 16px;
+    width: 44px; height: 44px;
+    border: 1px solid var(--hairline);
+    border-radius: 50%;
+    background: var(--panel);
+    color: var(--clay);
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10001;
+}
+.edit-toggle.show,
+.edit-toggle.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.edit-toggle.active {
+    background: var(--clay);
+    color: #FFF8F3;
+    border-color: var(--clay);
+}
+.deck-stage.editing [contenteditable]:focus {
+    outline: 2px solid var(--clay);
+    outline-offset: 6px;
+}
+</style>
+</head>
+<body>
+
+<div class="deck-viewport">
+<main class="deck-stage" id="stage">
+
+<!-- ============ 1 · 封面 ============ -->
+<section class="slide cover active">
+    <div class="pad">
+        <div class="spark reveal" style="--sp:46px; --d:.05s"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <h1 class="cover-title reveal" style="--d:.16s">和 AI 协作的工作习惯</h1>
+        <div class="cover-line reveal" style="--d:.30s"></div>
+        <p class="cover-sub reveal" style="--d:.38s">11 条，来自 3 月到 8 月</p>
+        <div class="cover-foot reveal" style="--d:.52s">
+            <span class="cover-by">Miss发行人</span>
+            <span class="cover-role">AI 科普创作者</span>
+        </div>
+    </div>
+    <div class="speaker-note">本页无备注。</div>
+</section>
+
+<!-- ============ 2 · 总览：11 条一页看完 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head s-head--plain">
+            <div class="s-head-c">
+                <div class="s-kicker reveal" style="--d:.05s">总览</div>
+                <h2 class="s-title reveal" style="--d:.12s">11 条，一页看完</h2>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="ov">
+                <div class="ov-item reveal" style="--d:.18s"><span class="ov-n">01</span><span class="ov-t">工具一步到位</span></div>
+                <div class="ov-item reveal" style="--d:.40s"><span class="ov-n">07</span><span class="ov-t">先搜有没有现成的</span></div>
+                <div class="ov-item reveal" style="--d:.22s"><span class="ov-n">02</span><span class="ov-t">以终为始</span></div>
+                <div class="ov-item reveal" style="--d:.44s"><span class="ov-n">08</span><span class="ov-t">版本管理</span></div>
+                <div class="ov-item reveal" style="--d:.26s"><span class="ov-n">03</span><span class="ov-t">人和 Agent 分工</span></div>
+                <div class="ov-item reveal" style="--d:.48s"><span class="ov-n">09</span><span class="ov-t">验收分阶段</span></div>
+                <div class="ov-item reveal" style="--d:.30s"><span class="ov-n">04</span><span class="ov-t">用 AI 给人省脑力、减判断</span></div>
+                <div class="ov-item reveal" style="--d:.52s"><span class="ov-n">10</span><span class="ov-t">复盘协作过程</span></div>
+                <div class="ov-item reveal" style="--d:.34s"><span class="ov-n">05</span><span class="ov-t">上下文，团队和项目知识库</span></div>
+                <div class="ov-item reveal" style="--d:.56s"><span class="ov-n">11</span><span class="ov-t">要有学习和积攒工程能力的意识</span></div>
+                <div class="ov-item reveal" style="--d:.38s"><span class="ov-n">06</span><span class="ov-t">大项目分拆，判断和执行分开</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">本页无备注。</div>
+</section>
+
+<!-- ============ 3 · 第 1 条 工具一步到位 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">01</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">工具一步到位</h2>
+                <p class="s-lede reveal" style="--d:.16s">用最好的工具，才分得清是用法问题还是模型问题。</p>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="cols cols--wide-l">
+                <div class="stack g30">
+                    <p class="said said--lg reveal" style="--d:.24s">「越是新手越应该一步到位，因为它可以帮我很好地判断究竟是我使用的问题、工具的问题，还是模型能力的问题。而当我一步到位最好的工具时，我就知道那应该是使用方法的问题。」</p>
+                    <p class="aside-line reveal" style="--d:.34s">主力工具 Claude Code 和 Codex。</p>
+                </div>
+                <div class="stack g30">
+                    <div class="eg reveal" style="--d:.42s">
+                        <div class="eg-label">例子</div>
+                        <p class="eg-text">换到 SOTA 工具后，AI at work 从每天 3 小时到 6 到 8 小时。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">例子：换到 SOTA 工具后，AI at work 从每天 3 小时到 6 到 8 小时。</div>
+</section>
+
+<!-- ============ 4 · 第 2 条 以终为始（上） ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">02</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">以终为始</h2>
+                <p class="s-lede reveal" style="--d:.16s">目标和不能妥协的东西一次想清楚，路径推着走。</p>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="cols cols--wide-l">
+                <div class="stack g30">
+                    <p class="said said--lg reveal" style="--d:.24s">「实现路径是可以推着走的；怎么和现有的内容做耦合也是可以推着走的；但是我的目标和不能妥协的东西，是要一次性想清楚的。」</p>
+                    <p class="said said--lg reveal" style="--d:.32s">「要以终为始，因为工具无法帮你设定目标。」</p>
+                    <p class="aside-line reveal" style="--d:.40s">写东西前先定读者、30 秒拿什么、用什么框架。</p>
+                </div>
+                <div class="stack g24">
+                    <figure class="quote reveal" style="--d:.46s">
+                        <p class="q-en">"Move from providing tasks to providing objectives. Describe what done looks like and how to verify it."</p>
+                        <p class="q-zh">从给任务改成给目标，描述什么算做完、怎么验证。</p>
+                        <figcaption class="q-by">——Alex Albert，Anthropic</figcaption>
+                    </figure>
+                    <figure class="quote reveal" style="--d:.54s">
+                        <p class="q-zh">「难回头的东西——数据结构、模块边界、接口约定、核心流程——前置思考清楚会更好；容易改的细节可以延后。」</p>
+                        <figcaption class="q-by">—— 同事 A</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">例子：这份清单就是这么问出来的；起标题工作流第一步是 AI 反向提问。</div>
+</section>
+
+<!-- ============ 5 · 第 2 条（下）：让 AI 反过来采访我 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">02</div>
+            <div class="s-head-c">
+                <div class="s-kicker reveal" style="--d:.05s">拆自第 2 条</div>
+                <h2 class="s-title reveal" style="--d:.10s">以终为始</h2>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="cols cols--wide-l">
+                <div class="stack g30">
+                    <h3 class="sub-h reveal" style="--d:.22s">怎么想清楚：让 AI 反过来采访我</h3>
+                    <p class="said reveal" style="--d:.30s">先给它一句最简描述，让它专挑我没想到的硬问题问，问完由它整理成需求说明，再开新会话照着做。</p>
+                    <div class="eg reveal" style="--d:.38s">
+                        <div class="eg-label">例子</div>
+                        <p class="eg-text">这份清单就是这么问出来的；起标题工作流第一步是 AI 反向提问。</p>
+                    </div>
+                </div>
+                <div class="stack g24">
+                    <figure class="quote reveal" style="--d:.46s">
+                        <p class="q-en">"I want to build [brief description]. Interview me in detail... Don't ask obvious questions, dig into the hard parts I might not have considered. Keep interviewing until we've covered everything, then write a complete spec."</p>
+                        <p class="q-zh">大活别直接下指令，先给一句最简描述，让 AI 反过来采访你，专挑你没想到的硬问题问；问完让它把答案整理成一份需求说明（spec），再开新会话照着做。</p>
+                        <figcaption class="q-by">——Anthropic 官方，Claude Code 最佳实践</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">例子：这份清单就是这么问出来的；起标题工作流第一步是 AI 反向提问。</div>
+</section>
+
+<!-- ============ 6 · 第 3 条 人和 Agent 分工 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">03</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">人和 Agent 分工</h2>
+                <p class="s-lede reveal" style="--d:.16s">判断自己来，执行交给 Agent。</p>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="cols cols--wide-l">
+                <div class="stack g30">
+                    <p class="said reveal" style="--d:.24s">「判断要自己来，执行完全可以交给 Agent。当你的判断没问题，以及该有的细节都传递给 Agent 的时候，它的执行应该是能非常到位的。」</p>
+                    <p class="aside-line reveal" style="--d:.32s">我和主 agent 是 CEO 和 COO，它有自己的下游工具和上下文。</p>
+                    <p class="said reveal" style="--d:.40s">「比事实层判断层更抬高一层的是：整体我们要以什么样的思路解决什么样的问题？我们当前是否在最优路径上？」</p>
+                </div>
+                <div class="stack g24">
+                    <figure class="quote reveal" style="--d:.48s">
+                        <p class="q-zh">「执行可以放手，判断不能外包。」</p>
+                        <figcaption class="q-by">—— 同事 B</figcaption>
+                    </figure>
+                    <figure class="quote reveal" style="--d:.56s">
+                        <p class="q-zh">「以前只需要想清楚“要什么”，研发去负责“怎么做”；测试去“兜底”。现在这三层都落在你身上，只是和 AI 一起完成。」</p>
+                        <figcaption class="q-by">—— 同事 C</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">本条无例子。</div>
+</section>
+
+<!-- ============ 7 · 第 4 条 用 AI 给人省脑力、减判断（上） ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">04</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">用 AI 给人省脑力、减判断</h2>
+            </div>
+        </header>
+        <div class="s-body s-body--airy">
+            <div class="stack g48 narrow">
+                <p class="hero reveal" style="--d:.24s">「我非常喜欢的一个诉求叫做减熵降熵，就是熵减，给大脑减负。」</p>
+                <div class="item reveal" style="--d:.38s">
+                    <div class="badge">a</div>
+                    <div class="item-c">
+                        <h3 class="item-t">让 AI 做初判和排序</h3>
+                        <p class="said">「用 AI 帮我减少脑力税和做排序的工作。」</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">本条无例子。</div>
+</section>
+
+<!-- ============ 8 · 第 4 条（下） ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">04</div>
+            <div class="s-head-c">
+                <div class="s-kicker reveal" style="--d:.05s">拆自第 4 条</div>
+                <h2 class="s-title reveal" style="--d:.10s">用 AI 给人省脑力、减判断</h2>
+            </div>
+        </header>
+        <div class="s-body s-body--airy">
+            <div class="cols">
+                <div class="item reveal" style="--d:.24s">
+                    <div class="badge">b</div>
+                    <div class="item-c">
+                        <h3 class="item-t">让 AI 做 demo 和演示</h3>
+                        <p class="said said--sm">「相比于读文字，我会让 AI 给我出一些 demo 来看它们的关系。」「当我想不清一些事情的时候，我会让 AI 给我出一个 HTML，把这个关系帮我捋清楚。」</p>
+                    </div>
+                </div>
+                <div class="item reveal" style="--d:.36s">
+                    <div class="badge">c</div>
+                    <div class="item-c">
+                        <h3 class="item-t">让 AI 提问我、采访我</h3>
+                        <p class="said said--sm">「现在我让你提问我和采访我，也是一种省脑力的方法。」</p>
+                        <p class="aside-line" style="margin-top:16px">做法见第 2 条。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">本条无例子。</div>
+</section>
+
+<!-- ============ 9 · 第 5 条 上下文，团队和项目知识库（上） ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">05</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">上下文，团队和项目知识库</h2>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="stack g48">
+                <p class="hero hero--sm reveal" style="--d:.22s">「这个团队和项目知识库的长期价值是极高的。」「AI 不知道的事情来回返工，其实是因为没沉淀上下文。」</p>
+                <div class="cols">
+                    <div class="item reveal" style="--d:.36s">
+                        <div class="badge">a</div>
+                        <div class="item-c">
+                            <h3 class="item-t">知识库本身</h3>
+                            <p class="aside-line">规矩写进文件是其中一部分：CLAUDE.md、AGENTS.md、群置顶说明书，任何 agent 读了就能干。</p>
+                        </div>
+                    </div>
+                    <div class="item reveal" style="--d:.46s">
+                        <div class="badge">b</div>
+                        <div class="item-c">
+                            <h3 class="item-t">handoff 和日志</h3>
+                            <p class="said said--sm">「我会有意识地记录，几乎每天都会写，最少每周也会写一次，然后定期清理上下文、更换窗口。」</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">本条无例子。</div>
+</section>
+
+<!-- ============ 10 · 第 5 条（下） ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">05</div>
+            <div class="s-head-c">
+                <div class="s-kicker reveal" style="--d:.05s">拆自第 5 条</div>
+                <h2 class="s-title reveal" style="--d:.10s">上下文，团队和项目知识库</h2>
+            </div>
+        </header>
+        <div class="s-body s-body--airy">
+            <div class="cols">
+                <div class="item reveal" style="--d:.24s">
+                    <div class="badge">c</div>
+                    <div class="item-c">
+                        <h3 class="item-t">主动沉淀存档</h3>
+                        <p class="said said--sm">「通常在阶段性进展做完后都会进行沉淀」，必沉淀三样，「过程中走过的弯路、关键决策和判断思路；最终方案；对前文的推翻」。</p>
+                    </div>
+                </div>
+                <div class="item reveal" style="--d:.36s">
+                    <div class="badge">d</div>
+                    <div class="item-c">
+                        <h3 class="item-t">一群加一文件夹解决一件事</h3>
+                        <p class="aside-line">往群里丢糙话，AI 分拣归档。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">本条无例子。</div>
+</section>
+
+<!-- ============ 11 · 第 6 条 大项目分拆，判断和执行分开 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">06</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">大项目分拆，判断和执行分开</h2>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="cols">
+                <div class="stack g30">
+                    <p class="said reveal" style="--d:.24s">「大项目分拆其实是分拆两层。第一层是大项目怎么拆成小项目：每一个独立的模块是什么，以及它们之间的耦合点和逻辑关系是什么，分拆是平面的。第二层是关键决策点：关键决策点是时间性的，前后有因果关系。」</p>
+                    <figure class="quote reveal" style="--d:.34s">
+                        <p class="q-zh">「动手前强迫自己写一页纸的设计——目标是什么、拆成哪几块、块和块之间的接口是什么、最大的不确定性在哪、打算先验证什么。写不出来，说明画面还没成型；很多返工，其实在写这页纸的第十分钟就能被发现。」</p>
+                        <figcaption class="q-by">—— 同事 A</figcaption>
+                    </figure>
+                </div>
+                <div class="stack g30">
+                    <div class="eg reveal" style="--d:.44s">
+                        <div class="eg-label">例子</div>
+                        <p class="eg-text">一次产品改版。先探数拿全基本信息做全局判断，第二次决策要不要改还是下一版迭代，第三次决策怎么砍，后面才是执行。</p>
+                    </div>
+                    <p class="said said--sm reveal" style="--d:.52s">「前两次其实是在帮助你做判断，后半程其实是偏向于做执行。」「如果判断不清楚，执行是执行不清楚的。」</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">例子：一次产品改版。先探数拿全基本信息做全局判断，第二次决策要不要改还是下一版迭代，第三次决策怎么砍，后面才是执行。「前两次其实是在帮助你做判断，后半程其实是偏向于做执行。」「如果判断不清楚，执行是执行不清楚的。」</div>
+</section>
+
+<!-- ============ 12 · 第 7 条 先搜有没有现成的 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">07</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">先搜有没有现成的</h2>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="cols cols--wide-l">
+                <div class="stack g30">
+                    <p class="said said--lg reveal" style="--d:.24s">「通用型的能力都应该是在外部的基础上做给自己的定制性修改，而不是从头搭。」</p>
+                    <div class="eg reveal" style="--d:.34s">
+                        <div class="eg-label">例子</div>
+                        <p class="eg-text">「有的时候我们想做一个数据分析的能力，做完了之后发现内部有现成的，或者外部有现成的，这种东西非常的多。」</p>
+                    </div>
+                </div>
+                <div class="stack g24">
+                    <figure class="quote reveal" style="--d:.44s">
+                        <p class="q-zh">「不是哪里不顺都值得自己造工具。」先过三条门槛：重复发生、底层能力现成、影响可控。</p>
+                        <figcaption class="q-by">—— 同事 D</figcaption>
+                    </figure>
+                    <figure class="quote reveal" style="--d:.52s">
+                        <p class="q-zh">Every 团队的 Natalia 和 Austin 各撞过一次「什么都自己造」的墙，退回来先用现成的。</p>
+                        <figcaption class="q-by">——Every 团队</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">例子：「有的时候我们想做一个数据分析的能力，做完了之后发现内部有现成的，或者外部有现成的，这种东西非常的多。」</div>
+</section>
+
+<!-- ============ 13 · 第 8 条 版本管理 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">08</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">版本管理</h2>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="narrow">
+                <p class="hero hero--xl reveal" style="--d:.26s">「我的旧版本都会留着。如果是代码的话，我会 Git，方便回滚，同时我会存日期。」</p>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">本条无例子。</div>
+</section>
+
+<!-- ============ 14 · 第 9 条 验收分阶段 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">09</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">验收分阶段</h2>
+            </div>
+        </header>
+        <div class="s-body s-body--airy">
+            <div class="cols cols--wide-l">
+                <div class="stack g38">
+                    <p class="hero hero--sm reveal" style="--d:.22s">「验收是分阶段的。」</p>
+                    <p class="said reveal" style="--d:.32s">内容是大纲、脚本、视频三次大验收，中间有子版本验收；代码是「先有大方案的验收，再到完整方案的验收，接着是对关键问题的确认，最后才是成品的确认。这里的每一个验收方法都不一样。」</p>
+                </div>
+                <div class="stack g24">
+                    <p class="said said--sm reveal" style="--d:.44s">「验收这件事分大点和小点，你要先想清楚怎么验收：有哪些关键点要验收？让谁去验收？有的我会让 Agent 去验收，有的我要亲自验收。」</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">本条无例子。</div>
+</section>
+
+<!-- ============ 15 · 第 10 条 复盘协作过程 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">10</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">复盘协作过程</h2>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="cols cols--wide-l">
+                <div class="stack g30">
+                    <p class="said said--lg reveal" style="--d:.24s">「复盘协作过程不是一个固定的工作或节点，而是无时无刻发生在脑海里的潜意识。当你遇到弯路、困难的时候，自然就会去想。」</p>
+                    <div class="eg reveal" style="--d:.34s">
+                        <div class="eg-label">例子</div>
+                        <p class="eg-text">「以前在周会的时候，我们会说说大家都在做什么工作，哪些部分是 Agent 做的，哪些部分是我们自己做的，大家会一起听别人的过程。」</p>
+                    </div>
+                </div>
+                <div class="stack g24">
+                    <figure class="quote reveal" style="--d:.46s">
+                        <p class="q-zh">同事 B 自查了自己 158 个 session、1349 条指令、中位数 42 字、4992 个子 agent。</p>
+                        <figcaption class="q-by">—— 同事 B</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">例子：「以前在周会的时候，我们会说说大家都在做什么工作，哪些部分是 Agent 做的，哪些部分是我们自己做的，大家会一起听别人的过程。」</div>
+</section>
+
+<!-- ============ 16 · 第 11 条 要有学习和积攒工程能力的意识 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head">
+            <div class="s-num reveal" style="--d:.05s">11</div>
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.10s">要有学习和积攒工程能力的意识</h2>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="cols cols--wide-l">
+                <div class="stack g30">
+                    <p class="hero hero--sm reveal" style="--d:.22s">「工程能力始终很重要，学习工程能力始终重要。」</p>
+                    <div class="item reveal" style="--d:.32s">
+                        <div class="badge">a</div>
+                        <div class="item-c">
+                            <h3 class="item-t">用到哪学到哪，直接问 AI</h3>
+                            <p class="said said--sm">「开发知识可以去学习了解一下，比如什么是构建、单测、编译、部署，不用系统学，用到哪学到哪，直接问 AI。」</p>
+                            <p class="aside-line" style="margin-top:12px">让 AI 做每个工程动作时顺手问它为什么。</p>
+                        </div>
+                    </div>
+                    <div class="item reveal" style="--d:.40s">
+                        <div class="badge">b</div>
+                        <div class="item-c">
+                            <h3 class="item-t">上线流程自己走几遍</h3>
+                            <p class="said said--sm">「第一次基本上有了一个大概的模糊感觉；第二次有了确定性，心里基本有数了；第三次非常熟悉。」</p>
+                        </div>
+                    </div>
+                    <div class="item reveal" style="--d:.48s">
+                        <div class="badge">c</div>
+                        <div class="item-c">
+                            <h3 class="item-t">每碰到一个新概念写清三问</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="stack g24">
+                    <figure class="quote reveal" style="--d:.54s">
+                        <p class="q-zh">「每次接触新东西都逼自己用文字写清它是什么、为什么重要、和我已有认知的关系是什么。」「写不出来就说明没想通，想不通就继续挖。」「碎片化的信息摄入不叫学习，能把碎片连成结构才叫学习。」</p>
+                        <figcaption class="q-by">—— 同事 B</figcaption>
+                    </figure>
+                    <figure class="quote reveal" style="--d:.62s">
+                        <p class="q-zh">「工程能力没有因为 AI 变成别的东西。变的是链路，不变的是：信息管理得越好，做出来的东西就越接近脑子里的那个样子。」</p>
+                        <figcaption class="q-by">—— 同事 C</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="speaker-note">本条无例子。</div>
+</section>
+
+<!-- ============ 17 · 带走页 ============ -->
+<section class="slide">
+    <div class="pad">
+        <header class="s-head s-head--plain">
+            <div class="s-head-c">
+                <h2 class="s-title reveal" style="--d:.08s">带走这 11 条</h2>
+            </div>
+        </header>
+        <div class="s-body">
+            <div class="ov ov--takeaway">
+                <div class="ov-item reveal" style="--d:.16s"><span class="ov-n">01</span><span class="ov-t">工具一步到位</span></div>
+                <div class="ov-item reveal" style="--d:.38s"><span class="ov-n">07</span><span class="ov-t">先搜有没有现成的</span></div>
+                <div class="ov-item reveal" style="--d:.20s"><span class="ov-n">02</span><span class="ov-t">以终为始</span></div>
+                <div class="ov-item reveal" style="--d:.42s"><span class="ov-n">08</span><span class="ov-t">版本管理</span></div>
+                <div class="ov-item reveal" style="--d:.24s"><span class="ov-n">03</span><span class="ov-t">人和 Agent 分工</span></div>
+                <div class="ov-item reveal" style="--d:.46s"><span class="ov-n">09</span><span class="ov-t">验收分阶段</span></div>
+                <div class="ov-item reveal" style="--d:.28s"><span class="ov-n">04</span><span class="ov-t">用 AI 给人省脑力、减判断</span></div>
+                <div class="ov-item reveal" style="--d:.50s"><span class="ov-n">10</span><span class="ov-t">复盘协作过程</span></div>
+                <div class="ov-item reveal" style="--d:.32s"><span class="ov-n">05</span><span class="ov-t">上下文，团队和项目知识库</span></div>
+                <div class="ov-item reveal" style="--d:.54s"><span class="ov-n">11</span><span class="ov-t">要有学习和积攒工程能力的意识</span></div>
+                <div class="ov-item reveal" style="--d:.36s"><span class="ov-n">06</span><span class="ov-t">大项目分拆，判断和执行分开</span></div>
+            </div>
+        </div>
+        <div class="take-foot reveal" style="--d:.62s">
+            <span class="spark" style="--sp:26px"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span>Miss发行人 · 和 AI 协作的工作习惯</span>
+        </div>
+    </div>
+    <div class="speaker-note">本页无备注。</div>
+</section>
+
+<!-- 舞台内的右下角页码 -->
+<div class="stage-pn" id="stagePn"><b id="pnCur">01</b><span>/</span><i id="pnTot" style="font-style:normal">17</i></div>
+
+</main>
+</div>
+
+<!-- 演讲备注面板：按 N 弹出 -->
+<aside class="note-panel" id="notePanel" aria-live="polite">
+    <div class="note-head">
+        <span class="note-tag">备注</span>
+        <span class="note-hint">按 N 关闭</span>
+    </div>
+    <div class="note-body" id="noteBody"></div>
+</aside>
+
+<!-- 就地改字：鼠标移到左上角或按 E -->
+<div class="edit-hotzone"></div>
+<button class="edit-toggle" id="editToggle" title="改字模式（E）" aria-label="改字模式">✎</button>
+
+<script>
+/* ===========================================
+   幻灯片控制器
+   ← → / 空格 / PageUp PageDown 翻页
+   #页码 直达（例如 #7）
+   N 弹出当页备注
+   =========================================== */
+class Deck {
+    constructor() {
+        this.stage   = document.getElementById('stage');
+        this.slides  = Array.from(this.stage.querySelectorAll('.slide'));
+        this.pnCur   = document.getElementById('pnCur');
+        this.pnTot   = document.getElementById('pnTot');
+        this.stagePn = document.getElementById('stagePn');
+        this.notePanel = document.getElementById('notePanel');
+        this.noteBody  = document.getElementById('noteBody');
+        this.i = 0;
+        this.noteOpen = false;
+
+        this.pnTot.textContent = this.pad2(this.slides.length);
+
+        this.fitStage();
+        window.addEventListener('resize', () => this.fitStage());
+
+        this.bindKeys();
+        this.bindTouch();
+        window.addEventListener('hashchange', () => this.go(this.fromHash(), true));
+
+        this.go(this.fromHash(), true);
+    }
+
+    pad2(n) { return String(n).padStart(2, '0'); }
+
+    /* 整块舞台等比缩放，居中信箱化，绝不重排内容 */
+    fitStage() {
+        const f = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+        const x = (window.innerWidth  - 1920 * f) / 2;
+        const y = (window.innerHeight - 1080 * f) / 2;
+        this.stage.style.transform = `translate(${x}px, ${y}px) scale(${f})`;
+    }
+
+    /* #7 → 第 7 页（1 起算） */
+    fromHash() {
+        const m = (location.hash || '').match(/\d+/);
+        return m ? parseInt(m[0], 10) - 1 : this.i;
+    }
+
+    go(index, fromHash) {
+        const n = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.i = n;
+        this.slides.forEach((s, k) => {
+            s.classList.toggle('active',  k === n);
+            s.classList.toggle('visible', k === n);
+        });
+        this.pnCur.textContent = this.pad2(n + 1);
+        /* 封面不显示页码 */
+        this.stagePn.classList.toggle('hide', n === 0);
+        this.syncNote();
+        if (!fromHash) {
+            history.replaceState(null, '', '#' + (n + 1));
+        }
+    }
+
+    next() { this.go(this.i + 1); }
+    prev() { this.go(this.i - 1); }
+
+    /* 备注面板 */
+    syncNote() {
+        const el = this.slides[this.i].querySelector('.speaker-note');
+        this.noteBody.textContent = el ? el.textContent.trim() : '本页无备注。';
+    }
+    toggleNote() {
+        this.noteOpen = !this.noteOpen;
+        this.notePanel.classList.toggle('open', this.noteOpen);
+    }
+
+    bindKeys() {
+        document.addEventListener('keydown', (e) => {
+            if (e.target.isContentEditable) return;
+            switch (e.key) {
+                case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown':
+                    e.preventDefault(); this.next(); break;
+                case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+                    e.preventDefault(); this.prev(); break;
+                case 'Home': e.preventDefault(); this.go(0); break;
+                case 'End':  e.preventDefault(); this.go(this.slides.length - 1); break;
+                case 'n': case 'N': e.preventDefault(); this.toggleNote(); break;
+                case 'Escape': if (this.noteOpen) this.toggleNote(); break;
+            }
+        });
+    }
+
+    bindTouch() {
+        let x0 = null, y0 = null;
+        document.addEventListener('touchstart', (e) => {
+            x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+        }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            if (x0 === null) return;
+            const dx = e.changedTouches[0].clientX - x0;
+            const dy = e.changedTouches[0].clientY - y0;
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+                dx < 0 ? this.next() : this.prev();
+            }
+            x0 = y0 = null;
+        }, { passive: true });
+    }
+}
+
+const deck = new Deck();
+
+/* ===========================================
+   就地改字（默认关闭）
+   E 键或左上角热区唤出，Ctrl/Cmd+S 存一份 HTML
+   =========================================== */
+const editor = {
+    isActive: false,
+    toggle() {
+        this.isActive = !this.isActive;
+        deck.stage.classList.toggle('editing', this.isActive);
+        deck.stage.setAttribute('contenteditable', this.isActive ? 'true' : 'false');
+        const btn = document.getElementById('editToggle');
+        btn.classList.toggle('active', this.isActive);
+        if (this.isActive) btn.classList.add('show');
+    },
+    save() {
+        const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'ai-habits.html';
+        a.click();
+        URL.revokeObjectURL(a.href);
+    }
+};
+
+(function bindEditor() {
+    const hotzone = document.querySelector('.edit-hotzone');
+    const btn = document.getElementById('editToggle');
+    let hideTimer = null;
+
+    const show = () => { clearTimeout(hideTimer); btn.classList.add('show'); };
+    const hideSoon = () => {
+        hideTimer = setTimeout(() => { if (!editor.isActive) btn.classList.remove('show'); }, 400);
+    };
+
+    hotzone.addEventListener('mouseenter', show);
+    hotzone.addEventListener('mouseleave', hideSoon);
+    btn.addEventListener('mouseenter', show);
+    btn.addEventListener('mouseleave', hideSoon);
+    hotzone.addEventListener('click', () => editor.toggle());
+    btn.addEventListener('click', () => editor.toggle());
+
+    document.addEventListener('keydown', (e) => {
+        if ((e.key === 'e' || e.key === 'E') && !e.target.isContentEditable) {
+            e.preventDefault(); editor.toggle();
+        }
+        if ((e.metaKey || e.ctrlKey) && (e.key === 's' || e.key === 'S')) {
+            e.preventDefault(); editor.save();
+        }
+    });
+})();
+</script>
+</body>
+</html>
