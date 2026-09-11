@@ -1191,6 +1191,7 @@
       我们将从安装、模型配置和权限设置开始，逐步讲解工具、技能、插件、远程控制与自动化等核心能力。
       看完以后，你就能用 Codex 处理日常工作，并搭建自己想做的项目。
     -->
+    <!-- 01 封面 -->
     <section class="slide cover active">
       <div class="cover-label">MISS 发行人 · 大白话讲 AI</div>
       <div class="cover-rule"></div>
@@ -1204,62 +1205,69 @@
       </div>
     </section>
 
-    <section class="slide content mindmap-slide">
-      <div class="slide-head">
-        <img class="title-icon" src="logo-codex.png" alt="">
-        <div>
-          <div class="eyebrow">课程地图 · 可上下滚动</div>
-          <h2 class="slide-title">先用一张图，看清这期的完整结构</h2>
-        </div>
-      </div>
-      <div class="canvas">
-        <div class="mindmap-viewport">
-          <div class="mindmap-scroll-note">↕ 在图内滚动</div>
-          <iframe
-            class="mindmap-frame"
-            src="codex-mindmap-v10.html#mapStage"
-            title="Codex 小白教程结构思维导图"
-            loading="eager"
-            scrolling="yes"
-          ></iframe>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide chapter" style="--chapter:var(--navy)">
-      <div class="chapter-kicker">第 01 部分 · 必须理解</div>
-      <h2 class="chapter-title">理解这个产品</h2>
-      <p class="chapter-desc">先看它能完成什么，再理解它为什么可以自己往前做。</p>
-    </section>
-
+    <!-- 02 课程地图（新结构目录） -->
     <section class="slide content">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">01 · 先看结果</div>
-          <h2 class="slide-title">Codex 能完成的，不只是“写代码”</h2>
+          <div class="eyebrow">先看清这期的完整结构</div>
+          <h2 class="slide-title">课程地图</h2>
         </div>
       </div>
       <div class="canvas">
-        <div class="quad-list capability-grid">
+        <div class="toc-list">
+          <div class="toc-row" style="--part:var(--navy)">
+            <b>0 总览</b>
+            <span>封面 · 课程地图</span>
+          </div>
+          <div class="toc-row" style="--part:var(--teal)">
+            <b>1 是什么</b>
+            <span>Codex 整体介绍 · 核心能力 · Codex 和 Claude Code · Agent 是什么 · 协作原理 · 4 个入口</span>
+          </div>
+          <div class="toc-row" style="--part:var(--blue)">
+            <b>2 安装使用</b>
+            <span>安装+首次使用 · 选模型 · 权限 · 上下文 · 语音输入和用量 · 验收和报错 · 提示词 · 记忆和 AGENTS.md · 图片输入 · 生成图片 · 远程控制 · 自动运行 · 计划模式 · Skill 和技能 · 插件和连通工具</span>
+          </div>
+          <div class="toc-row" style="--part:var(--amber)">
+            <b>3 项目实操</b>
+            <span>操作电脑（办公剪辑） · 批量处理、自动化 · 编程 Vibe Coding · 大型项目工作台</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 章扉 · Codex 整体介绍 -->
+    <section class="slide chapter" style="--chapter:var(--navy)">
+      <div class="chapter-kicker">第 1 章 · 是什么</div>
+      <h2 class="chapter-title">Codex 整体介绍</h2>
+      <p class="chapter-desc">Codex 是什么、能做什么</p>
+    </section>
+
+    <!-- 04 核心能力 -->
+    <section class="slide content">
+      <div class="slide-head">
+        <img class="title-icon" src="logo-codex.png" alt="">
+        <div>
+          <div class="eyebrow">01 · Codex 能完成的，不只是“写代码”</div>
+          <h2 class="slide-title">核心能力</h2>
+        </div>
+      </div>
+      <div class="canvas">
+        <div class="quad-list">
           <div class="quad-item" style="--item:var(--navy)">
-            <div class="capability-icon">＋</div>
-            <strong>创建与修改</strong>
+            <strong>🛠️ 创建与修改</strong>
             <span>写网页、改文件、修问题、调整已有项目。</span>
           </div>
           <div class="quad-item" style="--item:var(--blue)">
-            <div class="capability-icon">⌕</div>
-            <strong>研究与分析</strong>
+            <strong>🔍 研究与分析</strong>
             <span>搜索资料、读取文档、整理信息、形成结论。</span>
           </div>
           <div class="quad-item" style="--item:var(--amber)">
-            <div class="capability-icon">✦</div>
-            <strong>内容与视觉</strong>
+            <strong>🎨 内容与视觉</strong>
             <span>生成文案、图片、网页素材，并继续修改。</span>
           </div>
           <div class="quad-item" style="--item:var(--teal)">
-            <div class="capability-icon">↻</div>
-            <strong>操作与自动化</strong>
+            <strong>⚙️ 操作与自动化</strong>
             <span>使用浏览器和桌面软件，让重复工作自动运行。</span>
           </div>
         </div>
@@ -1267,16 +1275,46 @@
       </div>
     </section>
 
+    <!-- 04b Codex 和 Claude Code 对比 -->
     <section class="slide content">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">01 · 智能体心智模型</div>
-          <h2 class="slide-title">模型负责思考，工具给它眼睛和手</h2>
+          <div class="eyebrow">01 · 都是第一梯队，差别在哪</div>
+          <h2 class="slide-title">Codex 和 Claude Code</h2>
         </div>
       </div>
       <div class="canvas">
-        <div class="agent-loop">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th></th>
+              <th><img class="vs-logo" src="logo-codex.png" alt=""> Codex</th>
+              <th><img class="vs-logo" src="logo-claude.png" alt=""> Claude Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>优势</td><td>功能全＋不封号＋能生图</td><td>文案好＋会主动纠正</td></tr>
+            <tr><td>劣势</td><td>谄媚啰嗦</td><td>封号</td></tr>
+            <tr><td>易用</td><td colspan="2">整个打通，用法相同</td></tr>
+            <tr><td>功能</td><td>全套（插件＋浏览器控制＋远程＋生图）</td><td>全套（但不能生图）</td></tr>
+            <tr><td>价格</td><td>免费能试试；20 刀日常够用，100 刀深度使用</td><td>没有免费档，起步 20 刀；100 刀深度使用</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 05 Agent 是什么 -->
+    <section class="slide content">
+      <div class="slide-head">
+        <img class="title-icon" src="logo-codex.png" alt="">
+        <div>
+          <div class="eyebrow">01 · 模型负责思考，工具给它眼睛和手</div>
+          <h2 class="slide-title">Agent 是什么</h2>
+        </div>
+      </div>
+      <div class="canvas">
+        <div class="agent-loop roomy">
           <div class="agent-unit" style="--unit:var(--navy)">
             <div class="concept-emoji" aria-label="大脑">🧠</div>
             <b>模型</b>
@@ -1299,79 +1337,124 @@
       </div>
     </section>
 
+    <!-- 06 协作原理 -->
     <section class="slide content">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">01 · 人机分工</div>
-          <h2 class="slide-title">你定义结果，Codex 推进任务，你根据证据验收</h2>
+          <div class="eyebrow">01 · 你定义结果，Codex 推进任务，你根据证据验收</div>
+          <h2 class="slide-title">协作原理</h2>
         </div>
       </div>
       <div class="canvas">
-        <div class="flat-steps">
-          <div class="flat-step"><b>你</b><div><strong>说清想得到什么</strong>：目标、背景、限制和完成标准。</div></div>
-          <div class="flat-step"><b>Codex</b><div><strong>进入环境并执行</strong>：读文件、调用工具、修改、运行和检查。</div></div>
-          <div class="flat-step"><b>你</b><div><strong>查看证据</strong>：修改差异、运行结果、测试和最终成品。</div></div>
-          <div class="flat-step"><b>双方</b><div><strong>继续调整</strong>：补充信息、纠正方向，直到满足完成标准。</div></div>
+        <div class="flat-steps roomy">
+          <div class="flat-step"><b>🗣️ 你</b><div><strong>说清想得到什么</strong>：目标、背景、限制和完成标准。</div></div>
+          <div class="flat-step"><b>🤖 Codex</b><div><strong>进入环境并执行</strong>：读文件、调用工具、修改、运行和检查。</div></div>
+          <div class="flat-step"><b>🔍 你</b><div><strong>查看证据</strong>：修改差异、运行结果、测试和最终成品。</div></div>
+          <div class="flat-step"><b>🤝 双方</b><div><strong>继续调整</strong>：补充信息、纠正方向，直到满足完成标准。</div></div>
         </div>
       </div>
     </section>
 
+    <!-- 07 4 个入口 -->
     <!-- Source: https://developers.openai.com/codex/codex-manual.md -->
     <section class="slide content">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">01 · 使用入口</div>
-          <h2 class="slide-title">四种入口共享工作方式，但能力并不完全一样</h2>
+          <div class="eyebrow">01 · 四种入口共享工作方式，但能力并不完全一样</div>
+          <h2 class="slide-title">4 个入口</h2>
         </div>
       </div>
       <div class="canvas">
-        <table class="matrix">
-          <thead><tr><th>入口</th><th>最适合</th><th>你需要知道</th></tr></thead>
-          <tbody>
-            <tr><td>桌面应用</td><td>规划、审查、长任务和多任务协作</td><td>小白最容易建立全局视角</td></tr>
-            <tr><td>命令行</td><td>直接在终端处理本地项目</td><td>适合已经习惯终端的人</td></tr>
-            <tr><td>编辑器</td><td>边写边改、紧贴当前代码</td><td>适合开发过程中的即时协作</td></tr>
-            <tr><td>云端</td><td>把任务放到托管环境中运行</td><td>运行环境与本机并不相同</td></tr>
-          </tbody>
-        </table>
+        <div class="quad-list">
+          <div class="quad-item" style="--item:var(--navy)">
+            <strong>⭐ 桌面应用（App）<em class="badge-rec">推荐</em></strong>
+            <span>规划、审查、长任务和多任务协作；小白最容易建立全局视角，最推荐从这里开始。</span>
+          </div>
+          <div class="quad-item" style="--item:var(--blue)">
+            <strong>命令行</strong>
+            <span>直接在终端处理本地项目；适合已经习惯终端的人。</span>
+          </div>
+          <div class="quad-item" style="--item:var(--amber)">
+            <strong>编辑器</strong>
+            <span>边写边改、紧贴当前代码；适合开发过程中的即时协作。</span>
+          </div>
+          <div class="quad-item" style="--item:var(--teal)">
+            <strong>云端</strong>
+            <span>把任务放到托管环境中运行；运行环境与本机并不相同。</span>
+          </div>
+        </div>
         <div class="takeaway">入口不是皮肤差异：运行位置、可用工具和适合的任务都可能不同。</div>
       </div>
     </section>
 
+    <!-- 08 章扉 · 安装与使用 -->
     <section class="slide chapter" style="--chapter:var(--blue)">
-      <div class="chapter-kicker">第 02 部分 · 必须会</div>
-      <h2 class="chapter-title">上手使用</h2>
+      <div class="chapter-kicker">第 2 章 · 安装使用</div>
+      <h2 class="chapter-title">安装与使用</h2>
       <p class="chapter-desc">完成安装和基础配置，然后跑通第一次从要求到验证的完整闭环。</p>
     </section>
 
+    <!-- 09 安装+首次使用 -->
     <section class="slide content">
+      <div class="demo-flag">⭕️</div>
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">02 · 安装与登录</div>
-          <h2 class="slide-title">第一次打开，只做三件事</h2>
+          <div class="eyebrow">02 · 第一次打开，只做三件事</div>
+          <h2 class="slide-title">安装+首次使用</h2>
         </div>
       </div>
       <div class="canvas">
-        <div class="flat-steps">
+        <div class="official-url"><small>官方网址</small><span>openai点com斜杠codex</span></div>
+        <div class="flat-steps roomy" style="margin-top:18px">
           <div class="flat-step"><b>步骤 01</b><div><strong>安装并登录</strong>：从官方渠道获取与你设备匹配的 Codex。</div></div>
           <div class="flat-step"><b>步骤 02</b><div><strong>选择入口</strong>：小白优先从桌面应用开始，需要时再转命令行或编辑器。</div></div>
           <div class="flat-step"><b>步骤 03</b><div><strong>打开正确项目</strong>：不是随便选一个文件，而是进入完整的工作目录。</div></div>
         </div>
-        <div class="official-url"><small>官方网址</small><span>openai点com斜杠codex</span></div>
-        <div class="takeaway">文件在电脑里，不等于 Codex 已经进入了能运行它的项目环境。</div>
       </div>
     </section>
 
-    <!-- Source: https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex -->
-    <section class="slide content">
+    <!-- 10 本章导航（点击中枢） -->
+    <section class="slide content" id="sec-hub">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">02 · 模型配置</div>
-          <h2 class="slide-title">模型不用背名字，先看任务需要什么</h2>
+          <div class="eyebrow">02 · 讲到哪个点哪个 · 进入后单击页面返回</div>
+          <h2 class="slide-title">14 个知识点</h2>
+        </div>
+      </div>
+      <div class="canvas">
+        <div class="hub-grid">
+          <div class="hub-group-label">基础<span>日常够用</span></div>
+          <button class="hub-btn" type="button" data-target="sec-model" style="--hub:var(--navy)"><small>01</small><b>选模型</b></button>
+          <button class="hub-btn" type="button" data-target="sec-perm" style="--hub:var(--blue)"><small>02</small><b>权限</b></button>
+          <button class="hub-btn" type="button" data-target="sec-context" style="--hub:var(--teal)"><small>03</small><b>上下文</b></button>
+          <div class="hub-btn hub-static"><small>04</small><b>语音输入 · 用量</b></div>
+          <button class="hub-btn" type="button" data-target="sec-check" style="--hub:var(--green)"><small>05</small><b>验收和报错</b></button>
+          <button class="hub-btn" type="button" data-target="sec-prompt" style="--hub:var(--amber)"><small>06</small><b>提示词</b></button>
+          <button class="hub-btn" type="button" data-target="sec-memory" style="--hub:var(--indigo)"><small>07</small><b>记忆和 AGENTS.md</b></button>
+          <button class="hub-btn" type="button" data-target="sec-imgin" style="--hub:var(--navy)"><small>08</small><b>图片输入</b></button>
+          <button class="hub-btn" type="button" data-target="sec-imggen" style="--hub:var(--blue)"><small>09</small><b>生成图片</b></button>
+          <button class="hub-btn" type="button" data-target="sec-remote" style="--hub:var(--teal)"><small>10</small><b>远程控制</b></button>
+          <button class="hub-btn" type="button" data-target="sec-auto" style="--hub:var(--green)"><small>11</small><b>自动运行</b></button>
+          <div class="hub-group-label">进阶<span>学有余力再看</span></div>
+          <button class="hub-btn adv" type="button" data-target="sec-plan" style="--hub:var(--amber)"><small>12</small><b>计划模式</b><em class="hub-adv">进阶</em></button>
+          <button class="hub-btn adv" type="button" data-target="sec-skill" style="--hub:var(--indigo)"><small>13</small><b>Skill 和技能</b><em class="hub-adv">进阶</em></button>
+          <button class="hub-btn adv" type="button" data-target="sec-plugin" style="--hub:var(--navy)"><small>14</small><b>插件和连通工具</b><em class="hub-adv">进阶</em></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 选模型 -->
+    <!-- Source: https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex -->
+    <section class="slide content hub-child" id="sec-model">
+      <div class="slide-head">
+        <img class="title-icon" src="logo-codex.png" alt="">
+        <div>
+          <div class="eyebrow">02 · 模型不用背名字，先看任务需要什么</div>
+          <h2 class="slide-title">选模型</h2>
         </div>
       </div>
       <div class="canvas">
@@ -1391,12 +1474,38 @@
       </div>
     </section>
 
-    <section class="slide content">
+    <!-- 11b 上下文 -->
+    <section class="slide content hub-child" id="sec-context">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">02 · 权限与沙箱</div>
-          <h2 class="slide-title">权限不是“全开”或“全关”</h2>
+          <div class="eyebrow">02 · 它的工作记忆，装满了就会忘</div>
+          <h2 class="slide-title">上下文</h2>
+        </div>
+      </div>
+      <div class="canvas">
+        <div class="quad-strip">
+          <div style="--item:var(--navy)"><strong>指令</strong><small>你说过的话</small></div>
+          <div style="--item:var(--blue)"><strong>文件</strong><small>打开的项目内容</small></div>
+          <div style="--item:var(--amber)"><strong>规则</strong><small>AGENTS.md 里的约定</small></div>
+          <div style="--item:var(--green)"><strong>历史</strong><small>这轮聊过的内容</small></div>
+        </div>
+        <div class="flat-steps" style="margin-top:16px">
+          <div class="flat-step"><b>一次一事</b><div><strong>别在一个会话里塞五个任务</strong>：装太满它就开始忘、开始乱。</div></div>
+          <div class="flat-step"><b>新任务新会话</b><div><strong>别接着旧的聊</strong>：干净的脑子干新活。</div></div>
+          <div class="flat-step"><b>变笨就重开</b><div><strong>答非所问、忘东忘西</strong>：说明装满了，重开一个最省事。</div></div>
+        </div>
+        <div class="takeaway">喂对上下文，比换模型管用。</div>
+      </div>
+    </section>
+
+    <!-- 12 权限 -->
+    <section class="slide content hub-child" id="sec-perm">
+      <div class="slide-head">
+        <img class="title-icon" src="logo-codex.png" alt="">
+        <div>
+          <div class="eyebrow">02 · 权限不是“全开”或“全关”</div>
+          <h2 class="slide-title">权限</h2>
         </div>
       </div>
       <div class="canvas">
@@ -1404,84 +1513,76 @@
       </div>
     </section>
 
-    <section class="slide content">
+    <!-- 13 验收和报错 -->
+    <section class="slide content hub-child" id="sec-check">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">02 · 演示后只记三件事</div>
-          <h2 class="slide-title">不要问“它说做完了吗”，要看“证据够不够”</h2>
+          <div class="eyebrow">02 · 说做完了要查证据，报错了就粘原文</div>
+          <h2 class="slide-title">验收和报错</h2>
         </div>
       </div>
       <div class="canvas">
-        <div class="flat-steps">
-          <div class="flat-step"><b>证据 01</b><div><strong>修改对不对</strong>：是否只改了该改的文件和位置。</div></div>
-          <div class="flat-step"><b>证据 02</b><div><strong>结果能不能运行</strong>：项目是否启动、页面是否正常、命令是否成功。</div></div>
-          <div class="flat-step"><b>证据 03</b><div><strong>是否满足完成标准</strong>：最终成品有没有达到最初要求。</div></div>
+        <div class="two-way">
+          <div class="way" style="--way:var(--green)">
+            <div class="way-label">验收 · AI 说做完了</div>
+            <div class="sim-quote">Codex：「已完成：首页三张图已压缩替换，加载 4.2 秒 → 1.8 秒」</div>
+            <h3>人做三步检查</h3>
+            <ul>
+              <li><strong>看改了什么</strong>——是不是只动了图片文件</li>
+              <li><strong>自己打开一次</strong>——图清不清楚、版有没有乱</li>
+              <li><strong>对最初要求</strong>——「压缩但不糊」做到没有</li>
+            </ul>
+          </div>
+          <div class="way" style="--way:var(--red)">
+            <div class="way-label">报错 · AI 卡住了</div>
+            <div class="sim-quote">Codex：「运行失败：Cannot find module 'sharp'（找不到模块）」</div>
+            <h3>人这样下指令</h3>
+            <div class="sim-quote">你：「这是报错原文。找到原因并修复，修完重新运行，把成功结果给我看。」</div>
+            <p>要点：报错别自己概括，整段粘原文；要求「修复＋重跑验证」，不是只让它解释。</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="slide chapter" style="--chapter:var(--teal)">
-      <div class="chapter-kicker">第 03 部分 · 分层学习</div>
-      <h2 class="chapter-title">把事情做得更好</h2>
-      <p class="chapter-desc">先掌握单次任务的方法，再学习沉淀、扩展和规模化。</p>
-    </section>
-
-    <section class="slide group-divider" style="--group:var(--teal)">
-      <div class="group-kicker">第 03 部分 · 第一组</div>
-      <div class="group-code">3A</div>
-      <div class="group-title">把当前任务做好</div>
-      <div class="group-depth">重点掌握</div>
-    </section>
-
-    <section class="slide content">
+    <!-- 14 提示词（原 15+16 合并） -->
+    <section class="slide content hub-child" id="sec-prompt">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">3A · 写好提示词</div>
-          <h2 class="slide-title">好提示词，不是写得长，而是说清四件事</h2>
+          <div class="eyebrow">02 · 好提示词，不是长，而是说清四件事</div>
+          <h2 class="slide-title">提示词</h2>
         </div>
       </div>
       <div class="canvas">
-        <div class="quad-list">
-          <div class="quad-item" style="--item:var(--navy)"><strong>目标</strong><span>最终想得到什么结果。</span></div>
-          <div class="quad-item" style="--item:var(--blue)"><strong>背景</strong><span>项目、受众、已有材料和当前状态。</span></div>
-          <div class="quad-item" style="--item:var(--amber)"><strong>限制</strong><span>哪些不能动、必须遵守什么、风险在哪里。</span></div>
-          <div class="quad-item" style="--item:var(--green)"><strong>完成标准</strong><span>看到什么证据才算真正做完。</span></div>
+        <div class="quad-strip">
+          <div style="--item:var(--navy)"><strong>目标</strong><small>想得到什么</small></div>
+          <div style="--item:var(--blue)"><strong>背景</strong><small>项目、受众、现状</small></div>
+          <div style="--item:var(--amber)"><strong>限制</strong><small>哪些不能动</small></div>
+          <div style="--item:var(--green)"><strong>完成标准</strong><small>什么证据算做完</small></div>
+        </div>
+        <div class="prompt-compare" style="margin-top:16px">
+          <div class="prompt-panel" style="--prompt:var(--red)">
+            <small>模糊版本</small>
+            <p>帮我把这段修改想法整理成发给设计师的说明，语气友好点，别太长。</p>
+            <p style="color:var(--muted)">场景、优先级、哪些不能替我拍板，全靠它猜。</p>
+          </div>
+          <div class="prompt-panel" style="--prompt:var(--green)">
+            <small>清晰版本</small>
+            <p><mark>目标</mark>整理成设计师能直接执行的界面修改说明。<br><mark>背景</mark>改首页首屏，明天过评审；是微调不是重做。<br><mark>限制</mark>别替我拍板，别扩出这轮范围外的新需求。<br><mark>完成标准</mark>4–6 条按优先级排，每条写清改哪里、为什么。</p>
+          </div>
         </div>
         <div class="takeaway">提示词的任务不是“显得专业”，而是减少 Codex 对结果的猜测。</div>
       </div>
     </section>
 
-    <section class="slide content">
+    <!-- 15 计划模式 -->
+    <section class="slide content hub-child" id="sec-plan">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">3A · 对比演示</div>
-          <h2 class="slide-title">同一件事，提示词不同，执行路径就不同</h2>
-        </div>
-      </div>
-      <div class="canvas">
-        <div class="prompt-compare">
-          <div class="prompt-panel" style="--prompt:var(--red)">
-            <small>模糊版本</small>
-            <p>我会给你一段我随手写的修改想法。帮我整理成一条发给设计师的说明，语气友好一点，重点说清楚我想改哪些地方，不用太长。</p>
-            <p style="color:var(--muted)">没有说明具体场景、输出结构、优先级，以及哪些内容不能替你拍板。</p>
-          </div>
-          <div class="prompt-panel" style="--prompt:var(--green)">
-            <small>清晰版本</small>
-            <p><mark>目标</mark>我会给你一段零散的修改想法，请整理成一条能直接发给设计师的界面修改说明，让设计师读完就能抓住这轮最重要的修改重点、不用来回确认，也能判断该先做什么。<br><br><mark>背景</mark>这次改首页首屏，明天要过内部评审；偏“微调”，不是整版重做。<br><br><mark>输出</mark>整理成 4–6 条，按优先级从高到低；每条具体到“改哪里、为什么改”。<br><br><mark>边界</mark>语气保持合作感，别像下命令；别把“我在纠结要不要改”写成已拍板；别顺手扩出这轮范围外的新需求。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide content">
-      <div class="slide-head">
-        <img class="title-icon" src="logo-codex.png" alt="">
-        <div>
-          <div class="eyebrow">3A · 使用计划模式 <span class="term-en">Plan mode</span></div>
-          <h2 class="slide-title">小任务直接做，复杂任务先规划</h2>
+          <div class="eyebrow">02 · 小任务直接做，复杂任务先规划</div>
+          <h2 class="slide-title">计划模式 <span class="term-en">Plan mode</span></h2>
         </div>
       </div>
       <div class="canvas">
@@ -1501,62 +1602,13 @@
       </div>
     </section>
 
-    <section class="slide group-divider" style="--group:var(--green)">
-      <div class="group-kicker">第 03 部分 · 第二组</div>
-      <div class="group-code">3B</div>
-      <div class="group-title">沉淀长期方法</div>
-      <div class="group-depth">理解关系</div>
-    </section>
-
-    <section class="slide content">
+    <!-- 16 记忆和 AGENTS.md（原 19+20+21 合并） -->
+    <section class="slide content hub-child" id="sec-memory">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">3B · 项目规则与技能</div>
-          <h2 class="slide-title">AGENTS.md 管项目规则，技能管做事方法</h2>
-        </div>
-      </div>
-      <div class="canvas">
-        <div class="two-way">
-          <div class="way" style="--way:var(--navy)">
-            <div class="way-label">AGENTS.md</div>
-            <h3>这个项目每次都必须遵守什么</h3>
-            <p>运行命令、目录约定、代码规范、验证要求和已知陷阱。</p>
-          </div>
-          <div class="way" style="--way:var(--green)">
-            <div class="way-label">技能（Skill）</div>
-            <h3>这类任务每次都应该怎样完成</h3>
-            <p>稳定步骤、参考资料、模板、脚本和验收方式。</p>
-          </div>
-        </div>
-        <div class="takeaway">当前任务指令只管这一轮；长期规则和可复用流程才需要沉淀。</div>
-      </div>
-    </section>
-
-    <section class="slide content">
-      <div class="slide-head">
-        <img class="title-icon" src="logo-codex.png" alt="">
-        <div>
-          <div class="eyebrow">3B · 放到正确位置</div>
-          <h2 class="slide-title">同一句要求，出现次数不同，去向就不同</h2>
-        </div>
-      </div>
-      <div class="canvas">
-        <div class="flat-steps">
-          <div class="flat-step"><b>只用一次</b><div><strong>留在当前任务</strong>：不用为了这一句话改项目规则。</div></div>
-          <div class="flat-step"><b>每次遵守</b><div><strong>写进 AGENTS.md</strong>：它已经成为项目长期约定。</div></div>
-          <div class="flat-step"><b>步骤反复</b><div><strong>做成技能</strong>：把一套做事方法固定下来。</div></div>
-        </div>
-        <div class="takeaway">沉淀不是把所有内容永久保存，而是把稳定、重复、值得复用的部分放对位置。</div>
-      </div>
-    </section>
-
-    <section class="slide content">
-      <div class="slide-head">
-        <img class="title-icon" src="logo-codex.png" alt="">
-        <div>
-          <div class="eyebrow">3B · 边界</div>
-          <h2 class="slide-title compact-title">记忆帮助想起偏好，配置文件控制运行设置</h2>
+          <div class="eyebrow">02 · 记忆管你的偏好，AGENTS.md 管项目的规矩</div>
+          <h2 class="slide-title">记忆和 AGENTS.md</h2>
         </div>
       </div>
       <div class="canvas">
@@ -1564,21 +1616,28 @@
           <thead><tr><th>内容</th><th>适合放什么</th><th>不要把它当成什么</th></tr></thead>
           <tbody>
             <tr><td>记忆</td><td>个人偏好、长期背景、常用习惯</td><td>不能替代必须遵守的项目规则</td></tr>
-            <tr><td>AGENTS.md</td><td>项目约定、命令、验证要求</td><td>不要写成百科全书</td></tr>
-            <tr><td>技能（Skill）</td><td>可复用工作流、脚本和参考资料</td><td>不要为了一个小要求就创建</td></tr>
+            <tr><td>AGENTS.md</td><td>项目约定、命令、目录规则、验证要求</td><td>不要写成百科全书</td></tr>
           </tbody>
         </table>
+        <div class="flat-steps" style="margin-top:16px">
+          <div class="flat-step"><b>只用一次</b><div><strong>留在当前任务</strong>：不用为了一句话改项目规则。</div></div>
+          <div class="flat-step"><b>每次遵守</b><div><strong>写进 AGENTS.md</strong>：它已经成为项目长期约定。</div></div>
+          <div class="flat-step"><b>个人习惯</b><div><strong>说一句「记住」</strong>：让它进记忆，换个项目也认你。</div></div>
+        </div>
+        <div class="takeaway">沉淀不是把所有内容都存下来，而是把稳定、重复的部分放对位置。</div>
       </div>
     </section>
 
-    <section class="slide content">
+    <!-- 17 Skill 和技能（原 22 升级） -->
+    <section class="slide content hub-child" id="sec-skill">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">3B · 热门技能</div>
-          <h2 class="slide-title">热门技能清单：按任务找，不按榜单装</h2>
+          <div class="eyebrow">02 · 反复在做的事，做成技能</div>
+          <h2 class="slide-title">Skill 和技能</h2>
         </div>
       </div>
+      <p class="slide-intro">技能（Skill）＝把一类任务的做法固定下来：步骤、模板、脚本和验收方式，下次一句话就能调用。</p>
       <div class="canvas">
         <div class="catalog">
           <div class="catalog-item" style="--catalog:var(--amber)"><b>图片生成</b><span>生成和编辑图片，适合内容与网页素材。</span></div>
@@ -1588,23 +1647,18 @@
           <div class="catalog-item" style="--catalog:var(--teal)"><b>技能创建器</b><span>把反复使用的方法做成自己的技能。</span></div>
           <div class="catalog-item" style="--catalog:var(--indigo)"><b>技能发现</b><span>当你不知道有没有现成能力时，用它寻找。</span></div>
         </div>
+        <div class="takeaway">按任务找技能，别按榜单装；也别为一个小要求就建一个。</div>
       </div>
     </section>
 
-    <section class="slide group-divider" style="--group:var(--amber)">
-      <div class="group-kicker">第 03 部分 · 第三组</div>
-      <div class="group-code">3C</div>
-      <div class="group-title">获得新的眼睛和手</div>
-      <div class="group-depth">理解并会选择</div>
-    </section>
-
+    <!-- 18 图片输入 -->
     <!-- Sources: https://learn.chatgpt.com/docs/image-inputs ; https://learn.chatgpt.com/docs/appshots -->
-    <section class="slide content">
+    <section class="slide content hub-child" id="sec-imgin">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">3C · 让它看</div>
-          <h2 class="slide-title">图片输入和应用截图，让 Codex 看见问题</h2>
+          <div class="eyebrow">02 · 图片输入和应用截图，让 Codex 看见问题</div>
+          <h2 class="slide-title">图片输入</h2>
         </div>
       </div>
       <div class="canvas">
@@ -1624,113 +1678,157 @@
       </div>
     </section>
 
+    <!-- 19 生成图片（定稿） -->
     <!-- Source: https://learn.chatgpt.com/docs/image-generation -->
-    <section class="slide content">
+    <section class="slide content hub-child" id="sec-imggen">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">3C · 让它创造 · 重点演示</div>
-          <h2 class="slide-title">生成图片的价值，是直接进入工作流</h2>
+          <div class="eyebrow">02 · 生成、修改、批量，都在你的项目里</div>
+          <h2 class="slide-title">生成图片</h2>
         </div>
       </div>
       <div class="canvas">
-        <div class="demo-banner">
-          <div class="demo-call" style="--demo:var(--amber)">
-            <small style="color:#f1d4b8">切出演示 · 图片生成</small>
-            <strong>生成主视觉<br>放进项目<br>打开检查<br>继续修改</strong>
+        <div class="genimg-grid">
+          <div>
+            <div class="flat-steps">
+              <div class="flat-step"><b>生成</b><div>从一句描述生成新图。</div></div>
+              <div class="flat-step"><b>修改</b><div>给它参考图：换元素、改文字、调风格。</div></div>
+              <div class="flat-step"><b>批量</b><div>一次出几十张同风格素材，聊天工具做不到。</div></div>
+            </div>
+            <div class="use-chips">
+              <span>网页配图</span><span>视频封面</span><span>logo 图标</span><span>批量素材</span>
+            </div>
           </div>
-          <div class="demo-checks">
-            <div class="demo-check"><b>生成</b>网页插图、横幅、背景或内容配图</div>
-            <div class="demo-check"><b>编辑</b>使用参考图，修改一个具体视觉元素</div>
-            <div class="demo-check"><b>落地</b>把结果保存到项目中，再看真实使用效果</div>
-          </div>
+          <figure>
+            <svg viewBox="0 0 300 420" role="img" aria-label="横幅进网页、封面一次三版的示意图">
+              <defs>
+                <linearGradient id="bannerG" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#2f6f8f"/>
+                  <stop offset="1" stop-color="#0f7d84"/>
+                </linearGradient>
+                <linearGradient id="coverG" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#1a3a6b"/>
+                  <stop offset="1" stop-color="#2f6f8f"/>
+                </linearGradient>
+              </defs>
+              <rect x="8" y="6" width="284" height="164" rx="14" fill="#f9fbfd" stroke="#c5d0dc"/>
+              <circle cx="26" cy="24" r="4" fill="#a8463e"/>
+              <circle cx="40" cy="24" r="4" fill="#a86125"/>
+              <circle cx="54" cy="24" r="4" fill="#3f765d"/>
+              <rect x="70" y="17" width="204" height="13" rx="6.5" fill="#e4eaf2"/>
+              <rect x="22" y="42" width="256" height="74" rx="9" fill="url(#bannerG)"/>
+              <text x="38" y="76" fill="#f9fbfd" font-size="19" font-weight="800" font-family="Songti SC, STSong, serif">AI 工具指南</text>
+              <text x="38" y="98" fill="rgba(249,251,253,0.85)" font-size="11" font-family="PingFang SC, sans-serif">横幅直接生成到首页</text>
+              <rect x="22" y="128" width="150" height="9" rx="4.5" fill="#d7e0e9"/>
+              <rect x="22" y="146" width="230" height="9" rx="4.5" fill="#e4eaf2"/>
+              <g transform="rotate(-4 240 48)">
+                <rect x="204" y="36" width="72" height="23" rx="11.5" fill="#a86125"/>
+                <text x="240" y="52" fill="#f9fbfd" font-size="11" font-weight="800" text-anchor="middle" font-family="PingFang SC, sans-serif">刚生成 ✓</text>
+              </g>
+              <g transform="rotate(-4 140 245)">
+                <rect x="40" y="212" width="196" height="64" rx="9" fill="#0f7d84" opacity="0.55"/>
+                <text x="54" y="234" fill="#f9fbfd" font-size="12" font-weight="700" font-family="PingFang SC, sans-serif">封面 v1</text>
+              </g>
+              <g transform="rotate(3 170 270)">
+                <rect x="66" y="238" width="200" height="66" rx="9" fill="#a86125" opacity="0.6"/>
+                <text x="80" y="260" fill="#f9fbfd" font-size="12" font-weight="700" font-family="PingFang SC, sans-serif">封面 v3</text>
+              </g>
+              <rect x="20" y="292" width="248" height="112" rx="11" fill="url(#coverG)"/>
+              <text x="42" y="346" fill="#f9fbfd" font-size="21" font-weight="800" font-family="Songti SC, STSong, serif">Codex 小白教程</text>
+              <text x="42" y="372" fill="rgba(249,251,253,0.85)" font-size="11" font-family="PingFang SC, sans-serif">封面 v2 · 标题已放大</text>
+              <circle cx="252" cy="304" r="13" fill="#3f765d"/>
+              <text x="252" y="309" fill="#f9fbfd" font-size="13" font-weight="800" text-anchor="middle" font-family="PingFang SC, sans-serif">✓</text>
+            </svg>
+            <figcaption>上：横幅直接进网页 · 下：一次三版挑一版接着改</figcaption>
+          </figure>
         </div>
+        <div class="takeaway">图不落在聊天窗口里，直接存进项目文件夹——能接着改、马上看真实效果。</div>
       </div>
     </section>
 
-    <!-- Sources: https://learn.chatgpt.com/docs/browser ; https://learn.chatgpt.com/docs/chrome-extension ; https://learn.chatgpt.com/docs/computer-use -->
-    <section class="slide content">
+    <!-- 20 插件和连通工具 · 原理 -->
+    <section class="slide content hub-child" id="sec-plugin">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">3C · 让它操作</div>
-          <h2 class="slide-title">浏览器、Chrome 和电脑操作，分别什么时候用？</h2>
+          <div class="eyebrow">02 · Codex 是实习生，MCP 和 CLI 是它的门禁卡</div>
+          <h2 class="slide-title">插件和连通工具</h2>
         </div>
       </div>
-      <div class="canvas">
-        <table class="matrix">
-          <thead><tr><th>任务</th><th>优先选择</th><th>原因</th></tr></thead>
-          <tbody>
-            <tr><td>搜索、查看或测试网页</td><td>内置浏览器</td><td>隔离清晰，适合让 Codex 自己测试</td></tr>
-            <tr><td>需要已有登录状态</td><td>Chrome</td><td>沿用你当前浏览器中的账号与页面</td></tr>
-            <tr><td>必须点击桌面软件</td><td>电脑操作</td><td>读取和操作 macOS、Windows 界面</td></tr>
-            <tr><td>存在稳定接口</td><td>插件或 MCP</td><td>结构化工具通常更稳定、更容易重复</td></tr>
-          </tbody>
-        </table>
-        <div class="takeaway">先选结构化、可验证的工具；只有必须操作界面时，才使用电脑操作。</div>
-      </div>
-    </section>
-
-    <!-- Sources: https://learn.chatgpt.com/docs/extend/mcp ; https://learn.chatgpt.com/docs/plugins ; https://learn.chatgpt.com/docs/build-skills -->
-    <section class="slide content">
-      <div class="slide-head">
-        <img class="title-icon" src="logo-codex.png" alt="">
-        <div>
-          <div class="eyebrow">3C · 外部工具</div>
-          <h2 class="slide-title">技能教方法，MCP 给能力，插件负责安装整套能力</h2>
-        </div>
-      </div>
+      <p class="slide-intro">不带卡时，Codex 只能动你项目文件夹里的东西和公开网页。想连上别的工具，看这三个角色的关系。</p>
       <div class="canvas">
         <div class="agent-loop">
-          <div class="agent-unit" style="--unit:var(--green)"><b>技能</b><span>告诉 Codex 应该怎样完成这类任务。</span></div>
-          <div class="arrow">＋</div>
-          <div class="agent-unit" style="--unit:var(--amber)"><b>MCP</b><span>提供结构化工具和外部实时信息。</span></div>
+          <div class="agent-unit" style="--unit:var(--navy)">
+            <div class="concept-emoji" aria-label="实习生">🧑‍💼</div>
+            <b>Codex · 实习生</b>
+            <span>听得懂任务、肯动手，但每栋楼都进不去。</span>
+          </div>
           <div class="arrow">→</div>
-          <div class="agent-unit" style="--unit:var(--indigo)"><b>插件</b><span>安装和分发技能、连接器、MCP 与相关资产。</span></div>
+          <div class="agent-unit" style="--unit:var(--teal)">
+            <div class="concept-emoji" aria-label="门禁卡">💳</div>
+            <b>MCP／CLI · 门禁卡</b>
+            <span>MCP（Model Context Protocol）是通用一卡通，哪家 AI 都能刷；CLI 是对方自家发的卡。</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="agent-unit" style="--unit:var(--amber)">
+            <div class="concept-emoji" aria-label="大楼">🏢</div>
+            <b>对方工具 · 那栋楼</b>
+            <span>飞书、地图、支付宝……楼里装了读卡器才刷得进；装不装，对方说了算。</span>
+          </div>
         </div>
-        <div class="takeaway">电脑操作插件就是一个好例子：技能说明方法，MCP 提供操作能力，插件把它们装进来。</div>
+        <div class="takeaway">Codex 这头的能力是现成的；一个工具能不能连，取决于那头开没开接口。</div>
       </div>
     </section>
 
-    <section class="slide content">
+    <!-- 21 插件和连通工具 · 清单 -->
+    <section class="slide content hub-child" id="sec-plugin2">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">3C · 热门插件</div>
-          <h2 class="slide-title">热门插件清单：只装当前任务真正需要的</h2>
+          <div class="eyebrow">02 · 有接口就直连，没接口就兜底</div>
+          <h2 class="slide-title">插件和连通工具</h2>
         </div>
       </div>
       <div class="canvas">
-        <div class="catalog">
-          <div class="catalog-item" style="--catalog:var(--teal)"><b>电脑操作</b><span>操作桌面软件和系统界面。</span></div>
-          <div class="catalog-item" style="--catalog:var(--blue)"><b>Chrome</b><span>使用你现有的浏览器登录状态。</span></div>
-          <div class="catalog-item" style="--catalog:var(--navy)"><b>GitHub</b><span>读取仓库、议题、代码审查和合并请求。</span></div>
-          <div class="catalog-item" style="--catalog:var(--green)"><b>云盘与文档</b><span>连接 Google Drive、Notion 等私有资料。</span></div>
-          <div class="catalog-item" style="--catalog:var(--amber)"><b>沟通协作</b><span>连接 Slack、Teams 等工作空间。</span></div>
-          <div class="catalog-item" style="--catalog:var(--indigo)"><b>视觉工具</b><span>连接 Canva、Adobe 等设计工作流。</span></div>
+        <div class="two-way">
+          <div class="way" style="--way:var(--green)">
+            <div class="way-label">已开接口 · 装插件直连</div>
+            <h3>办公类基本全接了</h3>
+            <ul>
+              <li><b>文档</b>：飞书文档、腾讯文档、语雀</li>
+              <li><b>协作</b>：飞书、钉钉、企业微信</li>
+              <li><b>生活服务</b>：高德地图、支付宝</li>
+            </ul>
+          </div>
+          <div class="way" style="--way:var(--amber)">
+            <div class="way-label">还没开接口 · 用兜底</div>
+            <h3>某书、某站、某某号官方没接</h3>
+            <ul>
+              <li><b>Chrome</b>：用你登录好的账号操作网页</li>
+              <li><b>电脑操作</b> <span class="term-en">Computer Use</span>：替你点开和操作软件界面</li>
+            </ul>
+          </div>
         </div>
-        <div class="takeaway">插件会接触真实账号和数据：只用可信来源，并检查权限与工作区限制。</div>
+        <div class="prompt-box" style="--prompt:var(--amber)">
+          <small>不确定能不能接？把这句发给 Codex，橙色部分换成你想连的工具</small>
+          <p>「我想用 Codex 操作<mark>飞书</mark>：有没有官方工具？怎么连？连上能干哪些事、有什么限制？」</p>
+        </div>
       </div>
     </section>
 
-    <section class="slide group-divider" style="--group:var(--indigo)">
-      <div class="group-kicker">第 03 部分 · 第四组</div>
-      <div class="group-code">3D</div>
-      <div class="group-title">扩大执行规模</div>
-      <div class="group-depth">知道何时用</div>
-    </section>
-
+    <!-- 22 远程控制 -->
     <!-- Source: https://openai.com/index/work-with-codex-from-anywhere/ -->
-    <section class="slide content">
+    <section class="slide content hub-child" id="sec-remote">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">3D · 远程控制</div>
-          <h2 class="slide-title">远程控制，是你从手机继续指挥 Codex</h2>
+          <div class="eyebrow">02 · 远程控制，是你从手机继续指挥 Codex</div>
+          <h2 class="slide-title">远程控制</h2>
         </div>
       </div>
       <div class="canvas">
-        <div class="flat-steps">
+        <div class="flat-steps roomy">
           <div class="flat-step"><b>查看</b><div>在手机上看线程、截图、终端输出、修改差异和测试结果。</div></div>
           <div class="flat-step"><b>判断</b><div>回答问题、批准下一步、改变方向或补充新的要求。</div></div>
           <div class="flat-step"><b>继续</b><div>文件、凭证和运行环境仍留在原来的电脑上，任务继续推进。</div></div>
@@ -1739,17 +1837,18 @@
       </div>
     </section>
 
+    <!-- 23 自动运行 -->
     <!-- Source: https://learn.chatgpt.com/docs/automations -->
-    <section class="slide content">
+    <section class="slide content hub-child" id="sec-auto">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">3D · 自动运行</div>
-          <h2 class="slide-title">先把流程跑通，再让它定时或批量执行</h2>
+          <div class="eyebrow">02 · 先把流程跑通，再让它定时或批量执行</div>
+          <h2 class="slide-title">自动运行</h2>
         </div>
       </div>
       <div class="canvas">
-        <div class="agent-loop">
+        <div class="agent-loop roomy">
           <div class="agent-unit" style="--unit:var(--green)"><b>跑通一次</b><span>步骤、输入、输出和验证都明确。</span></div>
           <div class="arrow">→</div>
           <div class="agent-unit" style="--unit:var(--indigo)"><b>定时任务</b><span>按时间或节奏重复执行。</span></div>
@@ -1760,13 +1859,63 @@
       </div>
     </section>
 
+    <!-- 24 章扉 · 项目实操 -->
+    <section class="slide chapter" style="--chapter:var(--teal)">
+      <div class="chapter-kicker">第 3 章 · 项目实操</div>
+      <h2 class="chapter-title">项目实操</h2>
+      <p class="chapter-desc">四个真项目：操作电脑、批量自动化、Vibe Coding、个人工作台</p>
+    </section>
+
+    <!-- 24b 项目一 · 操作电脑 -->
+    <section class="slide content">
+      <div class="slide-head">
+        <img class="title-icon" src="logo-codex.png" alt="">
+        <div>
+          <div class="eyebrow">03 · 项目一</div>
+          <h2 class="slide-title">操作电脑（办公剪辑）</h2>
+        </div>
+      </div>
+      <div class="canvas">
+        <div class="takeaway permission-core">让 Codex 替你操作电脑：办公整理、视频粗剪，点鼠标的活交给它。</div>
+      </div>
+    </section>
+
+    <!-- 24c 项目二 · 批量处理、自动化 -->
+    <section class="slide content">
+      <div class="slide-head">
+        <img class="title-icon" src="logo-codex.png" alt="">
+        <div>
+          <div class="eyebrow">03 · 项目二</div>
+          <h2 class="slide-title">批量处理、自动化</h2>
+        </div>
+      </div>
+      <div class="canvas">
+        <div class="takeaway permission-core">跑通一次的事，让它一次做一百遍、每天定时做。</div>
+      </div>
+    </section>
+
+    <!-- 24d 项目三 · 编程 Vibe Coding -->
+    <section class="slide content">
+      <div class="slide-head">
+        <img class="title-icon" src="logo-codex.png" alt="">
+        <div>
+          <div class="eyebrow">03 · 项目三</div>
+          <h2 class="slide-title">编程 Vibe Coding</h2>
+        </div>
+      </div>
+      <div class="canvas">
+        <div class="takeaway permission-core">不会代码也能做网页和小工具：你说想法，它来写。</div>
+      </div>
+    </section>
+
+    <!-- 25 个人工作台 -->
     <!-- User-provided project screenshot -->
     <section class="slide content project-finale">
       <div class="slide-head">
         <img class="title-icon" src="logo-codex.png" alt="">
         <div>
-          <div class="eyebrow">课程项目 · 把前面的能力组合起来</div>
-          <h2 class="slide-title">最后，我们一起做一个适合自己的工作台</h2>
+          <div class="eyebrow">03 · 项目四 · 最后，我们一起做一个适合自己的工作台</div>
+          <h2 class="slide-title">大型项目工作台</h2>
         </div>
       </div>
       <div class="canvas">
@@ -1789,9 +1938,306 @@
 
   </main>
 
+  <style>
+    .toc-list {
+      display: grid;
+      gap: 13px;
+    }
+    .toc-row {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      padding: 17px 24px;
+      border: 1px solid #cbd6e2;
+      border-radius: 16px;
+      background: rgba(251, 252, 254, 0.95);
+      box-shadow: 0 10px 24px rgba(29, 50, 74, 0.05);
+    }
+    .toc-row b {
+      color: var(--part);
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 22px;
+    }
+    .toc-row span {
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.9;
+    }
+    .sim-quote {
+      margin: 14px 0 0;
+      padding: 10px 14px;
+      border-left: 3px solid var(--way, var(--navy));
+      border-radius: 0 10px 10px 0;
+      color: var(--ink);
+      background: rgba(23, 37, 54, 0.05);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .way ul strong {
+      color: var(--ink);
+    }
+    .quad-list.roomy {
+      gap: 18px 20px;
+    }
+    .quad-list.roomy .quad-item {
+      min-height: 170px;
+      padding: 26px 28px;
+    }
+    .quad-list.roomy .quad-item strong {
+      font-size: 27px;
+    }
+    .quad-list.roomy .quad-item span {
+      margin-top: 12px;
+      font-size: 18.5px;
+      line-height: 1.75;
+    }
+    .agent-loop.roomy .agent-unit {
+      min-height: 200px;
+      padding: 28px 24px;
+    }
+    .agent-loop.roomy .agent-unit b {
+      font-size: 27px;
+    }
+    .agent-loop.roomy .agent-unit span {
+      margin-top: 12px;
+      font-size: 17.5px;
+      line-height: 1.7;
+    }
+    .agent-loop.roomy .concept-emoji {
+      width: 52px;
+      height: 52px;
+      font-size: 30px;
+    }
+    .flat-steps.roomy .flat-step {
+      min-height: 94px;
+    }
+    .flat-steps.roomy .flat-step b {
+      font-size: 17px;
+      letter-spacing: 0.04em;
+    }
+    .flat-steps.roomy .flat-step div {
+      font-size: 18.5px;
+    }
+    .badge-rec {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 3px 11px;
+      border-radius: 999px;
+      color: #f9fbfd;
+      background: var(--green);
+      font-family: "PingFang SC", sans-serif;
+      font-size: 12.5px;
+      font-weight: 800;
+      font-style: normal;
+      letter-spacing: 0.08em;
+      vertical-align: 5px;
+    }
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .hub-btn {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      min-height: 90px;
+      padding: 12px 16px;
+      border: 1px solid #cbd6e2;
+      border-radius: 16px;
+      background: rgba(251, 252, 254, 0.95);
+      box-shadow: 0 8px 18px rgba(29, 50, 74, 0.06);
+      cursor: pointer;
+      text-align: left;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+    .hub-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 26px rgba(29, 50, 74, 0.13);
+    }
+    .hub-btn small {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+    }
+    .hub-btn b {
+      color: var(--hub);
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+    .hub-group-label {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+    }
+    .hub-group-label span {
+      color: var(--muted);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+    .hub-group-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #c5d0dc;
+    }
+    .hub-static {
+      cursor: default;
+      background: #e8edf3;
+      box-shadow: none;
+    }
+    .hub-static:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .hub-static b {
+      color: var(--ink-soft);
+    }
+    .hub-btn.adv {
+      border-color: rgba(168, 97, 37, 0.55);
+    }
+    .hub-adv {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      padding: 2px 8px;
+      border: 1px solid rgba(168, 97, 37, 0.5);
+      border-radius: 999px;
+      color: var(--amber);
+      font-size: 10.5px;
+      font-style: normal;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+    .hub-child {
+      cursor: pointer;
+    }
+    .hub-child::before {
+      content: "单击返回导航";
+      position: absolute;
+      left: 26px;
+      bottom: 20px;
+      color: #8291a1;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+    }
+    .quad-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .quad-strip > div {
+      padding: 12px 16px;
+      border: 1px solid #d3dde8;
+      border-radius: 12px;
+      background: rgba(251, 252, 254, 0.92);
+    }
+    .quad-strip strong {
+      display: block;
+      color: var(--item, var(--navy));
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 19px;
+    }
+    .quad-strip small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .genimg-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 292px;
+      gap: 24px;
+      align-items: center;
+    }
+    .genimg-grid figure {
+      margin: 0;
+    }
+    .genimg-grid svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .genimg-grid figcaption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.5;
+      text-align: center;
+    }
+    .use-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 18px;
+    }
+    .use-chips span {
+      padding: 6px 13px;
+      border: 1px solid #c8d4e1;
+      border-radius: 999px;
+      color: var(--navy);
+      background: rgba(251, 252, 254, 0.9);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .prompt-box {
+      margin-top: 18px;
+      padding: 15px 22px;
+      border: 1px solid #cbd6e2;
+      border-radius: 14px;
+      background: rgba(251, 252, 254, 0.95);
+      box-shadow: 0 10px 24px rgba(29, 50, 74, 0.05);
+    }
+    .prompt-box small {
+      display: block;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+    .prompt-box p {
+      margin: 9px 0 0;
+      color: var(--ink);
+      font-family: "Songti SC", "STSong", serif;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    .permission-core {
+      font-size: 30px;
+    }
+    .demo-flag {
+      position: absolute;
+      right: 26px;
+      top: 22px;
+      font-size: 26px;
+      line-height: 1;
+    }
+    .vs-logo {
+      width: 22px;
+      height: 22px;
+      margin-right: 6px;
+      border: 1px solid #c7d1dc;
+      border-radius: 6px;
+      vertical-align: -5px;
+      object-fit: cover;
+    }
+  </style>
+
   <nav class="nav" aria-label="幻灯片导航">
     <button id="prev" type="button" aria-label="上一页">←</button>
-    <span class="counter" id="counter">1 / 32</span>
+    <span class="counter" id="counter">1 / 30</span>
     <button id="next" type="button" aria-label="下一页">→</button>
   </nav>
   <div class="hint">方向键翻页 · Home / End 跳转</div>
@@ -1823,6 +2269,18 @@
 
     previousButton.addEventListener("click", () => showSlide(current - 1));
     nextButton.addEventListener("click", () => showSlide(current + 1));
+
+    const hubIndex = slides.indexOf(document.getElementById("sec-hub"));
+    document.querySelectorAll(".hub-btn").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const target = document.getElementById(btn.dataset.target);
+        if (target) showSlide(slides.indexOf(target));
+      });
+    });
+    document.querySelectorAll(".hub-child").forEach((slide) => {
+      slide.addEventListener("click", () => showSlide(hubIndex));
+    });
 
     document.addEventListener("keydown", (event) => {
       if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(event.key)) {
