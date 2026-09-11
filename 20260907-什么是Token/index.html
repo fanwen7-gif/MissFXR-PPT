@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>什么是 Token？｜11 页视频画面 PPT</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Manrope:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
+
+    /* === THEME TOKENS === */
+    :root {
+      --stage-bg: #e9ecf2;
+      --slide-bg: #f7f8fb;
+      --paper: #ffffff;
+      --ink: #232730;
+      --muted: #6d7481;
+      --soft: #8e949e;
+      --line: #e0e4eb;
+      --panel: #f0f2f6;
+      --orange: #c76038;
+      --orange-soft: #f4e5df;
+      --olive: #77806a;
+      --olive-soft: #e8ece3;
+      --charcoal: #3e4249;
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+
+    /* ===========================================
+       FIXED 16:9 STAGE: MANDATORY BASE STYLES
+       Include this ENTIRE file in every presentation.
+       Slides are authored at 1920×1080 and scaled as a whole.
+       =========================================== */
+
+    /* 1. Lock the browser viewport */
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: var(--stage-bg, #000);
+    }
+
+    /* 2. Full-window deck viewport */
+    .deck-viewport {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        background: var(--stage-bg, #000);
+    }
+
+    /* 3. Fixed 16:9 design canvas.
+       JavaScript sets transform: translate(...) scale(...). */
+    .deck-stage {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        transform-origin: 0 0;
+        background: var(--slide-bg, #fff);
+    }
+
+    /* 4. Slides stack inside the fixed stage.
+       Content must be laid out at 1920×1080, not reflowed per device. */
+    .slide {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        display: block;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+        background: var(--slide-bg, #fff);
+    }
+
+    .slide.active,
+    .slide.visible {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 1;
+    }
+
+    /* 5. Keep media inside authored slide bounds */
+    img,
+    video,
+    canvas,
+    svg {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    /* 6. Presentation chrome stays outside the slide design system */
+    .deck-controls {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%);
+        z-index: 1000;
+    }
+
+    /* 7. Print one fixed-size slide per page */
+    @media print {
+        html,
+        body {
+            width: 1920px;
+            height: auto;
+            overflow: visible;
+            background: #fff;
+        }
+
+        .deck-viewport {
+            position: static;
+            overflow: visible;
+            background: #fff;
+        }
+
+        .deck-stage {
+            position: static;
+            width: auto;
+            height: auto;
+            transform: none !important;
+            background: none;
+        }
+
+        .slide {
+            position: relative;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            width: 1920px;
+            height: 1080px;
+            break-after: page;
+            page-break-after: always;
+        }
+
+        .slide:last-child {
+            break-after: auto;
+            page-break-after: auto;
+        }
+
+        .deck-controls {
+            display: none !important;
+        }
+    }
+
+    /* 8. Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.2s !important;
+        }
+    }
+
+    /* === PAGE FOUNDATION === */
+    * { box-sizing: border-box; }
+    button { font: inherit; }
+    .slide { color: var(--ink); font-family: 'Noto Sans SC','Manrope',sans-serif; }
+    .content { position: absolute; left: 152px; right: 152px; top: 94px; bottom: 84px; z-index: 2; }
+    .meta { display: flex; align-items: center; gap: 14px; font: 500 20px/1 'IBM Plex Mono',monospace; letter-spacing: .14em; color: var(--olive); margin-bottom: 18px; }
+    .meta::before { content: ''; width: 34px; height: 3px; background: var(--orange); }
+    h1 { margin: 0; font-size: 68px; line-height: 1.14; letter-spacing: -.025em; font-weight: 600; }
+    h1 .latin, .accent { color: var(--orange); }
+    .lead { margin-top: 28px; max-width: 1510px; font-size: 30px; line-height: 1.6; font-weight: 400; }
+    .lead strong { color: var(--orange); font-weight: 600; }
+    .section-label { margin-top: 34px; font-size: 21px; line-height: 1.3; letter-spacing: .035em; font-weight: 600; }
+    .page-number { position: absolute; right: 0; bottom: 14px; font: 500 19px/1 'IBM Plex Mono',monospace; color: #969ca6; }
+    .latin { font-family: 'Manrope','Noto Sans SC',sans-serif; }
+    .mono { font-family: 'IBM Plex Mono',monospace; }
+    .note { color: var(--muted); font-size: 21px; line-height: 1.55; }
+    .orange-note { color: var(--orange); }
+
+    /* === REVEAL MOTION === */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .52s var(--ease), transform .52s var(--ease); }
+    .visible .reveal { opacity: 1; transform: translateY(0); }
+    .visible .d1 { transition-delay: .08s; }
+    .visible .d2 { transition-delay: .16s; }
+    .visible .d3 { transition-delay: .24s; }
+    .visible .d4 { transition-delay: .32s; }
+    .visible .d5 { transition-delay: .40s; }
+
+    /* === SHARED PANELS === */
+    .panel { background: rgba(255,255,255,.9); border: 1px solid var(--line); border-radius: 13px; }
+    .number-tag { color: var(--olive); font: 500 18px/1 'IBM Plex Mono',monospace; letter-spacing: .12em; }
+    .soft-rule { height: 1px; background: var(--line); }
+    .keyline { display: inline-block; height: 3px; width: 32px; background: var(--orange); vertical-align: middle; margin-right: 12px; }
+
+    /* === COVER: CENTERED EDITORIAL === */
+    .cover-slide .cover-center { position: absolute; left: 180px; right: 180px; top: 184px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .cover-slide .cover-rule { width: 52px; height: 4px; border-radius: 2px; background: var(--orange); }
+    .cover-slide h1 { margin-top: 42px; font-size: 112px; line-height: 1.3; font-weight: 500; }
+    .cover-slide .cover-subtitle { margin-top: 62px; color: var(--muted); font-size: 37px; line-height: 1.5; font-weight: 400; }
+    .cover-slide .cover-keyword-zone { width: 1260px; margin-top: 106px; }
+    .cover-slide .cover-keyword-label { color: var(--muted); font-size: 20px; line-height: 1; letter-spacing: .12em; }
+    .cover-slide .cover-keywords { margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px 18px; color: var(--muted); font-size: 20px; line-height: 1.2; }
+    .cover-slide .cover-keywords span { padding: 10px 19px 11px; border: 1px solid #cfd4dc; border-radius: 999px; background: rgba(255,255,255,.44); }
+    .cover-slide .cover-keywords span.hot { color: var(--orange); border-color: #ddb5a4; background: #fcf6f3; }
+
+    /* === SLIDE 01: THREE OUTCOMES === */
+    .s1 .lead { margin-top: 38px; }
+    .three-cards { margin-top: 18px; display: grid; grid-template-columns: repeat(3,1fr); background: rgba(255,255,255,.9); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .result-card { min-height: 246px; padding: 30px 34px; }
+    .result-card + .result-card { border-left: 1px solid var(--line); }
+    .result-card h2 { margin: 28px 0 12px; font-size: 34px; line-height: 1.2; font-weight: 600; }
+    .result-card p { margin: 0; font-size: 24px; line-height: 1.58; color: var(--muted); }
+    .result-card b { color: var(--orange); font-weight: 600; }
+
+    /* === SLIDE 02: DEFINITION + EXAMPLE FIRST === */
+    .s2 .lead { margin-top: 24px; padding: 24px 30px 26px; max-width: none; color: var(--muted); font-size: 25px; line-height: 1.55; background: var(--paper); border-left: 5px solid var(--orange); }
+    .s2 .lead strong { display: block; margin-top: 5px; color: var(--ink); font-size: 38px; line-height: 1.4; font-weight: 500; }
+    .s2 .definition-tail { display: block; margin-top: 2px; }
+    .example-strip { margin-top: 24px; min-height: 142px; padding: 20px 18px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 42px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .example-copy { min-width: 0; }
+    .example-strip .source { color: var(--muted); font-size: 21px; line-height: 1.35; font-weight: 400; }
+    .example-strip .split { margin-top: 11px; padding: 0; color: var(--ink); font-size: 32px; line-height: 1.4; text-align: left; }
+    .example-strip .split b { color: var(--orange); font-weight: 500; }
+    .example-result { display: flex; align-items: center; gap: 22px; white-space: nowrap; }
+    .example-result .result-arrow { color: #aeb3bb; font-size: 44px; line-height: 1; }
+    .example-strip .count { color: var(--orange); font: 600 35px/1 'Manrope','Noto Sans SC',sans-serif; text-align: right; }
+    .pipeline { margin-top: 22px; display: grid; grid-template-columns: repeat(11, auto); align-items: center; gap: 10px; padding: 0 8px; }
+    .pipe-node { height: 62px; min-width: 150px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .pipe-node.focus { color: var(--orange); }
+    .pipe-node .small { margin-top: 5px; color: var(--soft); font-size: 15px; }
+    .pipe-node .main { font-size: 22px; line-height: 1.2; font-weight: 500; }
+    .pipe-arrow { color: #b4b8bf; font-size: 24px; }
+    .role-strip { margin-top: 20px; display: grid; grid-template-columns: repeat(3,1fr); border-top: 1px solid var(--line); }
+    .role { padding: 16px 34px 0 0; }
+    .role + .role { padding-left: 34px; border-left: 1px solid var(--line); }
+    .role h3 { margin: 0 0 6px; color: var(--soft); font-size: 18px; font-weight: 500; }
+    .role p { margin: 0; color: var(--muted); font-size: 20px; line-height: 1.45; }
+
+    /* === SLIDE 03: TOKENIZATION COMPARISON === */
+    .sentence { margin-top: 34px; font-size: 30px; color: var(--muted); }
+    .token-compare { margin-top: 34px; display: grid; gap: 22px; }
+    .token-row { display: grid; grid-template-columns: 170px 1fr 120px; align-items: center; gap: 24px; }
+    .tokenizer { font-size: 22px; font-weight: 600; }
+    .tokens { min-height: 128px; display: flex; align-items: center; gap: 16px; padding: 22px 26px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; }
+    .token { padding: 17px 23px; border-radius: 8px; background: var(--panel); font-size: 29px; line-height: 1; white-space: nowrap; }
+    .token.hot { background: var(--orange-soft); color: var(--orange); }
+    .token-count { font: 600 44px/1 'Manrope','Noto Sans SC',sans-serif; color: var(--orange); text-align: right; }
+    .token-count small { display: block; margin-top: 8px; font: 400 18px/1.2 'Noto Sans SC',sans-serif; color: var(--muted); }
+    .token-summary { margin-top: 26px; display: grid; grid-template-columns: 1.25fr 1fr; gap: 26px; }
+    .big-claim { padding: 26px 30px; font-size: 30px; line-height: 1.45; font-weight: 500; background: var(--orange-soft); border-radius: 12px; }
+    .examples { padding: 24px 28px; font-size: 22px; line-height: 1.6; color: var(--muted); }
+    .token-facts { margin-top: 38px; display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .token-fact { min-height: 320px; padding: 30px 32px; display: flex; flex-direction: column; justify-content: center; }
+    .token-fact h3 { margin: 24px 0 14px; font-size: 29px; font-weight: 500; }
+    .token-fact p { margin: 0; color: var(--muted); font-size: 23px; line-height: 1.65; }
+
+    /* === SLIDE 04: CONTEXT WINDOW === */
+    .context-grid { margin-top: 34px; display: grid; grid-template-columns: 1.24fr .76fr; gap: 54px; align-items: stretch; }
+    .window-panel { padding: 30px 32px 32px; }
+    .window-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+    .window-head h2 { margin: 0; font-size: 29px; font-weight: 600; }
+    .window-head span { color: var(--orange); font: 500 18px/1 'IBM Plex Mono',monospace; }
+    .window-track { height: 350px; display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1.5px solid #cbd0d8; border-radius: 10px; background: #fafbfd; }
+    .window-band { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-radius: 7px; font-size: 21px; opacity: 0; transform: scaleX(.86); transform-origin: left; transition: opacity .45s var(--ease), transform .7s var(--ease); }
+    .visible .window-band { opacity: 1; transform: scaleX(1); }
+    .window-band:nth-child(1){height:52px;background:#ecefe7;transition-delay:.12s}.window-band:nth-child(2){height:68px;background:#f3e7e2;transition-delay:.22s}.window-band:nth-child(3){height:96px;background:#e7eaef;transition-delay:.32s}.window-band:nth-child(4){height:76px;background:#edf0f4;transition-delay:.42s}.window-band:nth-child(5){height:34px;background:#f7f8fa;border:1px dashed #cdd2d9;transition-delay:.52s}
+    .window-band b { font-weight: 500; }
+    .window-band span { color: var(--muted); font-size: 18px; }
+    .capacity-side { display: flex; flex-direction: column; justify-content: center; gap: 36px; }
+    .capacity-point { padding: 2px 0 30px 44px; position: relative; border-bottom: 1px solid var(--line); }
+    .capacity-point:last-child { border-bottom: 0; }
+    .capacity-point::before { content: ''; position: absolute; left: 0; top: 12px; width: 14px; height: 14px; border-radius: 50%; background: var(--orange); }
+    .capacity-point h3 { margin: 0 0 12px; font-size: 28px; line-height: 1.42; font-weight: 500; }
+    .capacity-point p { margin: 0; color: var(--muted); font-size: 23px; line-height: 1.6; }
+    .capacity-point strong { color: var(--orange); font-weight: 600; }
+
+    /* === SLIDE 05: OVERFLOW ROUTES === */
+    .overflow-layout { margin-top: 28px; display: grid; grid-template-columns: 405px 1fr; gap: 52px; align-items: stretch; }
+    .overflow-source { height: 520px; padding: 34px; display: flex; flex-direction: column; justify-content: space-between; }
+    .overflow-source h2 { margin: 0; font-size: 34px; line-height: 1.32; font-weight: 500; }
+    .stack-lines { display: grid; gap: 8px; }
+    .stack-lines span { display: block; height: 42px; border-radius: 6px; background: #e8ebf0; }
+    .stack-lines span:nth-child(5), .stack-lines span:nth-child(6) { background: var(--orange-soft); border: 1px solid #e8c1b0; }
+    .overflow-mark { color: var(--orange); font-size: 21px; font-weight: 500; }
+    .overflow-copy { display: flex; flex-direction: column; justify-content: flex-start; min-width: 0; }
+    .feel-block { padding: 2px 0 25px; border-bottom: 1px solid var(--line); }
+    .feel-block h3 { margin: 0 0 20px; color: var(--muted); font-size: 22px; font-weight: 400; }
+    .feeling-list { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px 30px; }
+    .feeling-list span { position: relative; padding-left: 25px; font-size: 32px; line-height: 1.42; font-weight: 500; }
+    .feeling-list span::before { content: ''; position: absolute; left: 0; top: 15px; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+    .route-grid { margin-top: 24px; display: grid; grid-template-columns: 1fr; gap: 11px; }
+    .route { position: relative; padding: 0 0 0 44px; }
+    .route .number-tag { position: absolute; left: 0; top: 5px; color: var(--orange); font-size: 16px; letter-spacing: 0; }
+    .route h3 { margin: 0; font-size: 20px; line-height: 1.45; font-weight: 400; }
+
+    /* === SLIDE 06: WAITING TIME === */
+    .time-board { margin-top: 40px; padding: 36px 42px 32px; }
+    .timeline-row { display: grid; grid-template-columns: 365px 1fr 270px; gap: 28px; align-items: center; min-height: 190px; }
+    .timeline-row + .timeline-row { border-top: 1px solid var(--line); }
+    .time-label .kind { font-size: 29px; font-weight: 600; }
+    .time-label .desc { margin-top: 8px; color: var(--muted); font-size: 19px; line-height: 1.48; }
+    .time-track { position: relative; height: 68px; display: flex; align-items: center; }
+    .time-track::before { content: ''; position: absolute; left: 0; right: 0; height: 2px; background: #cfd3da; }
+    .time-fill { position: relative; z-index: 1; height: 18px; width: 0; border-radius: 9px; background: var(--orange); transition: width 1s var(--ease); }
+    .visible .input-fill { width: 58%; }
+    .visible .output-fill { width: 84%; }
+    .time-dot { position: absolute; z-index: 2; width: 18px; height: 18px; border-radius: 50%; background: var(--paper); border: 4px solid var(--orange); opacity: 0; transition: opacity .2s .75s; }
+    .visible .time-dot { opacity: 1; }
+    .time-dot.input { left: calc(58% - 9px); }
+    .time-dot.output { left: calc(84% - 9px); }
+    .time-result { padding: 18px 22px; background: var(--panel); border-radius: 10px; }
+    .time-result strong { display: block; font-size: 25px; font-weight: 600; color: var(--orange); }
+    .time-result span { display: block; margin-top: 6px; color: var(--muted); font-size: 18px; }
+    .time-conclusion { margin-top: 30px; display: flex; justify-content: center; gap: 18px; font-size: 29px; font-weight: 500; }
+    .time-conclusion b { color: var(--orange); font-weight: 600; }
+
+    /* === SLIDE 07: CHAT VS API === */
+    .billing-split { margin-top: 38px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .billing-side { min-height: 480px; padding: 32px 34px; position: relative; overflow: hidden; }
+    .billing-side::after { content: ''; position: absolute; left: 34px; right: 34px; bottom: 32px; height: 8px; border-radius: 4px; background: #eceef2; }
+    .billing-side h2 { margin: 18px 0 10px; font-size: 34px; font-weight: 600; }
+    .billing-side > p { margin: 0; color: var(--muted); font-size: 22px; line-height: 1.55; }
+    .billing-items { margin-top: 28px; display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+    .billing-item { padding: 19px 20px; background: var(--panel); border-radius: 9px; font-size: 21px; }
+    .billing-item.hot { background: var(--orange-soft); color: var(--orange); font-weight: 500; }
+    .billing-copy { margin-top: 24px; display: grid; gap: 12px; }
+    .billing-copy p { margin: 0; padding: 14px 16px; background: var(--panel); border-radius: 8px; color: var(--muted); font-size: 19px; line-height: 1.45; }
+    .under-meter { position: absolute; left: 34px; bottom: 54px; color: var(--soft); font: 500 17px/1 'IBM Plex Mono',monospace; letter-spacing: .07em; }
+    .billing-side.api::after { background: linear-gradient(90deg,var(--orange) 0 68%,#eceef2 68%); }
+    .billing-side.chat::after { background: linear-gradient(90deg,var(--olive) 0 48%,#eceef2 48%); }
+    .billing-takeaway { margin-top: 22px; padding-left: 18px; border-left: 4px solid var(--orange); font-size: 23px; line-height: 1.45; }
+
+    /* === SLIDE 08: COST FORMULA === */
+    .formula-layout { margin-top: 42px; display: grid; grid-template-columns: .76fr 1.24fr; gap: 34px; align-items: stretch; }
+    .weak-meters { padding: 30px 30px; display: grid; gap: 18px; }
+    .weak-meter { display: grid; grid-template-columns: 126px 1fr; gap: 18px; align-items: center; }
+    .weak-meter h3 { margin: 0; font-size: 23px; font-weight: 600; }
+    .weak-meter p { margin: 0; font-size: 20px; line-height: 1.45; color: var(--muted); }
+    .formula-card { padding: 44px 46px; background: var(--charcoal); color: white; border-radius: 13px; display: flex; flex-direction: column; justify-content: center; }
+    .formula-kicker { color: #c4c8cf; font: 500 18px/1 'IBM Plex Mono',monospace; letter-spacing: .12em; }
+    .formula { margin-top: 34px; font-size: 34px; line-height: 1.7; font-weight: 400; }
+    .formula b { color: #f2a37f; font-weight: 600; }
+    .formula-plus { color: #969ca5; padding: 0 8px; }
+    .formula-note { margin-top: 30px; color: #c8ccd2; font-size: 21px; line-height: 1.52; }
+    .formula-stack { margin-top: 36px; }
+    .formula-stack .formula-card { width: 1040px; min-height: 280px; margin: 0 auto; padding: 38px 52px; text-align: center; }
+    .formula-stack .formula { margin-top: 20px; font-size: 37px; line-height: 1.65; }
+    .definition-row { margin-top: 24px; display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+    .definition-card { padding: 26px 30px; min-height: 150px; }
+    .definition-card h3 { margin: 14px 0 8px; font-size: 27px; font-weight: 600; }
+    .definition-card p { margin: 0; color: var(--muted); font-size: 21px; line-height: 1.5; }
+
+    /* === SLIDE 09: PRICE FACTORS === */
+    .price-map { margin-top: 34px; display: grid; grid-template-columns: 1fr 190px 1fr; gap: 22px; align-items: center; }
+    .factor-column { display: grid; gap: 16px; }
+    .factor { padding: 23px 26px; min-height: 118px; }
+    .factor h3 { margin: 12px 0 8px; font-size: 25px; font-weight: 600; }
+    .factor p { margin: 0; color: var(--muted); font-size: 20px; line-height: 1.42; }
+    .price-center { width: 170px; height: 170px; margin: auto; border-radius: 50%; background: var(--orange-soft); border: 1px solid #e5b8a5; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .price-center strong { color: var(--orange); font: 600 36px/1 'Manrope',sans-serif; }
+    .price-center span { margin-top: 8px; font-size: 19px; line-height: 1.3; }
+    .price-unit { margin-top: 24px; padding: 19px 26px; display: flex; justify-content: space-between; align-items: center; background: var(--panel); border-radius: 10px; font-size: 22px; }
+    .price-unit b { color: var(--orange); font-weight: 600; }
+    .price-factor-row { margin-top: 34px; display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+    .price-factor-row .factor { min-height: 220px; padding: 29px 30px; border-top: 4px solid var(--orange); }
+    .price-factor-row .factor h3 { font-size: 28px; font-weight: 500; }
+    .price-factor-row .factor p { font-size: 22px; line-height: 1.55; }
+    .price-unit { margin-top: 48px; padding: 0; display: block; text-align: center; background: none; border-radius: 0; }
+    .price-unit .unit-kicker { color: var(--muted); font-size: 20px; letter-spacing: .08em; }
+    .price-unit .unit-main { margin-top: 9px; color: var(--orange); font: 600 62px/1.2 'Manrope','Noto Sans SC',sans-serif; }
+    .price-unit p { margin: 11px 0 0; color: var(--muted); font-size: 24px; line-height: 1.45; }
+    .price-summary { margin-top: 32px; padding: 0; color: var(--ink); background: none; border: 0; text-align: center; font-size: 33px; line-height: 1.45; font-weight: 500; }
+
+    /* === SLIDE 10: THREE USER ACTIONS === */
+    .action-grid { margin-top: 28px; display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+    .action-card { min-height: 282px; padding: 22px 26px; }
+    .action-card h2 { margin: 17px 0 10px; font-size: 27px; font-weight: 600; }
+    .action-card .why { margin: 0 0 12px; color: var(--orange); font-size: 18px; line-height: 1.4; font-weight: 500; }
+    .action-list { list-style: none; margin: 0; padding: 0; }
+    .action-list li { position: relative; padding: 9px 0 9px 23px; border-top: 1px solid var(--line); color: var(--muted); font-size: 19px; line-height: 1.42; }
+    .action-list li::before { content: ''; position: absolute; left: 0; top: 20px; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); }
+    .action-conclusion { margin-top: 24px; font-size: 26px; text-align: center; }
+    .action-conclusion b { color: var(--orange); font-weight: 600; }
+
+    /* === SLIDE 11: MODEL CHOICE === */
+    .choice-layout { margin-top: 34px; display: grid; grid-template-columns: 1.02fr .98fr; gap: 36px; }
+    .ladder { min-height: 500px; padding: 34px; position: relative; }
+    .ladder h2, .closing-box h2 { margin: 0; font-size: 30px; font-weight: 600; }
+    .steps { margin-top: 34px; display: grid; gap: 12px; align-items: end; }
+    .step { min-height: 88px; padding: 18px 22px; border-radius: 9px; background: var(--panel); display: flex; align-items: center; justify-content: space-between; }
+    .step:nth-child(1){width:68%}.step:nth-child(2){width:82%}.step:nth-child(3){width:100%;background:var(--orange-soft);border:1px solid #e5b8a5}
+    .step strong { font-size: 23px; font-weight: 600; }
+    .step span { color: var(--muted); font-size: 19px; }
+    .ladder-tip { margin-top: 24px; color: var(--muted); font-size: 21px; line-height: 1.5; }
+    .closing-box { min-height: 500px; padding: 34px; background: var(--charcoal); color: white; border-radius: 13px; }
+    .closing-list { margin-top: 30px; display: grid; gap: 20px; }
+    .closing-item { display: grid; grid-template-columns: 42px 1fr; gap: 15px; align-items: start; }
+    .closing-item .n { color: #f2a37f; font: 500 19px/1.45 'IBM Plex Mono',monospace; }
+    .closing-item p { margin: 0; color: #e0e3e8; font-size: 22px; line-height: 1.48; }
+    .human-check { margin-top: 28px; padding-top: 22px; border-top: 1px solid #5e6269; color: #f2a37f; font-size: 23px; line-height: 1.45; font-weight: 500; }
+
+    /* === OUTSIDE-STAGE NAVIGATION === */
+    .deck-controls { display: flex; align-items: center; gap: 10px; padding: 8px 11px; border-radius: 999px; background: rgba(35,39,48,.82); color: white; opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+    .deck-controls.show { opacity: 1; pointer-events: auto; }
+    .deck-controls button { width: 34px; height: 34px; border: 0; border-radius: 50%; background: rgba(255,255,255,.12); color: white; cursor: pointer; }
+    .deck-controls span { min-width: 52px; text-align: center; font: 500 13px/1 'IBM Plex Mono',monospace; }
+    .nav-hotzone { position: fixed; left: 0; right: 0; bottom: 0; height: 76px; z-index: 999; }
+
+    /* === INLINE EDITING CONTROLS === */
+    .edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+    .edit-toggle, .save-copy { position: fixed; top: 14px; width: 42px; height: 42px; border: 0; border-radius: 50%; background: rgba(35,39,48,.88); color: white; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .25s ease; z-index: 10001; }
+    .edit-toggle { left: 14px; }
+    .save-copy { left: 64px; width: auto; padding: 0 15px; border-radius: 21px; font-size: 13px; }
+    .edit-toggle.show, .edit-toggle.active, .save-copy.show { opacity: 1; pointer-events: auto; }
+    body.editing [data-editable] { outline: 1px dashed rgba(199,96,56,.55); outline-offset: 4px; cursor: text; }
+    .edit-status { position: fixed; top: 64px; left: 14px; z-index: 10001; padding: 8px 11px; border-radius: 7px; background: rgba(35,39,48,.88); color: white; font: 400 12px/1.2 'Noto Sans SC',sans-serif; opacity: 0; transform: translateY(-4px); pointer-events: none; transition: .2s ease; }
+    .edit-status.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <!-- === FIXED PRESENTATION STAGE === -->
+  <main class="deck-viewport">
+    <div class="deck-stage" id="deckStage">
+
+      <!-- === COVER === -->
+      <section class="slide cover-slide active" data-slide="1">
+        <div class="cover-center">
+          <div class="cover-rule reveal"></div>
+          <h1 class="reveal d1" data-editable>什么是 <span class="latin accent">Token</span>？</h1>
+          <div class="cover-subtitle reveal d2" data-editable>看懂 AI 能处理多少、要等多久、要花多少钱</div>
+          <div class="cover-keyword-zone reveal d3">
+            <div class="cover-keyword-label" data-editable>本期关键词</div>
+            <div class="cover-keywords"><span class="hot" data-editable>分词器</span><span data-editable>Token 词表</span><span data-editable>切分规则</span><span class="hot" data-editable>上下文窗口</span><span data-editable>输入 Token</span><span data-editable>输出 Token</span><span data-editable>回答速度</span><span class="hot" data-editable>API</span><span data-editable>模型</span><span data-editable>缓存</span><span data-editable>使用量</span><span data-editable>费用</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- === SLIDE 01 / WHY TOKEN MATTERS === -->
+      <section class="slide s1" data-slide="2">
+        <div class="content">
+          <div class="meta reveal" data-editable>CONCEPT 02 / 11</div>
+          <h1 class="reveal d1" data-editable>为什么要理解 <span class="latin">Token？</span></h1>
+          <div class="lead reveal d2" data-editable>它不只是一个技术名词。每次和 AI 对话，背后都在用 Token 衡量三件事：<strong>能处理多少、要等多久、要花多少钱。</strong></div>
+          <div class="section-label reveal d3" data-editable>TOKEN 与哪些使用结果直接相关？</div>
+          <div class="three-cards reveal d4">
+            <article class="result-card"><div class="number-tag" data-editable>NO. 01</div><h2 data-editable>能处理多少内容</h2><p data-editable>模型一次能参考的信息有上限，通常用 <b>Token 数量</b>表示。</p></article>
+            <article class="result-card"><div class="number-tag" data-editable>NO. 02</div><h2 data-editable>要等待多久</h2><p data-editable>需要处理和生成的 Token 越多，通常需要<b>等待更久</b>。</p></article>
+            <article class="result-card"><div class="number-tag" data-editable>NO. 03</div><h2 data-editable>要花多少钱</h2><p data-editable>通过 API 使用模型时，通常按实际 <b>Token 用量</b>计费。</p></article>
+          </div>
+          <div class="page-number">02 / 11</div>
+        </div>
+      </section>
+
+      <!-- === SLIDE 02 / DEFINITION AND PIPELINE === -->
+      <section class="slide s2" data-slide="3">
+        <div class="content">
+          <div class="meta reveal" data-editable>DEFINITION 03 / 11</div>
+          <h1 class="reveal d1" data-editable><span class="latin accent">Token</span> 是什么？用来做什么？</h1>
+          <div class="lead reveal d2" data-editable>模型看不懂文字，你向 AI 说一句话以后，要靠分词器把连续文字切成一个个 Token；<strong>Token 是文字被分词器切分后形成的单位，</strong><span class="definition-tail">模型以这些单位为基础处理和生成文本。</span></div>
+          <div class="example-strip reveal d3">
+            <div class="example-copy"><div class="source" data-editable>今天开始学人工智能！</div><div class="split" data-editable><b>今天</b>｜开始｜学｜<b>人工智能</b>｜！</div></div>
+            <div class="example-result"><span class="result-arrow" aria-hidden="true">→</span><div class="count" data-editable>5 个 Token</div></div>
+          </div>
+          <div class="pipeline reveal d4">
+            <div class="pipe-node"><div class="main" data-editable>一段文字</div><div class="small" data-editable>原始输入</div></div><div class="pipe-arrow">→</div>
+            <div class="pipe-node"><div class="main" data-editable>分词器切分</div><div class="small" data-editable>按规则处理</div></div><div class="pipe-arrow">→</div>
+            <div class="pipe-node focus"><div class="main latin" data-editable>多个 Token</div><div class="small" data-editable>切分结果</div></div><div class="pipe-arrow">→</div>
+            <div class="pipe-node"><div class="main" data-editable>对应编号</div><div class="small" data-editable>在词表中查找</div></div><div class="pipe-arrow">→</div>
+            <div class="pipe-node"><div class="main" data-editable>转成数字</div><div class="small" data-editable>可以计算</div></div><div class="pipe-arrow">→</div>
+            <div class="pipe-node"><div class="main" data-editable>模型计算</div><div class="small" data-editable>处理与生成</div></div>
+          </div>
+          <div class="role-strip reveal d5">
+            <div class="role"><h3 data-editable>作用 01</h3><p data-editable>把文字切成可处理的单位。</p></div>
+            <div class="role"><h3 data-editable>作用 02</h3><p data-editable>连接文字和数字表示。</p></div>
+            <div class="role"><h3 data-editable>作用 03</h3><p data-editable>让输入、输出的文本处理量可以被统计。</p></div>
+          </div>
+          <div class="page-number">03 / 11</div>
+        </div>
+      </section>
+
+      <!-- === SLIDE 03 / TOKEN SIZE === -->
+      <section class="slide" data-slide="4">
+        <div class="content">
+          <div class="meta reveal" data-editable>SPLIT 04 / 11</div>
+          <h1 class="reveal d1" data-editable>一个 <span class="latin accent">Token</span> 有多大？</h1>
+          <div class="sentence reveal d2" data-editable>原句：<b>今天开始学人工智能！</b></div>
+          <div class="token-compare reveal d3">
+            <div class="token-row">
+              <div class="tokenizer" data-editable>分词器</div>
+              <div class="tokens"><span class="token hot" data-editable>今天</span><span class="token" data-editable>开始</span><span class="token" data-editable>学</span><span class="token hot" data-editable>人工智能</span><span class="token" data-editable>！</span></div>
+              <div class="token-count">5<small data-editable>个 Token</small></div>
+            </div>
+          </div>
+          <div class="token-facts reveal d4">
+            <div class="token-fact panel"><div class="number-tag" data-editable>01</div><h3 data-editable>可能是什么？</h3><p data-editable>一个 Token 可能是一个字、一个词、一个标点，也可能是英文单词的一部分。</p></div>
+            <div class="token-fact panel"><div class="number-tag" data-editable>02</div><h3 data-editable>按照什么切分？</h3><p data-editable>分词器按照预先建立的 Token 词表和切分规则处理文字。经常一起出现的字词组合，更可能被保留成一个 Token。</p></div>
+            <div class="token-fact panel"><div class="number-tag" data-editable>03</div><h3 data-editable>为什么数量会不同？</h3><p data-editable>不同模型使用的切分规则和 Token 词表可能不同，所以同一段文字可能得到不同数量的 Token。</p></div>
+          </div>
+          <div class="page-number">04 / 11</div>
+        </div>
+      </section>
+
+      <!-- === SLIDE 04 / CONTEXT WINDOW === -->
+      <section class="slide" data-slide="5">
+        <div class="content">
+          <div class="meta reveal" data-editable>CAPACITY 05 / 11</div>
+          <h1 class="reveal d1" data-editable><span class="latin accent">Token</span> 如何影响 AI 的内容容量？</h1>
+          <div class="lead reveal d2" data-editable>AI 每次回答问题时，不能无限量地同时参考所有聊天记录和文件。它这一次能够参考的信息有一个上限，这个范围就叫<strong>“上下文窗口”</strong>。</div>
+          <div class="context-grid reveal d3">
+            <div class="window-panel panel">
+              <div class="window-head"><h2 data-editable>本轮上下文窗口</h2><span data-editable>共同占用同一份容量</span></div>
+              <div class="window-track">
+                <div class="window-band"><b data-editable>系统提示词和产品预设规则</b><span data-editable>预设信息</span></div>
+                <div class="window-band"><b data-editable>用户当前发送的问题</b><span data-editable>本轮输入</span></div>
+                <div class="window-band"><b data-editable>本轮的历史对话</b><span data-editable>前文信息</span></div>
+                <div class="window-band"><b data-editable>用户上传及 AI 临时取出的相关内容</b><span data-editable>相关资料</span></div>
+                <div class="window-band" aria-hidden="true"></div>
+              </div>
+            </div>
+            <div class="capacity-side">
+              <div class="capacity-point"><h3 data-editable>所有内容加在一起计算</h3><p data-editable>你的问题、AI 需要参考的前面对话和相关资料，都要先转换成 Token，再判断是否超过上限。</p></div>
+              <div class="capacity-point"><h3 data-editable><strong>不是</strong>简单看聊了几轮、上传了几个文件</h3><p data-editable>真正要看的是：这次实际交给 AI 的内容一共占了多少 Token。</p></div>
+            </div>
+          </div>
+          <div class="page-number">05 / 11</div>
+        </div>
+      </section>
+
+      <!-- === SLIDE 05 / OVERFLOW BEHAVIOR === -->
+      <section class="slide" data-slide="6">
+        <div class="content">
+          <div class="meta reveal" data-editable>LIMIT 06 / 11</div>
+          <h1 class="reveal d1" data-editable>内容太多以后，系统会怎样处理？</h1>
+          <div class="lead reveal d2" data-editable>当要处理的内容超过窗口容量时，产品不可能把全部原文都交给模型，只能<strong>报错或者对内容进行取舍</strong>。</div>
+          <div class="overflow-layout reveal d3">
+            <div class="overflow-source panel">
+              <h2 data-editable>上下文容量<br/>快要装满</h2>
+              <div class="stack-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="overflow-mark" data-editable>超出可用空间 →</div>
+            </div>
+            <div class="overflow-copy">
+              <div class="feel-block">
+                <h3 data-editable>长对话中，你可能会感觉到：</h3>
+                <div class="feeling-list"><span data-editable>忘记前面的要求</span><span data-editable>遗漏重要信息</span><span data-editable>前后回答矛盾</span><span data-editable>感觉“变笨了”</span></div>
+              </div>
+              <div class="route-grid">
+                <div class="route"><div class="number-tag" data-editable>01</div><h3 data-editable>直接提醒用户内容太长，需要缩短</h3></div>
+                <div class="route"><div class="number-tag" data-editable>02</div><h3 data-editable>少带一部分前面的聊天记录</h3></div>
+                <div class="route"><div class="number-tag" data-editable>03</div><h3 data-editable>把旧内容压缩成一份简短摘要</h3></div>
+                <div class="route"><div class="number-tag" data-editable>04</div><h3 data-editable>只从长文件中挑出与当前问题有关的部分</h3></div>
+              </div>
+            </div>
+          </div>
+          <div class="page-number">06 / 11</div>
+        </div>
+      </section>
+
+      <!-- === SLIDE 06 / LATENCY === -->
+      <section class="slide" data-slide="7">
+        <div class="content">
+          <div class="meta reveal" data-editable>TIME 07 / 11</div>
+          <h1 class="reveal d1" data-editable><span class="latin accent">Token</span> 如何影响 AI 的回答速度？</h1>
+          <div class="lead reveal d2" data-editable>输入 Token 影响多久开始回答；输出 Token 影响多久生成完整答案。</div>
+          <div class="time-board panel reveal d3">
+            <div class="timeline-row">
+              <div class="time-label"><div class="kind" data-editable>输入 Token</div><div class="desc" data-editable>模型需要先处理你的问题、需要参考的前面对话和资料，然后才能开始回答。</div></div>
+              <div class="time-track"><div class="time-fill input-fill"></div><div class="time-dot input"></div></div>
+              <div class="time-result"><strong data-editable>多久开始回答</strong><span data-editable>输入越多，通常处理越久</span></div>
+            </div>
+            <div class="timeline-row">
+              <div class="time-label"><div class="kind" data-editable>输出 Token</div><div class="desc" data-editable>AI 不是先写好完整答案再一次性显示，而是一个 Token 接一个 Token 地生成。</div></div>
+              <div class="time-track"><div class="time-fill output-fill"></div><div class="time-dot output"></div></div>
+              <div class="time-result"><strong data-editable>多久生成完成</strong><span data-editable>输出越多，通常完成越慢</span></div>
+            </div>
+          </div>
+          <div class="time-conclusion reveal d4" data-editable><span>输入影响<b>“多久开始”</b></span><span>｜</span><span>输出影响<b>“多久完成”</b></span></div>
+          <div class="page-number">07 / 11</div>
+        </div>
+      </section>
+
+      <!-- === SLIDE 07 / PRODUCT PACKAGING === -->
+      <section class="slide" data-slide="8">
+        <div class="content">
+          <div class="meta reveal" data-editable>BILLING 08 / 11</div>
+          <h1 class="reveal d1" data-editable><span class="latin accent">Token</span> 是结算 AI 账单的单位</h1>
+          <div class="lead reveal d2" data-editable>普通用户通常不是直接按 Token 付费；公司或开发者通过 API 调用模型时，会更直接地涉及 Token 计费。</div>
+          <div class="billing-split reveal d3">
+            <div class="billing-side chat panel">
+              <div class="number-tag" data-editable>CHAT PRODUCTS</div>
+              <h2 data-editable>普通聊天产品</h2>
+              <p data-editable>大多数人使用 AI 聊天产品时，一般不会收到每次对话的 Token 账单。</p>
+              <div class="billing-items"><div class="billing-item" data-editable>额度</div><div class="billing-item" data-editable>次数</div><div class="billing-item" data-editable>订阅套餐</div></div>
+              <div class="under-meter" data-editable>Token 用量被包装成额度、次数和订阅套餐</div>
+            </div>
+            <div class="billing-side api panel">
+              <div class="number-tag" data-editable>API SERVICES</div>
+              <h2 data-editable>什么时候直接涉及 Token 计费？</h2>
+              <p data-editable>公司或开发者把大模型接入自己的产品、网站或工作流程时，通常会通过 API 调用模型。</p>
+              <div class="billing-copy"><p data-editable>API 可以简单理解为：让其他产品在后台调用大模型的一种连接方式。</p><p data-editable>这类调用通常按照实际用量付费，因此会直接统计 Token。</p></div>
+              <div class="under-meter" data-editable>按照实际使用量付费</div>
+            </div>
+          </div>
+          <div class="billing-takeaway reveal d4" data-editable><b>看不到账单，不代表后台没有 Token 消耗</b>，只是产品没有把底层用量直接展示出来。</div>
+          <div class="page-number">08 / 11</div>
+        </div>
+      </section>
+
+      <!-- === SLIDE 08 / COST FORMULA === -->
+      <section class="slide" data-slide="9">
+        <div class="content">
+          <div class="meta reveal" data-editable>COST 09 / 11</div>
+          <h1 class="reveal d1" data-editable><span class="latin accent">API</span> 的 Token 费用怎么算？</h1>
+          <div class="lead reveal d2" data-editable>一笔 Token 费用，通常需要分别计算输入 Token 和输出 Token。</div>
+          <div class="formula-stack reveal d3">
+            <div class="formula-card">
+              <div class="formula-kicker" data-editable>BASIC FORMULA</div>
+              <div class="formula" data-editable>费用 ≈ <b>输入 Token 数 × 输入单价</b><br/><span class="formula-plus">+</span> <b>输出 Token 数 × 输出单价</b></div>
+            </div>
+            <div class="definition-row">
+              <div class="definition-card panel"><div class="number-tag" data-editable>INPUT TOKEN</div><h3 data-editable>输入 Token</h3><p data-editable>这一次交给模型处理的内容，包括当前问题，以及实际带入的前文和资料。</p></div>
+              <div class="definition-card panel"><div class="number-tag" data-editable>OUTPUT TOKEN</div><h3 data-editable>输出 Token</h3><p data-editable>模型这一次生成并返回的内容。</p></div>
+            </div>
+          </div>
+          <div class="page-number">09 / 11</div>
+        </div>
+      </section>
+
+      <!-- === SLIDE 09 / PRICE DIFFERENCES === -->
+      <section class="slide" data-slide="10">
+        <div class="content">
+          <div class="meta reveal" data-editable>PRICE 10 / 11</div>
+          <h1 class="reveal d1" data-editable>为什么同样数量的 <span class="latin accent">Token</span>，费用也可能不同？</h1>
+          <div class="lead reveal d2" data-editable>最终费用主要取决于：用了多少 Token、使用哪个模型，以及 Token 属于哪种类型。</div>
+          <div class="price-factor-row reveal d3">
+            <div class="factor panel"><div class="number-tag" data-editable>FACTOR 01</div><h3 data-editable>模型不同</h3><p data-editable>不同模型的能力、计算量和产品定价不同，Token 单价也可能不同。</p></div>
+            <div class="factor panel"><div class="number-tag" data-editable>FACTOR 02</div><h3 data-editable>类型不同</h3><p data-editable>输入、输出和缓存等 Token 可能采用不同价格。</p></div>
+            <div class="factor panel"><div class="number-tag" data-editable>FACTOR 03</div><h3 data-editable>重复输入可以复用</h3><p data-editable>如果能够复用之前的计算结果，这部分输入可能更便宜。</p></div>
+          </div>
+          <div class="price-unit reveal d4">
+            <div class="unit-kicker" data-editable>统一报价口径</div>
+            <div class="unit-main" data-editable>每 100 万 Token</div>
+            <p data-editable>不代表每次必须使用或购买 100 万 Token</p>
+          </div>
+          <div class="price-summary reveal d4" data-editable>实际费用仍按真实用量计算。</div>
+          <div class="page-number">10 / 11</div>
+        </div>
+      </section>
+
+      <!-- === SLIDE 10 / PRACTICAL ACTIONS === -->
+      <section class="slide" data-slide="11">
+        <div class="content">
+          <div class="meta reveal" data-editable>ACTION 11 / 11</div>
+          <h1 class="reveal d1" data-editable>理解 Token 后，普通人应该怎么做？</h1>
+          <div class="action-grid reveal d2">
+            <div class="action-card panel">
+              <div class="number-tag" data-editable>01 / INPUT</div><h2 data-editable>管理输入信息</h2>
+              <ul class="action-list"><li data-editable>只放当前任务真正需要的背景和资料，删掉无关、重复或互相冲突的信息</li><li data-editable>资料很多时，按“整理资料—确认结论—生成成品”分阶段推进，每一步留下简短总结</li></ul>
+            </div>
+            <div class="action-card panel">
+              <div class="number-tag" data-editable>02 / CONTEXT</div><h2 data-editable>管理长对话</h2>
+              <ul class="action-list"><li data-editable>AI 开始漏掉要求、答非所问或前后矛盾时，重新说明当前目标和关键条件</li><li data-editable>对话很长时，让 AI 整理已确认的信息（handoff 文档），再带着总结开启新对话</li></ul>
+            </div>
+            <div class="action-card panel">
+              <div class="number-tag" data-editable>03 / OUTPUT</div><h2 data-editable>管理输出要求</h2>
+              <ul class="action-list"><li data-editable>只需要结论时，直接说明“简短回答，并给出关键依据”</li><li data-editable>深入分析时，说清问题、背景、判断标准和希望的输出结构</li><li data-editable>不要只追求更长，先看答案是否真正解决问题</li></ul>
+            </div>
+            <div class="action-card panel">
+              <div class="number-tag" data-editable>04 / MODEL</div><h2 data-editable>按任务选择模型和思考强度</h2>
+              <ul class="action-list"><li data-editable>更高档通常意味着更多等待或使用额度，但不一定对所有任务都更好</li><li data-editable>简单任务先用默认或较低成本方案；先说清目标、资料和输出要求，再用中等模型尝试</li><li data-editable>到达能力上限时再升级；复杂、高风险任务可直接使用更强方案，重要结果仍要人工核对</li></ul>
+            </div>
+          </div>
+          <div class="page-number">11 / 11</div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- === PRESENTATION CONTROLS OUTSIDE THE STAGE === -->
+  <div class="nav-hotzone" aria-hidden="true"></div>
+  <div class="deck-controls" id="deckControls">
+    <button id="prevBtn" aria-label="上一页">‹</button>
+    <span id="deckCounter">1 / 11</span>
+    <button id="nextBtn" aria-label="下一页">›</button>
+  </div>
+
+  <!-- === INLINE EDITING UI === -->
+  <div class="edit-hotzone" title="编辑模式（E）"></div>
+  <button class="edit-toggle" id="editToggle" title="编辑模式（E）">✎</button>
+  <button class="save-copy" id="saveCopy" title="下载包含修改的 HTML">下载副本</button>
+  <div class="edit-status" id="editStatus">编辑模式已开启 · Ctrl/Cmd + S 保存</div>
+
+  <script>
+    /* === SLIDE PRESENTATION CONTROLLER === */
+    class SlidePresentation {
+      constructor() {
+        this.slides = [...document.querySelectorAll('.slide')];
+        this.currentSlide = 0;
+        this.stage = document.getElementById('deckStage');
+        this.counter = document.getElementById('deckCounter');
+        this.wheelLocked = false;
+        this.touchStartX = 0;
+        this.setupStageScale();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupButtons();
+        this.setupControlReveal();
+        const initial = Math.max(0, Math.min(Number(location.hash.replace('#','')) - 1 || 0, this.slides.length - 1));
+        this.showSlide(initial, false);
+      }
+
+      setupStageScale() {
+        const scale = () => {
+          const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+          const x = (window.innerWidth - 1920 * factor) / 2;
+          const y = (window.innerHeight - 1080 * factor) / 2;
+          this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+        };
+        scale();
+        window.addEventListener('resize', scale);
+      }
+
+      setupKeyboardNav() {
+        document.addEventListener('keydown', (event) => {
+          if (event.target.closest('[contenteditable="true"]')) return;
+          if (['ArrowRight','ArrowDown',' ','PageDown'].includes(event.key)) { event.preventDefault(); this.next(); }
+          if (['ArrowLeft','ArrowUp','PageUp'].includes(event.key)) { event.preventDefault(); this.prev(); }
+          if (event.key === 'Home') { event.preventDefault(); this.showSlide(0); }
+          if (event.key === 'End') { event.preventDefault(); this.showSlide(this.slides.length - 1); }
+        });
+      }
+
+      setupTouchNav() {
+        document.addEventListener('touchstart', (event) => { this.touchStartX = event.changedTouches[0].screenX; }, {passive:true});
+        document.addEventListener('touchend', (event) => {
+          const distance = event.changedTouches[0].screenX - this.touchStartX;
+          if (Math.abs(distance) < 48) return;
+          distance < 0 ? this.next() : this.prev();
+        }, {passive:true});
+      }
+
+      setupWheelNav() {
+        document.addEventListener('wheel', (event) => {
+          if (this.wheelLocked || Math.abs(event.deltaY) < 18) return;
+          this.wheelLocked = true;
+          event.deltaY > 0 ? this.next() : this.prev();
+          setTimeout(() => { this.wheelLocked = false; }, 620);
+        }, {passive:true});
+      }
+
+      setupButtons() {
+        document.getElementById('prevBtn').addEventListener('click', () => this.prev());
+        document.getElementById('nextBtn').addEventListener('click', () => this.next());
+      }
+
+      setupControlReveal() {
+        const hotzone = document.querySelector('.nav-hotzone');
+        const controls = document.getElementById('deckControls');
+        let timer;
+        const show = () => { clearTimeout(timer); controls.classList.add('show'); };
+        const hide = () => { timer = setTimeout(() => controls.classList.remove('show'), 500); };
+        hotzone.addEventListener('mouseenter', show);
+        hotzone.addEventListener('mouseleave', hide);
+        controls.addEventListener('mouseenter', show);
+        controls.addEventListener('mouseleave', hide);
+      }
+
+      showSlide(index, updateHash = true) {
+        this.currentSlide = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides.forEach((slide, i) => {
+          const active = i === this.currentSlide;
+          slide.classList.toggle('active', active);
+          slide.classList.toggle('visible', active);
+        });
+        this.counter.textContent = `${this.currentSlide + 1} / ${this.slides.length}`;
+        if (updateHash) history.replaceState(null, '', `#${this.currentSlide + 1}`);
+      }
+
+      next() { this.showSlide(this.currentSlide + 1); }
+      prev() { this.showSlide(this.currentSlide - 1); }
+    }
+
+    /* === INLINE EDITOR WITH LOCAL AUTOSAVE === */
+    class InlineEditor {
+      constructor() {
+        this.isActive = false;
+        this.storageKey = 'token-deck-11-v3-edits';
+        this.nodes = [...document.querySelectorAll('[data-editable]')];
+        this.toggle = document.getElementById('editToggle');
+        this.saveButton = document.getElementById('saveCopy');
+        this.status = document.getElementById('editStatus');
+        this.restore();
+        this.nodes.forEach((node, index) => {
+          node.dataset.editId = index;
+          node.addEventListener('input', () => this.save());
+        });
+        this.setupUI();
+      }
+
+      setupUI() {
+        this.toggle.addEventListener('click', () => this.toggleEditMode());
+        this.saveButton.addEventListener('click', () => this.downloadCopy());
+        const hotzone = document.querySelector('.edit-hotzone');
+        let hideTimeout = null;
+        hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); this.toggle.classList.add('show'); });
+        hotzone.addEventListener('mouseleave', () => {
+          hideTimeout = setTimeout(() => { if (!this.isActive) this.toggle.classList.remove('show'); }, 400);
+        });
+        this.toggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+        this.toggle.addEventListener('mouseleave', () => {
+          hideTimeout = setTimeout(() => { if (!this.isActive) this.toggle.classList.remove('show'); }, 400);
+        });
+        hotzone.addEventListener('click', () => this.toggleEditMode());
+        document.addEventListener('keydown', (event) => {
+          if ((event.key === 'e' || event.key === 'E') && !event.target.closest('[contenteditable="true"]')) this.toggleEditMode();
+          if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') { event.preventDefault(); this.save(true); }
+        });
+      }
+
+      toggleEditMode() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('editing', this.isActive);
+        this.toggle.classList.toggle('active', this.isActive);
+        this.saveButton.classList.toggle('show', this.isActive);
+        this.nodes.forEach(node => node.setAttribute('contenteditable', this.isActive ? 'true' : 'false'));
+        this.flash(this.isActive ? '编辑模式已开启 · Ctrl/Cmd + S 保存' : '编辑已关闭');
+        if (!this.isActive) this.save();
+      }
+
+      save(showStatus = false) {
+        const data = {};
+        this.nodes.forEach(node => { data[node.dataset.editId] = node.innerHTML; });
+        localStorage.setItem(this.storageKey, JSON.stringify(data));
+        if (showStatus) this.flash('修改已保存在当前浏览器');
+      }
+
+      restore() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(this.storageKey) || '{}');
+          this.nodes.forEach((node, index) => { if (saved[index] !== undefined) node.innerHTML = saved[index]; });
+        } catch (_) { /* Ignore damaged local drafts. */ }
+      }
+
+      flash(message) {
+        this.status.textContent = message;
+        this.status.classList.add('show');
+        clearTimeout(this.statusTimer);
+        this.statusTimer = setTimeout(() => this.status.classList.remove('show'), 1800);
+      }
+
+      downloadCopy() {
+        this.save();
+        const clone = document.documentElement.cloneNode(true);
+        clone.querySelectorAll('[contenteditable]').forEach(node => node.setAttribute('contenteditable','false'));
+        const source = '<!doctype html>\n' + clone.outerHTML;
+        const blob = new Blob([source], {type:'text/html;charset=utf-8'});
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = '什么是Token-11页-修改版.html';
+        anchor.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        this.flash('已下载包含当前修改的 HTML 副本');
+      }
+    }
+
+    const deck = new SlidePresentation();
+    const editor = new InlineEditor();
+  </script>
+</body>
+</html>
